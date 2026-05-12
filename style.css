@@ -3,14 +3,25 @@ body {
   text-align: center;
   background: #0f0f1a;
   color: white;
-  margin-top: 100px;
+  margin: 0;
 }
 
-input {
-  padding: 10px;
+header {
+  padding: 40px;
 }
 
-button {
+.menu a {
+  display: block;
+  margin: 20px auto;
+  padding: 15px;
+  background: #4f46e5;
+  color: white;
+  text-decoration: none;
+  width: 250px;
+  border-radius: 10px;
+}
+
+input, button {
   padding: 10px;
-  margin-left: 5px;
+  margin: 10px;
 }
