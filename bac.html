@@ -2,15 +2,28 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>BAC</title>
+  <title>BAC Calculator</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h1>🎓 Résultat BAC</h1>
+  <h1>🎓 Calculateur BAC</h1>
 
-  <input id="note" type="number" placeholder="Moyenne /20">
-  <button onclick="calcBAC()">Voir résultat</button>
+  <label>Choisis ta filière :</label>
+  <select id="filiere">
+    <option value="general">Général</option>
+    <option value="techno">Technologique</option>
+    <option value="pro">Professionnel</option>
+  </select>
+
+  <h3>Notes (sur 20)</h3>
+
+  <input id="fr" type="number" placeholder="Français">
+  <input id="math" type="number" placeholder="Maths">
+  <input id="hg" type="number" placeholder="Histoire-Géo">
+  <input id="spe" type="number" placeholder="Spécialité">
+
+  <button onclick="calcBAC()">Calculer résultat</button>
 
   <p id="resBAC"></p>
 
