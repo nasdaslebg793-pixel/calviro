@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impôt sur le revenu — Calviro</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🏛️ Impôt sur le revenu</h1>
+      <p>Estimation selon le barème 2025 (revenus 2024).</p>
+    </div>
+
+    <div class="field">
+      <label for="imp-revenu">Revenu annuel net imposable (€)</label>
+      <input type="number" id="imp-revenu" placeholder="30 000" min="0">
+    </div>
+
+    <div class="field">
+      <label for="imp-parts">Nombre de parts fiscales</label>
+      <select id="imp-parts">
+        <option value="1">1 part (célibataire)</option>
+        <option value="1.5">1,5 part (célibataire + 1 enfant)</option>
+        <option value="2">2 parts (couple)</option>
+        <option value="2.5">2,5 parts (couple + 1 enfant)</option>
+        <option value="3">3 parts (couple + 2 enfants)</option>
+        <option value="4">4 parts (couple + 3 enfants)</option>
+      </select>
+    </div>
+
+    <button class="btn" onclick="calcImpots()">Estimer mon impôt</button>
+
+    <div class="result" id="imp-result"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
