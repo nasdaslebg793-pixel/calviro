@@ -7,56 +7,17 @@
 </head>
 <body>
 
-  <h1>Calviro</h1>
-  <p>Outils simples pour calculer</p>
+  <header>
+    <h1>Calviro</h1>
+    <p>Multi-tools simple et rapide</p>
+  </header>
 
-  <input id="brut" type="number" placeholder="Salaire brut">
-  <button onclick="calc()">Calculer</button>
+  <main class="menu">
 
-  <p id="result"></p>
+    <a href="salaire.html">💰 Salaire brut → net</a>
+    <a href="bac.html">🎓 Calcul BAC</a>
 
-  <script src="script.js"></script>
+  </main>
+
 </body>
 </html>
-<!-- AGE -->
-<section class="tool">
-  <h2>📅 Calcul âge</h2>
-  <input id="birth" type="number" placeholder="Année de naissance">
-  <button onclick="calcAge()">Calculer</button>
-  <p id="resAge"></p>
-</section>
-
-<!-- MOYENNE -->
-<section class="tool">
-  <h2>📊 Moyenne simple</h2>
-  <input id="n1" type="number" placeholder="Note 1">
-  <input id="n2" type="number" placeholder="Note 2">
-  <input id="n3" type="number" placeholder="Note 3">
-  <button onclick="calcMoy()">Calculer</button>
-  <p id="resMoy"></p>
-</section>
-
-<!-- TVA -->
-<section class="tool">
-  <h2>🧾 TVA</h2>
-  <input id="ht" type="number" placeholder="Prix HT">
-  <button onclick="calcTVA()">Calculer TTC</button>
-  <p id="resTVA"></p>
-</section>
-
-<!-- TEMPS -->
-<section class="tool">
-  <h2>⏱ Convertisseur heures → minutes</h2>
-  <input id="hours" type="number" placeholder="Heures">
-  <button onclick="calcTime()">Convertir</button>
-  <p id="resTime"></p>
-</section>
-
-<!-- % -->
-<section class="tool">
-  <h2>📉 Pourcentage</h2>
-  <input id="val" type="number" placeholder="Valeur">
-  <input id="perc" type="number" placeholder="%">
-  <button onclick="calcPercent()">Calculer</button>
-  <p id="resPercent"></p>
-</section>
