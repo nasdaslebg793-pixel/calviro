@@ -1,40 +1,153 @@
 :root {
-    --primary: #6366f1;
-    --bg: #f8fafc;
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --bg: #f3f4f6;
+    --card: #ffffff;
+    --text: #1f2937;
 }
 
 body {
-    font-family: 'Inter', sans-serif;
     background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
     padding: 20px;
 }
 
 .container {
-    max-width: 600px; /* Parfait pour mobile */
-    margin: auto;
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-}
-
-input, select {
     width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
+    max-width: 450px; /* Taille parfaite pour mobile et lisible sur PC */
+    background: var(--card);
+    padding: 30px;
+    border-radius: 24px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-/* Grille pour les matières */
-.matiere-row {
+header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+    color: var(--primary);
+    text-align: center;
+}
+
+header p {
+    text-align: center;
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+}
+/* Style des sélecteurs et inputs */
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+}
+
+select, input {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box; /* Important pour que ça ne dépasse pas */
+}
+
+select:focus, input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+/* Boutons de trimestres */
+.trimestres {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.tab {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: #e5e7eb;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.tab.active {
+    background: var(--primary);
+    color: white;
+}
+
+/* Cartes des matières */
+.matiere-card {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    padding: 15px;
+    background: #f9fafb;
+    border-radius: 15px;
+    margin-bottom: 12px;
+    border: 1px solid #f3f4f6;
 }
 
-@media (max-width: 480px) {
-    .container { padding: 1rem; }
-    h1 { font-size: 1.5rem; }
+.matiere-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.matiere-info span:first-child {
+    font-weight: 600;
+}
+
+.matiere-info span:last-child {
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
+
+.note-input {
+    width: 70px;
+    margin-bottom: 0; /* Override */
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Résultat final */
+.resultats {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px dashed #f3f4f6;
+    text-align: center;
+}
+
+.moyenne-display {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 10px 0;
+}
+
+.btn-pdf {
+    width: 100%;
+    background: var(--text);
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.btn-pdf:hover {
+    background: #000;
 }
