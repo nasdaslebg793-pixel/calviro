@@ -1,23 +1,27 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Calviro</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<!-- Dans ton index.html -->
+<div class="container">
+    <h1>Simulateur Bac 2026</h1>
+    
+    <!-- Choix du Bac -->
+    <label>Choisis ton Bac :</label>
+    <select id="select-bac" onchange="chargerMatieres()">
+        <option value="general">Général</option>
+        <option value="stmg">STMG</option>
+        <option value="sti2d">STI2D</option>
+    </select>
 
-  <header>
-    <h1>Calviro</h1>
-    <p>Multi-tools simple et rapide</p>
-  </header>
+    <!-- Choix du Trimestre -->
+    <div class="tabs">
+        <button onclick="changeTrimestre(1)">Trimestre 1</button>
+        <button onclick="changeTrimestre(2)">Trimestre 2</button>
+        <button onclick="changeTrimestre(3)">Trimestre 3</button>
+    </div>
 
-  <main class="menu">
+    <!-- Zone où les matières s'afficheront via JS -->
+    <div id="matieres-container"></div>
 
-    <a href="salaire.html">💰 Salaire brut → net</a>
-    <a href="bac.html">🎓 Calcul BAC</a>
+    <button id="btn-pdf" onclick="genererPDF()">Télécharger mon PDF</button>
+</div>
 
-  </main>
-
-</body>
-</html>
+<!-- Librairie PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
