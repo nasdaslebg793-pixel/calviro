@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pomodoro — Calviro</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>⏱️ Pomodoro</h1>
+      <p>Méthode 25 minutes de travail / 5 minutes de pause.</p>
+    </div>
+
+    <div class="timer-mode" id="pomo-mode">Travail</div>
+    <div class="timer-display" id="pomo-time">25:00</div>
+
+    <div class="btn-group" style="margin-bottom: 24px;">
+      <button class="btn" id="pomo-start" onclick="pomoStart()">Démarrer</button>
+      <button class="btn btn-secondary" onclick="pomoReset()">Réinitialiser</button>
+    </div>
+
+    <hr class="divider">
+
+    <h3>Réglages</h3>
+    <div class="field-row">
+      <div class="field">
+        <label for="pomo-work">Travail (min)</label>
+        <input type="number" id="pomo-work" value="25" min="1" max="120" onchange="pomoReset()">
+      </div>
+      <div class="field">
+        <label for="pomo-break">Pause (min)</label>
+        <input type="number" id="pomo-break" value="5" min="1" max="60" onchange="pomoReset()">
+      </div>
+    </div>
+
+    <div class="result-detail" style="border:none;padding-top:8px;">
+      <div class="result-detail-row"><span>Pomodoros complétés</span><strong id="pomo-cycles">0</strong></div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>pomoInit();</script>
+</body>
+</html>
