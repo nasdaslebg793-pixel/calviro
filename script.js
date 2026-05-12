@@ -1,29 +1,26 @@
-
-Copier
-
 /* ===== Calviro — script.js ===== */
- 
+
 // ---------- Helpers ----------
- 
+
 function $(id) { return document.getElementById(id); }
- 
+
 function showResult(elId, html) {
   const el = $(elId);
   if (!el) return;
   el.innerHTML = html;
   el.classList.add('visible');
 }
- 
+
 function formatEur(n) {
   return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
 }
- 
+
 function formatNum(n, digits = 2) {
   return new Intl.NumberFormat('fr-FR', { maximumFractionDigits: digits }).format(n);
 }
- 
+
 // ---------- 1. BAC ----------
- 
+
 const BAC_COEF = {
   general: {
     name: 'Général',
@@ -62,7 +59,7 @@ const BAC_COEF = {
     ]
   }
 };
- 
+
 function bacRender() {
   const filiere = $('bac-filiere').value;
   const cfg = BAC_COEF[filiere];
@@ -79,7 +76,7 @@ function bacRender() {
     container.appendChild(row);
   });
 }
- 
+
 function bacCalc() {
   const filiere = $('bac-filiere').value;
   const cfg = BAC_COEF[filiere];
@@ -107,7 +104,7 @@ function bacCalc() {
   else if (moy >= 10) mention = 'Sans mention — admis';
   else if (moy >= 8) mention = 'Oral de rattrapage';
   else mention = 'Refusé';
- 
+
   showResult('bac-result', `
     <div class="result-label">Moyenne pondérée</div>
     <div class="result-value">${formatNum(moy, 2)}<span class="unit">/20</span></div>
@@ -118,25 +115,25 @@ function bacCalc() {
     ${manquantes > 0 ? `<div class="note">⚠ ${manquantes} matière(s) non renseignée(s) — résultat partiel.</div>` : ''}
   `);
 }
- 
+
 // ---------- 2. Salaire ----------
- 
+
 function calcSalaire() {
   const sens = $('sal-sens').value;
   const valeur = parseFloat($('sal-input').value);
   const statut = $('sal-statut').value;
   if (isNaN(valeur) || valeur <= 0) return;
- 
+
   // Taux moyens simplifiés
   const taux = statut === 'cadre' ? 0.25 : (statut === 'fonction' ? 0.15 : 0.22);
- 
+
   let brut, net;
   if (sens === 'brut-net') { brut = valeur; net = valeur * (1 - taux); }
   else { net = valeur; brut = valeur / (1 - taux); }
- 
+
   const annuel = sens === 'brut-net' ? net * 12 : brut * 12;
   const cotisations = brut - net;
- 
+
   showResult('sal-result', `
     <div class="result-label">${sens === 'brut-net' ? 'Salaire net mensuel' : 'Salaire brut mensuel'}</div>
     <div class="result-value">${formatEur(sens === 'brut-net' ? net : brut)}</div>
@@ -148,9 +145,9 @@ function calcSalaire() {
     <div class="note">Estimation indicative basée sur un taux moyen. Le vrai taux dépend de ta convention collective, mutuelle, prévoyance, etc.</div>
   `);
 }
- 
+
 // ---------- 3. IMC ----------
- 
+
 function calcIMC() {
   const p = parseFloat($('imc-poids').value);
   const t = parseFloat($('imc-taille').value) / 100;
@@ -163,10 +160,10 @@ function calcIMC() {
   else if (imc < 35) { cat = 'Obésité modérée'; color = 'var(--error)'; }
   else if (imc < 40) { cat = 'Obésité sévère'; color = 'var(--error)'; }
   else { cat = 'Obésité morbide'; color = 'var(--error)'; }
- 
+
   const poidsIdealMin = 18.5 * t * t;
   const poidsIdealMax = 25 * t * t;
- 
+
   showResult('imc-result', `
     <div class="result-label">Indice de masse corporelle</div>
     <div class="result-value">${formatNum(imc, 1)}<span class="unit">kg/m²</span></div>
@@ -177,9 +174,9 @@ function calcIMC() {
     <div class="note">L'IMC est un indicateur général. Il ne tient pas compte de la masse musculaire, de l'âge, du sexe ou de la morphologie.</div>
   `);
 }
- 
+
 // ---------- 4. Convertisseur ----------
- 
+
 const CONVERSIONS = {
   longueur: { name: 'Longueur', unites: { mm: 0.001, cm: 0.01, m: 1, km: 1000, pouce: 0.0254, pied: 0.3048, mile: 1609.344 } },
   masse: { name: 'Masse', unites: { mg: 0.000001, g: 0.001, kg: 1, tonne: 1000, livre: 0.453592, once: 0.0283495 } },
@@ -188,7 +185,7 @@ const CONVERSIONS = {
   energie: { name: 'Énergie', unites: { joule: 1, kJ: 1000, calorie: 4.184, kcal: 4184, Wh: 3600, kWh: 3600000 } },
   temperature: { name: 'Température', special: true }
 };
- 
+
 function convRender() {
   const cat = $('conv-cat').value;
   if (cat === 'temperature') {
@@ -204,7 +201,7 @@ function convRender() {
     <select id="conv-to">${u.map((x, i) => `<option value="${x}"${i === 1 ? ' selected' : ''}>${x}</option>`).join('')}</select>
   `;
 }
- 
+
 function convCalc() {
   const cat = $('conv-cat').value;
   const v = parseFloat($('conv-input').value);
@@ -229,9 +226,9 @@ function convCalc() {
     <div class="result-value" style="font-size: 26px;">${formatNum(v, 4)} ${from} = <strong>${formatNum(result, 6)} ${to}</strong></div>
   `);
 }
- 
+
 // ---------- 5. Facture ----------
- 
+
 function calcFacture() {
   const ht = parseFloat($('fac-ht').value);
   const tva = parseFloat($('fac-tva').value);
@@ -247,9 +244,9 @@ function calcFacture() {
     </div>
   `);
 }
- 
+
 // ---------- 6. Eau ----------
- 
+
 function calcEau() {
   const p = parseFloat($('eau-poids').value);
   const sport = parseFloat($('eau-sport').value) || 0;
@@ -257,7 +254,7 @@ function calcEau() {
   const base = p * 35; // 35ml par kg
   const total = base + sport * 500; // +500ml par heure de sport
   const verres = Math.ceil(total / 250);
- 
+
   showResult('eau-result', `
     <div class="result-label">Besoin quotidien</div>
     <div class="result-value">${formatNum(total / 1000, 2)}<span class="unit">L / jour</span></div>
@@ -269,11 +266,11 @@ function calcEau() {
     <div class="note">Augmente l'apport en cas de forte chaleur, de grossesse, d'allaitement ou de maladie.</div>
   `);
 }
- 
+
 // ---------- 7. Pomodoro ----------
- 
+
 let pomoState = { running: false, mode: 'work', remaining: 25 * 60, interval: null, workMin: 25, breakMin: 5, cycles: 0 };
- 
+
 function pomoUpdate() {
   const m = Math.floor(pomoState.remaining / 60).toString().padStart(2, '0');
   const s = (pomoState.remaining % 60).toString().padStart(2, '0');
@@ -282,7 +279,7 @@ function pomoUpdate() {
   $('pomo-cycles').textContent = pomoState.cycles;
   document.title = `${m}:${s} — ${pomoState.mode === 'work' ? '🍅' : '☕'} Pomodoro`;
 }
- 
+
 function pomoTick() {
   if (pomoState.remaining > 0) {
     pomoState.remaining--;
@@ -311,7 +308,7 @@ function pomoTick() {
     alert(pomoState.mode === 'work' ? 'Fin de pause — retour au travail !' : 'Pomodoro terminé — pause !');
   }
 }
- 
+
 function pomoStart() {
   if (pomoState.running) {
     clearInterval(pomoState.interval);
@@ -323,7 +320,7 @@ function pomoStart() {
     $('pomo-start').textContent = 'Pause';
   }
 }
- 
+
 function pomoReset() {
   clearInterval(pomoState.interval);
   pomoState.running = false;
@@ -334,17 +331,17 @@ function pomoReset() {
   $('pomo-start').textContent = 'Démarrer';
   pomoUpdate();
 }
- 
+
 function pomoInit() {
   pomoReset();
 }
- 
+
 // ---------- 8. Pseudo ----------
- 
+
 const PSEUDO_ADJ = ['silent','cosmic','rapid','crystal','neon','solar','lunar','wild','quiet','bright','dark','swift','royal','arctic','golden','iron','velvet','obsidian','crimson','vivid','frozen','feral','astral','mystic','phantom','sonic','retro','hyper','ultra','vintage'];
 const PSEUDO_NOUN = ['fox','wolf','eagle','tiger','dragon','phoenix','raven','panda','shark','lion','panther','falcon','knight','rider','wizard','ninja','samurai','pilot','rebel','ghost','blade','storm','wave','nova','pulse','vortex','echo','drift','spark','flux'];
 const PSEUDO_STYLES = ['camelCase','snake_case','dot.case','with-dash','random_num','leet'];
- 
+
 function genererPseudo() {
   const style = $('pseudo-style').value;
   const a = PSEUDO_ADJ[Math.floor(Math.random() * PSEUDO_ADJ.length)];
@@ -362,7 +359,7 @@ function genererPseudo() {
   }
   $('pseudo-out').textContent = result;
 }
- 
+
 function copierPseudo() {
   const txt = $('pseudo-out').textContent;
   if (!txt || txt === '—') return;
@@ -373,9 +370,9 @@ function copierPseudo() {
     setTimeout(() => btn.textContent = old, 1500);
   });
 }
- 
+
 // ---------- 9. Probabilités ----------
- 
+
 const PROBA_REF = [
   { p: 1/19068840, label: 'gagner le jackpot du Loto (1 grille)' },
   { p: 1/139838160, label: 'gagner le jackpot de l\'EuroMillions' },
@@ -386,7 +383,7 @@ const PROBA_REF = [
   { p: 1/6, label: 'faire un 6 avec un dé' },
   { p: 0.5, label: 'tirer pile à pile ou face' }
 ];
- 
+
 function calcProba() {
   const num = parseFloat($('proba-num').value);
   const den = parseFloat($('proba-den').value);
@@ -394,7 +391,7 @@ function calcProba() {
   const p = num / den;
   const pct = p * 100;
   const oneIn = p > 0 ? 1 / p : Infinity;
- 
+
   let comparaisons = '';
   PROBA_REF.forEach(ref => {
     const ratio = p / ref.p;
@@ -404,7 +401,7 @@ function calcProba() {
       comparaisons += `<div class="result-detail-row"><span>${ref.label}</span><strong>${formatNum(1/ratio, 1)}× moins probable</strong></div>`;
     }
   });
- 
+
   showResult('proba-result', `
     <div class="result-label">Probabilité</div>
     <div class="result-value">${pct < 0.01 ? pct.toExponential(2) : formatNum(pct, 4)}<span class="unit">%</span></div>
@@ -414,14 +411,14 @@ function calcProba() {
     ${comparaisons ? `<div class="result-detail" style="margin-top:12px;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-muted);margin-bottom:8px;">Comparaisons</div>${comparaisons}</div>` : ''}
   `);
 }
- 
+
 // ---------- 10. PDF generator ----------
- 
+
 function genererPDF() {
   const titre = $('pdf-titre').value || 'Document';
   const contenu = $('pdf-contenu').value;
   if (!contenu.trim()) { alert('Ajoute du contenu avant de générer le PDF.'); return; }
- 
+
   // Création d'un élément pour html2pdf
   const wrapper = document.createElement('div');
   wrapper.style.cssText = 'padding: 40px; font-family: Georgia, serif; color: #000; line-height: 1.6; max-width: 800px;';
@@ -440,14 +437,14 @@ function genererPDF() {
     document.body.removeChild(wrapper);
   });
 }
- 
+
 // ---------- 11. Chômage ----------
- 
+
 function calcChomage() {
   const sjr = parseFloat($('cho-salaire').value); // salaire brut mensuel
   const age = parseInt($('cho-age').value) || 30;
   if (isNaN(sjr) || sjr <= 0) return;
- 
+
   // SJR = salaire journalier de référence (approx)
   const salaireJournalier = sjr * 12 / 365;
   // ARE = max(57% SJR, 40,4% SJR + 13,18€)
@@ -458,13 +455,13 @@ function calcChomage() {
   const arePlafonne = Math.min(areJour, salaireJournalier * 0.75);
   const areFinal = Math.max(arePlafonne, 31.97);
   const areMensuel = areFinal * 30;
- 
+
   // Durée indicative
   let duree;
   if (age < 53) duree = 18;
   else if (age < 55) duree = 22.5;
   else duree = 27;
- 
+
   showResult('cho-result', `
     <div class="result-label">Allocation chômage estimée</div>
     <div class="result-value">${formatEur(areMensuel)}<span class="unit">/ mois</span></div>
@@ -475,9 +472,9 @@ function calcChomage() {
     <div class="note">⚠ Estimation très simplifiée. Le calcul réel dépend de la durée travaillée, du nombre de jours de référence, du type de contrat, etc. Voir <a href="https://www.unedic.org" target="_blank" style="color:var(--text);">Unédic</a> pour le détail.</div>
   `);
 }
- 
+
 // ---------- 12. Impôts ----------
- 
+
 // Barème 2025 (sur revenus 2024)
 const IR_TRANCHES = [
   { max: 11497, taux: 0 },
@@ -486,16 +483,16 @@ const IR_TRANCHES = [
   { max: 180294, taux: 0.41 },
   { max: Infinity, taux: 0.45 }
 ];
- 
+
 function calcImpots() {
   const revenu = parseFloat($('imp-revenu').value);
   const parts = parseFloat($('imp-parts').value);
   if (isNaN(revenu) || isNaN(parts) || parts <= 0) return;
- 
+
   // Abattement 10% (frais pro forfaitaires)
   const revenuImposable = revenu * 0.9;
   const quotient = revenuImposable / parts;
- 
+
   let impotParPart = 0;
   let bornePrec = 0;
   IR_TRANCHES.forEach(t => {
@@ -505,7 +502,7 @@ function calcImpots() {
     }
     bornePrec = t.max;
   });
- 
+
   const impotBrut = impotParPart * parts;
   const tauxMoyen = revenu > 0 ? (impotBrut / revenu * 100) : 0;
   // Taux marginal
@@ -515,7 +512,7 @@ function calcImpots() {
     if (quotient > bornePrec && quotient <= t.max) { tauxMarg = t.taux; break; }
     bornePrec = t.max;
   }
- 
+
   showResult('imp-result', `
     <div class="result-label">Impôt sur le revenu (estimation)</div>
     <div class="result-value">${formatEur(Math.max(0, impotBrut))}<span class="unit">/ an</span></div>
@@ -528,26 +525,26 @@ function calcImpots() {
     <div class="note">Barème 2025 sur revenus 2024. Hors décote, réductions et crédits d'impôt. Pour un calcul officiel : impots.gouv.fr.</div>
   `);
 }
- 
+
 // ---------- 13. Retraite ----------
- 
+
 function calcRetraite() {
   const salaire = parseFloat($('ret-salaire').value); // brut mensuel actuel
   const trimestres = parseInt($('ret-trimestres').value);
   const age = parseInt($('ret-age').value);
   if (isNaN(salaire) || isNaN(trimestres) || isNaN(age)) return;
- 
+
   // Taux plein : 50% du salaire moyen des 25 meilleures années
   const TRIM_REQUIS = 172;
   const tauxBase = 0.50;
   const decote = Math.max(0, (TRIM_REQUIS - trimestres) * 0.00625); // 0.625% par trimestre manquant
   const tauxFinal = Math.max(0.25, tauxBase - decote);
- 
+
   const retraiteBase = salaire * tauxFinal;
   // Estimation retraite complémentaire (Agirc-Arrco) : approx 25% du salaire pour cadres, 15% pour non cadres
   const complement = salaire * 0.20;
   const total = retraiteBase + complement;
- 
+
   showResult('ret-result', `
     <div class="result-label">Pension mensuelle estimée</div>
     <div class="result-value">${formatEur(total)}</div>
@@ -560,16 +557,16 @@ function calcRetraite() {
     <div class="note">Estimation très indicative basée sur le salaire actuel. La pension réelle dépend des 25 meilleures années, du Smic horaire, du régime, etc. Voir <a href="https://www.info-retraite.fr" target="_blank" style="color:var(--text);">info-retraite.fr</a>.</div>
   `);
 }
- 
+
 // ---------- 14. APL ----------
- 
+
 function calcAPL() {
   const loyer = parseFloat($('apl-loyer').value);
   const revenu = parseFloat($('apl-revenu').value); // revenu annuel
   const zone = $('apl-zone').value;
   const composition = $('apl-compo').value;
   if (isNaN(loyer) || isNaN(revenu)) return;
- 
+
   // Calcul ULTRA-simplifié (le vrai calcul CAF est très complexe)
   // Plafonds loyer indicatifs par zone (personne seule 2025)
   const plafondLoyer = {
@@ -580,13 +577,13 @@ function calcAPL() {
   const cle = composition === 'seul' ? 'seul' : (composition === 'couple' ? 'couple' : 'plus');
   const plafond = plafondLoyer[zone][cle];
   const loyerPrisEnCompte = Math.min(loyer, plafond);
- 
+
   // Estimation : APL ≈ loyer pris en compte − participation personnelle
   const participationMin = 35;
   const tauxRevenu = 0.20; // 20% du revenu mensuel sert de participation
   const participation = Math.max(participationMin, (revenu / 12) * tauxRevenu - (composition === 'seul' ? 0 : 100));
   const apl = Math.max(0, loyerPrisEnCompte - participation);
- 
+
   showResult('apl-result', `
     <div class="result-label">APL estimée</div>
     <div class="result-value">${formatEur(apl)}<span class="unit">/ mois</span></div>
