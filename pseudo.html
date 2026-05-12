@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Générateur de pseudo — Calviro</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>✨ Générateur de pseudo</h1>
+      <p>Idées de pseudonymes uniques pour tes comptes.</p>
+    </div>
+
+    <div class="field">
+      <label for="pseudo-style">Style</label>
+      <select id="pseudo-style">
+        <option value="snake_case">snake_case</option>
+        <option value="camelCase">camelCase</option>
+        <option value="dot.case">dot.case</option>
+        <option value="with-dash">with-dash</option>
+        <option value="random_num">avec chiffres</option>
+        <option value="leet">l33t sp34k</option>
+      </select>
+    </div>
+
+    <div class="pseudo-output" id="pseudo-out">—</div>
+
+    <div class="btn-group">
+      <button class="btn" onclick="genererPseudo()">🎲 Générer</button>
+      <button class="btn btn-secondary" id="pseudo-copy" onclick="copierPseudo()">📋 Copier</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>genererPseudo();</script>
+</body>
+</html>
