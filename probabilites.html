@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Probabilités — Calviro</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🎲 Calculateur de probabilités</h1>
+      <p>Avec ordres de grandeur concrets (loto, foudre, accident…).</p>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="proba-num">Cas favorables</label>
+        <input type="number" id="proba-num" placeholder="1" step="any" value="1">
+      </div>
+      <div class="field">
+        <label for="proba-den">Cas possibles</label>
+        <input type="number" id="proba-den" placeholder="6" step="any">
+      </div>
+    </div>
+
+    <button class="btn" onclick="calcProba()">Calculer</button>
+
+    <div class="result" id="proba-result"></div>
+
+    <div class="note" style="margin-top: 20px;">
+      <strong style="color:var(--text);">Exemples :</strong> 1 / 19 068 840 = Loto · 1 / 13 = tirer un as · 1 / 6 = dé.
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
