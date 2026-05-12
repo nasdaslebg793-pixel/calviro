@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Générateur PDF — Calviro</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>📄 Générateur PDF</h1>
+      <p>Convertis ton texte en document PDF téléchargeable.</p>
+    </div>
+
+    <div class="field">
+      <label for="pdf-titre">Titre du document</label>
+      <input type="text" id="pdf-titre" placeholder="Mon document" value="Document">
+    </div>
+
+    <div class="field">
+      <label for="pdf-contenu">Contenu</label>
+      <textarea id="pdf-contenu" placeholder="Colle ou tape ton texte ici…" rows="10"></textarea>
+    </div>
+
+    <button class="btn" onclick="genererPDF()">📥 Télécharger en PDF</button>
+
+    <div class="note" style="margin-top: 20px;">
+      Mise en page sobre, format A4, prêt à imprimer.
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
