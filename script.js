@@ -1,41 +1,42 @@
-function calcBAC() {
-  let filiere = document.getElementById("filiere").value;
+const bacData = {
+    general: [
+        { nom: "Maths", coef: 16 },
+        { nom: "Philo", coef: 8 },
+        { nom: "Français", coef: 10 }
+    ],
+    stmg: [
+        { nom: "Management", coef: 16 },
+        { nom: "Économie-Droit", coef: 16 },
+        { nom: "Philo", coef: 4 }
+    ]
+};
 
-  let fr = parseFloat(document.getElementById("fr").value) || 0;
-  let math = parseFloat(document.getElementById("math").value) || 0;
-  let hg = parseFloat(document.getElementById("hg").value) || 0;
-  let spe = parseFloat(document.getElementById("spe").value) || 0;
+function chargerMatieres() {
+    const bacSelectionne = document.getElementById('select-bac').value;
+    const container = document.getElementById('matieres-container');
+    container.innerHTML = ""; // On vide
 
-  let total = 0;
-  let coeff = 0;
-
-  // Coefficients simplifiés
-  if (filiere === "general") {
-    total = fr*3 + math*5 + hg*3 + spe*8;
-    coeff = 19;
-  }
-
-  if (filiere === "techno") {
-    total = fr*4 + math*4 + hg*4 + spe*6;
-    coeff = 18;
-  }
-
-  if (filiere === "pro") {
-    total = fr*3 + math*3 + hg*2 + spe*10;
-    coeff = 18;
-  }
-
-  let moyenne = total / coeff;
-
-  let result = "";
-
-  if (moyenne >= 10) {
-    result = "🎉 Admis avec " + moyenne.toFixed(2);
-  } else if (moyenne >= 8) {
-    result = "⚠️ Rattrapage avec " + moyenne.toFixed(2);
-  } else {
-    result = "❌ Recalé avec " + moyenne.toFixed(2);
-  }
-
-  document.getElementById("resBAC").innerText = result;
+    bacData[bacSelectionne].forEach(m => {
+        container.innerHTML += `
+            <div class="matiere-row">
+                <span>${m.nom} (Coef ${m.coef})</span>
+                <input type="number" placeholder="Note" class="note-input" data-coef="${m.coef}">
+            </div>
+        `;
+    });
 }
+
+function genererPDF() {
+    const element = document.getElementById('matieres-container');
+    const options = {
+        margin: 1,
+        filename: 'mon_bac_previsionnel.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+    html2pdf().set(options).from(element).save();
+}
+
+// Lancer au chargement
+window.onload = chargerMatieres;
