@@ -1,1 +1,49 @@
+Bac · HTML
+Copier
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calcul du BAC — Calviro</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+ 
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+ 
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🎓 Calcul du BAC</h1>
+      <p>Estime ta moyenne pondérée en fonction de ta filière et du contrôle continu.</p>
+    </div>
+ 
+    <div class="field">
+      <label for="bac-filiere">Filière</label>
+      <select id="bac-filiere" onchange="bacRender()">
+        <option value="general">Bac général</option>
+        <option value="techno">Bac technologique</option>
+        <option value="pro">Bac professionnel</option>
+      </select>
+    </div>
+ 
+    <div class="field">
+      <label>Notes (sur 20)</label>
+      <div id="bac-matieres" class="subjects-list"></div>
+    </div>
+ 
+    <button class="btn" onclick="bacCalc()">Calculer ma moyenne</button>
+ 
+    <div class="result" id="bac-result"></div>
+  </div>
+</div>
+ 
+<script src="script.js"></script>
+<script>bacRender();</script>
+</body>
+</html>
