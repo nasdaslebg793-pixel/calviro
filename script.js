@@ -1,23 +1,41 @@
-function calcSalaire() {
-  let brut = document.getElementById("brut").value;
-  let net = brut * 0.78;
-
-  document.getElementById("resSalaire").innerText =
-    "Net ≈ " + net.toFixed(2) + "€";
-}
-
 function calcBAC() {
-  let note = document.getElementById("note").value;
+  let filiere = document.getElementById("filiere").value;
 
-  if (note >= 16) {
-    document.getElementById("resBAC").innerText = "Très bien";
-  } else if (note >= 14) {
-    document.getElementById("resBAC").innerText = "Bien";
-  } else if (note >= 12) {
-    document.getElementById("resBAC").innerText = "Assez bien";
-  } else if (note >= 10) {
-    document.getElementById("resBAC").innerText = "Admis";
-  } else {
-    document.getElementById("resBAC").innerText = "Recalé";
+  let fr = parseFloat(document.getElementById("fr").value) || 0;
+  let math = parseFloat(document.getElementById("math").value) || 0;
+  let hg = parseFloat(document.getElementById("hg").value) || 0;
+  let spe = parseFloat(document.getElementById("spe").value) || 0;
+
+  let total = 0;
+  let coeff = 0;
+
+  // Coefficients simplifiés
+  if (filiere === "general") {
+    total = fr*3 + math*5 + hg*3 + spe*8;
+    coeff = 19;
   }
+
+  if (filiere === "techno") {
+    total = fr*4 + math*4 + hg*4 + spe*6;
+    coeff = 18;
+  }
+
+  if (filiere === "pro") {
+    total = fr*3 + math*3 + hg*2 + spe*10;
+    coeff = 18;
+  }
+
+  let moyenne = total / coeff;
+
+  let result = "";
+
+  if (moyenne >= 10) {
+    result = "🎉 Admis avec " + moyenne.toFixed(2);
+  } else if (moyenne >= 8) {
+    result = "⚠️ Rattrapage avec " + moyenne.toFixed(2);
+  } else {
+    result = "❌ Recalé avec " + moyenne.toFixed(2);
+  }
+
+  document.getElementById("resBAC").innerText = result;
 }
