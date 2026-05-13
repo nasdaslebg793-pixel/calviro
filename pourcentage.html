@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculateur de pourcentage gratuit en ligne — Calviro</title>
+<meta name="description" content="Calcule un pourcentage en 1 clic : remise, augmentation, évolution, X% de Y. Outil gratuit, instantané, sans inscription.">
+<meta name="keywords" content="calcul pourcentage, calculer pourcentage, calcul remise, pourcentage de réduction, augmentation pourcentage, évolution pourcentage">
+<meta property="og:title" content="Calculateur de pourcentage — 5 modes différents">
+<meta property="og:description" content="Tous les calculs de pourcentage en un seul outil.">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://calviro.vercel.app/pourcentage.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>📊 Calculateur de pourcentage</h1>
+      <p>5 modes de calcul pour toutes les situations.</p>
+    </div>
+
+    <div class="field">
+      <label for="pct-mode">Type de calcul</label>
+      <select id="pct-mode" onchange="pourcentageRender()">
+        <option value="pourcentage-de">Combien fait X % de Y ?</option>
+        <option value="est-de">X représente combien de % de Y ?</option>
+        <option value="ajouter">Ajouter X % à Y (augmentation)</option>
+        <option value="remise">Remise de X % sur un prix Y</option>
+        <option value="evolution">Évolution en % entre A et B</option>
+      </select>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label id="pct-lab-a">Pourcentage (%)</label>
+        <input type="number" id="pct-a" placeholder="20" step="any">
+      </div>
+      <div class="field">
+        <label id="pct-lab-b">De quelle valeur ?</label>
+        <input type="number" id="pct-b" placeholder="150" step="any">
+      </div>
+    </div>
+
+    <button class="btn" onclick="calcPourcentage()">Calculer</button>
+
+    <div class="result" id="pct-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Tous les calculs de pourcentage en un seul outil</h2>
+    <p>Le pourcentage est une notion qu'on utilise tous les jours sans toujours bien la maîtriser. Soldes en magasin, hausse de loyer, statistiques dans les médias, intérêts bancaires, augmentation de salaire : les pourcentages sont partout. Notre calculateur couvre les <strong>5 situations les plus fréquentes</strong> en un seul outil, pour ne plus jamais se tromper.</p>
+
+    <h2>Les 5 modes de calcul</h2>
+
+    <h3>1. Combien fait X % de Y ?</h3>
+    <p>Le calcul le plus basique. Par exemple, "combien fait 20 % de 150 € ?" → 30 €. Formule : <strong>(X ÷ 100) × Y</strong>. Utile pour calculer un pourboire, une commission, une TVA simple, ou la part qu'une catégorie représente dans un total.</p>
+
+    <h3>2. X représente combien de pour cent de Y ?</h3>
+    <p>Le calcul inverse. Par exemple, "30 € c'est combien de % de 150 € ?" → 20 %. Formule : <strong>(X ÷ Y) × 100</strong>. Utile pour évaluer une part de marché, un taux de réussite, ou la proportion d'une catégorie.</p>
+
+    <h3>3. Ajouter X % à Y</h3>
+    <p>Pour calculer une augmentation. Par exemple, "ajouter 15 % à 100 €" → 115 €. Formule : <strong>Y × (1 + X/100)</strong>. Utile pour appliquer une hausse de loyer indexée sur l'IRL, une augmentation de salaire, ou la TVA à un prix HT.</p>
+
+    <h3>4. Remise de X % sur un prix Y</h3>
+    <p>Pour les soldes et promotions. Par exemple, "remise de 30 % sur un article à 80 €" → tu paies 56 € et tu économises 24 €. Formule : <strong>Y × (1 − X/100)</strong>. Mode favori des consommateurs et des soldeurs.</p>
+
+    <h3>5. Évolution en pour cent entre A et B</h3>
+    <p>Pour mesurer un changement. Par exemple, "de 1 000 € à 1 200 €" → +20 %. Formule : <strong>((B − A) ÷ A) × 100</strong>. Utile pour évaluer la croissance d'un placement, la variation d'un prix, ou l'évolution d'une statistique entre deux dates.</p>
+
+    <h2>Erreurs courantes</h2>
+
+    <h3>L'erreur du double pourcentage</h3>
+    <p>Si tu augmentes un prix de 20 % puis tu enlèves 20 %, tu <strong>ne retombes pas sur le prix initial</strong>. Exemple : 100 € + 20 % = 120 €. Puis 120 € − 20 % = 96 €. Tu as perdu 4 € parce que les 20 % de remise s'appliquent sur une base plus élevée. C'est le piège classique des "promotions" mensongères.</p>
+
+    <h3>Le piège des moyennes de pourcentages</h3>
+    <p>On ne peut pas faire la moyenne arithmétique de deux pourcentages s'ils ne portent pas sur la même base. Exemple : un magasin a un panier moyen à 50 € en janvier (1 000 ventes) et 100 € en décembre (10 000 ventes). La moyenne pondérée ≠ (50 + 100) / 2.</p>
+
+    <h3>"Le double" vs "augmenté de 100 %"</h3>
+    <p>"Le double" et "augmenté de 100 %" donnent le même résultat. Mais "augmenté de 200 %" = <strong>triplé</strong> (et non doublé), parce qu'on ajoute 2 fois la valeur de départ.</p>
+
+    <h2>Le pourcentage dans la vie courante</h2>
+    <ul>
+      <li><strong>Soldes et promotions</strong> : les "−30 % puis −50 % en caisse" ne font pas −80 % mais −65 %.</li>
+      <li><strong>TVA</strong> : 20 % en France (taux normal). Pour passer du HT au TTC, multiplie par 1,20.</li>
+      <li><strong>Augmentation de loyer</strong> : limitée à l'évolution de l'IRL (Indice de Référence des Loyers).</li>
+      <li><strong>Intérêts bancaires</strong> : un livret A à 3 % rapporte 30 € par an sur 1 000 € placés.</li>
+      <li><strong>Plus-value en bourse</strong> : un placement qui passe de 1 000 € à 1 200 € a fait +20 %.</li>
+      <li><strong>Pourcentage de matière grasse</strong> : un yaourt à 0 % de MG vs un classique à 3,5 % de MG.</li>
+    </ul>
+
+    <h2>Astuces de calcul mental</h2>
+    <p>Pour faire des pourcentages de tête rapidement :</p>
+    <ul>
+      <li><strong>10 % d'un montant</strong> : décale la virgule d'un cran vers la gauche. 10 % de 250 = 25.</li>
+      <li><strong>5 %</strong> : prends 10 % et divise par 2. 5 % de 250 = 12,5.</li>
+      <li><strong>20 %</strong> : prends 10 % et multiplie par 2. 20 % de 250 = 50.</li>
+      <li><strong>25 %</strong> : divise par 4. 25 % de 200 = 50.</li>
+      <li><strong>50 %</strong> : divise par 2. 50 % de 80 = 40.</li>
+      <li><strong>1 %</strong> : décale la virgule de 2 crans. 1 % de 1 500 = 15.</li>
+    </ul>
+    <p>Avec ces 6 raccourcis, tu peux calculer la plupart des pourcentages courants sans calculatrice.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+<script>pourcentageRender();</script>
+</body>
+</html>

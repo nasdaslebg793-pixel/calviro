@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulateur crédit immobilier 2026 : mensualité, coût, tableau — Calviro</title>
+<meta name="description" content="Simulateur de prêt immobilier gratuit : calcule ta mensualité, le coût total et le tableau d'amortissement détaillé. Avec ou sans assurance.">
+<meta name="keywords" content="simulateur crédit immobilier, calcul prêt immobilier, mensualité crédit, tableau amortissement, simulateur prêt, crédit immo">
+<meta property="og:title" content="Simulateur de crédit immobilier — mensualité et amortissement">
+<meta property="og:description" content="Calcule ta mensualité de prêt immobilier en quelques secondes.">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://calviro.vercel.app/credit-immobilier.html">
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Simulateur de crédit immobilier",
+  "description": "Calcul de mensualité, coût total et tableau d'amortissement pour un prêt immobilier",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+}
+</script>
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🏠 Simulateur de crédit immobilier</h1>
+      <p>Mensualité, coût total et tableau d'amortissement détaillé.</p>
+    </div>
+
+    <div class="field">
+      <label for="credit-montant">Montant emprunté (€)</label>
+      <input type="number" id="credit-montant" placeholder="200 000" min="1000" step="1000">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="credit-taux">Taux d'intérêt annuel (%)</label>
+        <input type="number" id="credit-taux" placeholder="3.5" step="0.01" min="0">
+      </div>
+      <div class="field">
+        <label for="credit-duree">Durée (années)</label>
+        <input type="number" id="credit-duree" placeholder="20" min="1" max="30">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="credit-assurance">Taux d'assurance emprunteur annuel (%) — optionnel</label>
+      <input type="number" id="credit-assurance" placeholder="0.35" step="0.01" min="0" value="0.35">
+    </div>
+
+    <button class="btn" onclick="calcCreditImmo()">Calculer ma mensualité</button>
+
+    <div class="result" id="credit-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Comment fonctionne un crédit immobilier ?</h2>
+    <p>Un prêt immobilier classique est un <strong>prêt amortissable</strong> : chaque mois, tu rembourses une mensualité fixe composée de deux parties — une partie de <strong>capital</strong> (le montant emprunté que tu rembourses progressivement) et une partie d'<strong>intérêts</strong> (la rémunération de la banque). Au début du crédit, les intérêts dominent. À la fin, c'est presque uniquement du capital.</p>
+
+    <h2>Les paramètres qui déterminent ta mensualité</h2>
+    <ul>
+      <li><strong>Le montant emprunté</strong> : la somme prêtée par la banque (généralement le prix du bien moins ton apport).</li>
+      <li><strong>Le taux d'intérêt</strong> : exprimé en % annuel. C'est le coût de l'emprunt pour la banque. Les taux varient selon les périodes économiques, ton profil, et la durée.</li>
+      <li><strong>La durée</strong> : entre 7 et 30 ans en général. Plus c'est long, plus la mensualité est faible mais plus le coût total des intérêts est élevé.</li>
+      <li><strong>L'assurance emprunteur</strong> : obligatoire pour quasi tous les crédits. Elle couvre les risques de décès, invalidité, voire perte d'emploi. Taux : 0,2 % à 1 % du capital initial par an selon ton âge et ton état de santé.</li>
+    </ul>
+
+    <h2>Quels taux d'intérêt en 2026 ?</h2>
+    <p>Les taux fluctuent selon les politiques de la Banque Centrale Européenne et la concurrence entre banques. Quelques ordres de grandeur observés début 2026 (à vérifier avec ton courtier) :</p>
+    <table>
+      <thead><tr><th>Durée</th><th>Taux moyen 2026</th><th>Profil bon dossier</th></tr></thead>
+      <tbody>
+        <tr><td>15 ans</td><td>~3,30 %</td><td>~3,00 %</td></tr>
+        <tr><td>20 ans</td><td>~3,50 %</td><td>~3,20 %</td></tr>
+        <tr><td>25 ans</td><td>~3,70 %</td><td>~3,40 %</td></tr>
+      </tbody>
+    </table>
+    <p>Ces taux peuvent évoluer rapidement. Les comparateurs en ligne (Empruntis, Meilleurtaux, Pretto, CAFPI) donnent une idée des taux du moment.</p>
+
+    <h2>La règle des 35 % d'endettement</h2>
+    <p>Depuis 2022, le Haut Conseil de Stabilité Financière (HCSF) impose aux banques de respecter <strong>deux règles strictes</strong> :</p>
+    <ul>
+      <li><strong>Taux d'endettement maximum 35 %</strong> : la mensualité totale (incluant assurance) ne peut dépasser 35 % de tes revenus nets.</li>
+      <li><strong>Durée maximum 25 ans</strong> (27 ans pour le neuf ou avec gros travaux dans l'ancien).</li>
+    </ul>
+    <p>Les banques peuvent déroger à ces règles pour <strong>20 % de leurs dossiers</strong>, en priorité pour les primo-accédants. Si ton dossier est solide (CDI, revenus élevés, apport, peu de charges), tu peux espérer un dépassement.</p>
+
+    <h2>Coût total : ce qu'un crédit te coûte vraiment</h2>
+    <p>Le coût total d'un crédit, c'est <strong>tout ce que tu paies en plus du capital emprunté</strong> :</p>
+    <ul>
+      <li>Les intérêts du crédit (la part principale)</li>
+      <li>L'assurance emprunteur (souvent oubliée dans les comparaisons)</li>
+      <li>Les frais de dossier bancaire (500 à 1 500 €)</li>
+      <li>Les frais de garantie (caution Crédit Logement ~1 % ou hypothèque ~2 %)</li>
+      <li>Les frais de courtier si tu en utilises un (1 % du montant en général, gratuit chez certains)</li>
+    </ul>
+    <p>Exemple concret : sur 200 000 € empruntés à 3,5 % sur 20 ans, tu rembourses environ <strong>278 000 €</strong> au total — soit <strong>78 000 € de frais sur 20 ans</strong>. Avec l'assurance et les frais annexes, on dépasse souvent 90 000 €.</p>
+
+    <h2>Stratégies pour réduire le coût</h2>
+    <h3>1. Apporte plus</h3>
+    <p>Un apport plus important (au moins 10 % en plus des frais de notaire) réduit le montant emprunté et améliore le taux que la banque te propose. C'est un signal positif sur ta capacité d'épargne.</p>
+
+    <h3>2. Négocie tout, surtout l'assurance</h3>
+    <p>Depuis la loi Lemoine (2022), tu peux changer d'assurance emprunteur <strong>à tout moment</strong>, gratuitement. La délégation d'assurance (prendre une autre compagnie que celle de la banque) peut te faire économiser <strong>10 000 à 30 000 €</strong> sur la durée totale. C'est l'optimisation la plus rentable et la plus simple.</p>
+
+    <h3>3. Raccourcis la durée si possible</h3>
+    <p>Passer de 25 ans à 20 ans augmente la mensualité d'environ 20 %, mais peut réduire le coût total de plus de 30 %. À condition que tes revenus le permettent.</p>
+
+    <h3>4. Compare plusieurs banques</h3>
+    <p>Les écarts entre banques sur un même dossier peuvent atteindre 0,3 à 0,5 points. Sur un crédit de 200 000 € sur 20 ans, 0,3 % de différence = <strong>~7 000 €</strong> sur la durée. Vaut le coup de prendre une demi-journée.</p>
+
+    <h3>5. Passe par un courtier</h3>
+    <p>Un courtier connaît les politiques de chaque banque et peut négocier mieux qu'un particulier. Coût : généralement 1 % du montant emprunté, parfois nul (les banques rémunèrent le courtier directement). Souvent rentable.</p>
+
+    <h2>Les frais de notaire</h2>
+    <p>En plus du prix du bien, prévois les <strong>frais de notaire</strong> (improprement appelés ainsi — ce sont surtout des taxes pour l'État) :</p>
+    <ul>
+      <li><strong>Ancien</strong> : 7 à 8 % du prix d'achat</li>
+      <li><strong>Neuf</strong> : 2 à 3 % du prix d'achat</li>
+    </ul>
+    <p>Pour un appartement à 250 000 € dans l'ancien, prévois donc environ <strong>20 000 € de frais en plus</strong>. Ces frais doivent généralement être payés en cash (l'apport).</p>
+
+    <h2>Quand renégocier son prêt ?</h2>
+    <p>Si les taux baissent significativement après ton achat, tu peux <strong>renégocier ton prêt</strong>. Conditions pour que ça soit rentable :</p>
+    <ul>
+      <li>Écart d'au moins <strong>1 point</strong> entre ton taux actuel et le taux du marché</li>
+      <li>Tu es encore dans le premier tiers de ton prêt (où les intérêts dominent)</li>
+      <li>Le capital restant dû est encore important (au moins 50 000 €)</li>
+    </ul>
+    <p>Tu peux soit renégocier avec ta banque actuelle, soit faire racheter ton prêt par une autre banque. Compare avant de signer.</p>
+
+    <h2>Limites de notre simulateur</h2>
+    <p>Notre calcul est exact pour un prêt amortissable classique à taux fixe. Il ne prend <strong>pas en compte</strong> :</p>
+    <ul>
+      <li>Les frais de dossier et de garantie (à ajouter au coût total)</li>
+      <li>Les prêts à taux variable (rares aujourd'hui en France)</li>
+      <li>Les prêts à paliers (mensualités évolutives)</li>
+      <li>Les remboursements anticipés (qui peuvent réduire le coût)</li>
+      <li>L'aide à l'accession (PTZ, prêt employeur, prêt Action Logement)</li>
+    </ul>
+    <p>Pour une simulation officielle, utilise les outils des banques (BNP Paribas, Crédit Agricole, Société Générale) ou d'un courtier (Meilleurtaux, Empruntis, Pretto).</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

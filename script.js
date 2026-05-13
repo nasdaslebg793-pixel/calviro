@@ -595,3 +595,503 @@ function calcAPL() {
     <div class="note">⚠ Estimation très approximative. Le calcul officiel CAF prend en compte une trentaine de paramètres. Simulateur officiel : <a href="https://www.caf.fr" target="_blank" style="color:var(--text);">caf.fr</a>.</div>
   `);
 }
+
+// ---------- 15. POURCENTAGE ----------
+
+function calcPourcentage() {
+  const mode = $('pct-mode').value;
+  const a = parseFloat($('pct-a').value);
+  const b = parseFloat($('pct-b').value);
+
+  if (isNaN(a) || isNaN(b)) {
+    showResult('pct-result', '<div class="note">⚠ Entre des valeurs numériques dans les deux champs.</div>');
+    return;
+  }
+
+  let label = '', value = '', detail = '';
+
+  if (mode === 'pourcentage-de') {
+    // X% de Y = ?
+    const r = (a / 100) * b;
+    label = `${formatNum(a)} % de ${formatNum(b)}`;
+    value = formatNum(r, 2);
+    detail = `${formatNum(a)} ÷ 100 × ${formatNum(b)} = ${formatNum(r, 2)}`;
+  } else if (mode === 'est-de') {
+    // X est X% de Y
+    if (b === 0) {
+      showResult('pct-result', '<div class="note">⚠ Impossible de calculer un pourcentage avec un total de 0.</div>');
+      return;
+    }
+    const r = (a / b) * 100;
+    label = `${formatNum(a)} représente combien de % de ${formatNum(b)}`;
+    value = formatNum(r, 2) + ' %';
+    detail = `${formatNum(a)} ÷ ${formatNum(b)} × 100 = ${formatNum(r, 2)} %`;
+  } else if (mode === 'ajouter') {
+    // Ajouter X% à Y
+    const r = b + (a / 100) * b;
+    label = `${formatNum(b)} + ${formatNum(a)} %`;
+    value = formatNum(r, 2);
+    detail = `${formatNum(b)} × (1 + ${formatNum(a)}/100) = ${formatNum(r, 2)}`;
+  } else if (mode === 'remise') {
+    // Remise de X% sur Y
+    const r = b - (a / 100) * b;
+    const economie = (a / 100) * b;
+    label = `${formatNum(b)} avec ${formatNum(a)} % de remise`;
+    value = formatNum(r, 2);
+    detail = `Tu économises ${formatNum(economie, 2)} sur ${formatNum(b)}`;
+  } else if (mode === 'evolution') {
+    // X% d'évolution entre A et B
+    if (a === 0) {
+      showResult('pct-result', '<div class="note">⚠ Impossible de calculer une évolution depuis 0.</div>');
+      return;
+    }
+    const r = ((b - a) / a) * 100;
+    const sens = r >= 0 ? 'hausse' : 'baisse';
+    label = `Évolution de ${formatNum(a)} à ${formatNum(b)}`;
+    value = (r >= 0 ? '+' : '') + formatNum(r, 2) + ' %';
+    detail = `${sens} de ${formatNum(Math.abs(b - a), 2)} (${formatNum(Math.abs(r), 2)} % par rapport au point de départ)`;
+  }
+
+  showResult('pct-result', `
+    <div class="result-label">${label}</div>
+    <div class="result-value">${value}</div>
+    <div class="result-detail">
+      <div class="result-detail-row" style="border:none;"><span>${detail}</span></div>
+    </div>
+  `);
+}
+
+function pourcentageRender() {
+  const mode = $('pct-mode').value;
+  const labA = $('pct-lab-a'), labB = $('pct-lab-b');
+  const phA = $('pct-a'), phB = $('pct-b');
+  const labels = {
+    'pourcentage-de': ['Pourcentage (%)', 'De quelle valeur ?'],
+    'est-de': ['Valeur', 'Sur un total de'],
+    'ajouter': ['Pourcentage à ajouter (%)', 'Valeur de départ'],
+    'remise': ['Remise (%)', 'Prix initial'],
+    'evolution': ['Valeur de départ', 'Valeur d\'arrivée']
+  };
+  const phs = {
+    'pourcentage-de': ['20', '150'],
+    'est-de': ['30', '120'],
+    'ajouter': ['15', '100'],
+    'remise': ['30', '80'],
+    'evolution': ['1000', '1200']
+  };
+  labA.textContent = labels[mode][0];
+  labB.textContent = labels[mode][1];
+  phA.placeholder = phs[mode][0];
+  phB.placeholder = phs[mode][1];
+}
+
+// ---------- 16. COMPTEUR DE MOTS ----------
+
+function compteurMaj() {
+  const txt = $('cpt-text').value;
+
+  const carAvec = txt.length;
+  const carSans = txt.replace(/\s/g, '').length;
+  const mots = txt.trim() === '' ? 0 : txt.trim().split(/\s+/).length;
+  const phrases = (txt.match(/[.!?]+/g) || []).length;
+  const paragraphes = txt.split(/\n\s*\n/).filter(p => p.trim().length > 0).length;
+  const lignes = txt.split('\n').length;
+
+  const lectureMin = Math.max(1, Math.ceil(mots / 200)); // 200 mots/min de lecture moyenne
+
+  // Compteurs sociaux
+  const twitter = 280 - carAvec;
+  const sms = 160 - carAvec;
+  const meta = 160 - carAvec; // SEO meta description
+
+  $('cpt-mots').textContent = formatNum(mots, 0);
+  $('cpt-car-avec').textContent = formatNum(carAvec, 0);
+  $('cpt-car-sans').textContent = formatNum(carSans, 0);
+  $('cpt-phrases').textContent = formatNum(phrases, 0);
+  $('cpt-paragraphes').textContent = formatNum(paragraphes, 0);
+  $('cpt-lignes').textContent = formatNum(lignes, 0);
+  $('cpt-lecture').textContent = lectureMin + ' min';
+
+  const setLimite = (id, restant) => {
+    const el = $(id);
+    if (!el) return;
+    if (restant < 0) {
+      el.innerHTML = `<span style="color:#dc2626;">+${formatNum(-restant, 0)} de trop</span>`;
+    } else {
+      el.textContent = formatNum(restant, 0) + ' restants';
+    }
+  };
+  setLimite('cpt-twitter', twitter);
+  setLimite('cpt-sms', sms);
+  setLimite('cpt-meta', meta);
+}
+
+function compteurVider() {
+  $('cpt-text').value = '';
+  compteurMaj();
+}
+
+// ---------- 17. GÉNÉRATEUR MOT DE PASSE ----------
+
+function genererMotDePasse() {
+  const longueur = parseInt($('mdp-longueur').value, 10);
+  const maj = $('mdp-maj').checked;
+  const min = $('mdp-min').checked;
+  const chif = $('mdp-chiffres').checked;
+  const sym = $('mdp-symboles').checked;
+
+  if (!maj && !min && !chif && !sym) {
+    showResult('mdp-result', '<div class="note">⚠ Sélectionne au moins un type de caractères.</div>');
+    return;
+  }
+
+  let chars = '';
+  if (maj) chars += 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+  if (min) chars += 'abcdefghijkmnopqrstuvwxyz';
+  if (chif) chars += '23456789';
+  if (sym) chars += '!@#$%&*+-=?';
+
+  let mdp = '';
+  const arr = new Uint32Array(longueur);
+  crypto.getRandomValues(arr);
+  for (let i = 0; i < longueur; i++) {
+    mdp += chars[arr[i] % chars.length];
+  }
+
+  // Estimation de la force
+  const types = [maj, min, chif, sym].filter(Boolean).length;
+  let force = 'Faible', couleur = '#dc2626', combinaisons = '';
+  const entropie = longueur * Math.log2(chars.length);
+  if (entropie >= 80) { force = 'Très forte'; couleur = '#059669'; }
+  else if (entropie >= 60) { force = 'Forte'; couleur = '#10b981'; }
+  else if (entropie >= 40) { force = 'Moyenne'; couleur = '#f59e0b'; }
+
+  // Temps pour cracker (estimation à 1 milliard de tentatives/seconde)
+  const totalComb = Math.pow(chars.length, longueur);
+  const secondes = totalComb / 1e9;
+  let temps = '';
+  if (secondes < 60) temps = '< 1 minute';
+  else if (secondes < 3600) temps = Math.round(secondes / 60) + ' minutes';
+  else if (secondes < 86400) temps = Math.round(secondes / 3600) + ' heures';
+  else if (secondes < 31536000) temps = Math.round(secondes / 86400) + ' jours';
+  else if (secondes < 3.15e10) temps = Math.round(secondes / 31536000) + ' ans';
+  else if (secondes < 3.15e13) temps = Math.round(secondes / 31536000 / 1000) + ' mille ans';
+  else if (secondes < 3.15e16) temps = Math.round(secondes / 31536000 / 1e6) + ' millions d\'années';
+  else temps = 'des milliards d\'années';
+
+  showResult('mdp-result', `
+    <div class="pseudo-output" id="mdp-output" style="font-family: 'SF Mono', Consolas, monospace; word-break: break-all;">${mdp}</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Force du mot de passe</span><strong style="color:${couleur};">${force}</strong></div>
+      <div class="result-detail-row"><span>Entropie</span><strong>${formatNum(entropie, 1)} bits</strong></div>
+      <div class="result-detail-row"><span>Temps pour le cracker</span><strong>${temps}</strong></div>
+    </div>
+    <div class="note">Mot de passe généré localement (jamais envoyé sur internet). Stocke-le dans un gestionnaire de mots de passe.</div>
+  `);
+
+  // Sauvegarde pour copie
+  window._mdpGenere = mdp;
+}
+
+function copierMotDePasse() {
+  if (!window._mdpGenere) return;
+  navigator.clipboard.writeText(window._mdpGenere).then(() => {
+    const btn = $('mdp-copy');
+    if (btn) {
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copié';
+      setTimeout(() => { btn.textContent = orig; }, 1500);
+    }
+  });
+}
+
+// ---------- 18. CRÉDIT IMMOBILIER ----------
+
+function calcCreditImmo() {
+  const montant = parseFloat($('credit-montant').value);
+  const taux = parseFloat($('credit-taux').value);
+  const duree = parseInt($('credit-duree').value, 10);
+  const assurance = parseFloat($('credit-assurance').value) || 0;
+
+  if (isNaN(montant) || isNaN(taux) || isNaN(duree) || montant <= 0 || duree <= 0) {
+    showResult('credit-result', '<div class="note">⚠ Remplis tous les champs avec des valeurs positives.</div>');
+    return;
+  }
+
+  // Calcul mensualité (formule classique de prêt amortissable)
+  const tauxMensuel = taux / 100 / 12;
+  const nbMensualites = duree * 12;
+  let mensualite;
+  if (tauxMensuel === 0) {
+    mensualite = montant / nbMensualites;
+  } else {
+    mensualite = montant * tauxMensuel / (1 - Math.pow(1 + tauxMensuel, -nbMensualites));
+  }
+
+  // Assurance (% annuel du capital initial)
+  const assuranceMensuelle = (assurance / 100) * montant / 12;
+  const mensualiteTotale = mensualite + assuranceMensuelle;
+
+  const coutTotalCredit = (mensualite * nbMensualites) - montant;
+  const coutTotalAssurance = assuranceMensuelle * nbMensualites;
+  const coutTotal = coutTotalCredit + coutTotalAssurance;
+
+  // Construction du tableau d'amortissement année par année (limité à 30 lignes pour lisibilité)
+  let capitalRestant = montant;
+  let amortRows = '';
+  const maxLignes = Math.min(duree, 30);
+
+  for (let annee = 1; annee <= maxLignes; annee++) {
+    let interetsAnnee = 0;
+    let capitalAnnee = 0;
+    for (let m = 0; m < 12; m++) {
+      const interet = capitalRestant * tauxMensuel;
+      const capital = mensualite - interet;
+      interetsAnnee += interet;
+      capitalAnnee += capital;
+      capitalRestant -= capital;
+    }
+    amortRows += `<tr><td>${annee}</td><td>${formatEur(capitalAnnee)}</td><td>${formatEur(interetsAnnee)}</td><td>${formatEur(Math.max(0, capitalRestant))}</td></tr>`;
+  }
+
+  showResult('credit-result', `
+    <div class="result-label">Mensualité totale (avec assurance)</div>
+    <div class="result-value">${formatEur(mensualiteTotale)}<span class="unit">/ mois</span></div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Mensualité (hors assurance)</span><strong>${formatEur(mensualite)}</strong></div>
+      <div class="result-detail-row"><span>Assurance mensuelle</span><strong>${formatEur(assuranceMensuelle)}</strong></div>
+      <div class="result-detail-row"><span>Coût total du crédit (intérêts)</span><strong>${formatEur(coutTotalCredit)}</strong></div>
+      <div class="result-detail-row"><span>Coût total de l'assurance</span><strong>${formatEur(coutTotalAssurance)}</strong></div>
+      <div class="result-detail-row"><span>Coût total (hors capital)</span><strong>${formatEur(coutTotal)}</strong></div>
+      <div class="result-detail-row"><span>Coût global (capital + frais)</span><strong>${formatEur(montant + coutTotal)}</strong></div>
+    </div>
+    <details style="margin-top: 16px;">
+      <summary style="cursor:pointer; color:var(--text); font-weight:500;">📊 Voir le tableau d'amortissement</summary>
+      <table style="margin-top: 12px; width: 100%; font-size: 13px;">
+        <thead><tr><th>Année</th><th>Capital remboursé</th><th>Intérêts payés</th><th>Capital restant</th></tr></thead>
+        <tbody>${amortRows}</tbody>
+      </table>
+    </details>
+    <div class="note">Calcul indicatif. Le taux réel inclut souvent des frais (dossier, garantie) qui augmentent le TAEG. Demande plusieurs offres.</div>
+  `);
+}
+
+// ---------- 19. CONVERTISSEUR MONNAIES ----------
+
+let _tauxCache = null;
+let _tauxDate = null;
+
+async function chargerTaux() {
+  if (_tauxCache && _tauxDate && (Date.now() - _tauxDate < 3600000)) {
+    return _tauxCache;
+  }
+  try {
+    const resp = await fetch('https://api.frankfurter.app/latest?from=EUR');
+    if (!resp.ok) throw new Error('API indisponible');
+    const data = await resp.json();
+    _tauxCache = data.rates;
+    _tauxCache.EUR = 1;
+    _tauxDate = Date.now();
+    return _tauxCache;
+  } catch (e) {
+    return null;
+  }
+}
+
+async function calcMonnaie() {
+  const montant = parseFloat($('mon-montant').value);
+  const de = $('mon-de').value;
+  const vers = $('mon-vers').value;
+
+  if (isNaN(montant)) {
+    showResult('mon-result', '<div class="note">⚠ Entre un montant valide.</div>');
+    return;
+  }
+
+  $('mon-result').innerHTML = '<div class="note">Chargement des taux en cours...</div>';
+  $('mon-result').classList.add('visible');
+
+  const taux = await chargerTaux();
+  if (!taux) {
+    showResult('mon-result', '<div class="note">⚠ Impossible de charger les taux actuels. Réessaie dans quelques instants.</div>');
+    return;
+  }
+
+  if (!taux[de] || !taux[vers]) {
+    showResult('mon-result', '<div class="note">⚠ Une des devises n\'est pas disponible.</div>');
+    return;
+  }
+
+  // Conversion via EUR pivot
+  const enEuros = de === 'EUR' ? montant : montant / taux[de];
+  const resultat = vers === 'EUR' ? enEuros : enEuros * taux[vers];
+  const tauxDirect = vers === 'EUR' ? 1 / taux[de] : (de === 'EUR' ? taux[vers] : taux[vers] / taux[de]);
+
+  const symboles = { EUR: '€', USD: '$', GBP: '£', JPY: '¥', CHF: 'CHF', CAD: 'CA$', AUD: 'AU$', CNY: '¥', INR: '₹', BRL: 'R$', MXN: 'MX$', NOK: 'kr', SEK: 'kr', DKK: 'kr', PLN: 'zł', TRY: '₺', ZAR: 'R', SGD: 'S$', HKD: 'HK$', KRW: '₩', THB: '฿' };
+  const symVers = symboles[vers] || vers;
+
+  showResult('mon-result', `
+    <div class="result-label">${formatNum(montant, 2)} ${de} =</div>
+    <div class="result-value">${formatNum(resultat, 2)} <span class="unit">${symVers}</span></div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Taux de change</span><strong>1 ${de} = ${formatNum(tauxDirect, 4)} ${vers}</strong></div>
+      <div class="result-detail-row"><span>Taux inverse</span><strong>1 ${vers} = ${formatNum(1 / tauxDirect, 4)} ${de}</strong></div>
+    </div>
+    <div class="note">Taux fournis par la Banque Centrale Européenne (frankfurter.app). Mis à jour quotidiennement en semaine.</div>
+  `);
+}
+
+// ---------- 20. GÉNÉRATEUR DE CV ----------
+
+function cvAjouterExperience() {
+  const cont = $('cv-experiences');
+  const idx = cont.querySelectorAll('.cv-bloc').length;
+  const bloc = document.createElement('div');
+  bloc.className = 'cv-bloc';
+  bloc.innerHTML = `
+    <div class="field-row">
+      <div class="field"><label>Poste</label><input type="text" class="cv-exp-poste" placeholder="Développeur Web"></div>
+      <div class="field"><label>Entreprise</label><input type="text" class="cv-exp-entreprise" placeholder="Nom de l'entreprise"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Du</label><input type="text" class="cv-exp-debut" placeholder="Sept. 2023"></div>
+      <div class="field"><label>Au</label><input type="text" class="cv-exp-fin" placeholder="Actuel"></div>
+    </div>
+    <div class="field"><label>Description (1-3 lignes)</label><textarea class="cv-exp-desc" rows="2" placeholder="Missions principales, réalisations..."></textarea></div>
+    <button class="btn btn-secondary" onclick="this.parentElement.remove()" style="margin-bottom: 16px;">− Supprimer</button>
+  `;
+  cont.appendChild(bloc);
+}
+
+function cvAjouterFormation() {
+  const cont = $('cv-formations');
+  const bloc = document.createElement('div');
+  bloc.className = 'cv-bloc';
+  bloc.innerHTML = `
+    <div class="field-row">
+      <div class="field"><label>Diplôme</label><input type="text" class="cv-form-diplome" placeholder="Master Informatique"></div>
+      <div class="field"><label>École / Université</label><input type="text" class="cv-form-ecole" placeholder="Université Paris-Saclay"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Année de début</label><input type="text" class="cv-form-debut" placeholder="2021"></div>
+      <div class="field"><label>Année de fin</label><input type="text" class="cv-form-fin" placeholder="2023"></div>
+    </div>
+    <button class="btn btn-secondary" onclick="this.parentElement.remove()" style="margin-bottom: 16px;">− Supprimer</button>
+  `;
+  cont.appendChild(bloc);
+}
+
+function genererCV() {
+  const nom = ($('cv-nom').value || '').trim();
+  if (!nom) {
+    alert('Indique au moins ton nom.');
+    return;
+  }
+  const titre = ($('cv-titre').value || '').trim();
+  const email = ($('cv-email').value || '').trim();
+  const tel = ($('cv-tel').value || '').trim();
+  const ville = ($('cv-ville').value || '').trim();
+  const profil = ($('cv-profil').value || '').trim();
+  const competences = ($('cv-competences').value || '').trim();
+  const langues = ($('cv-langues').value || '').trim();
+  const interets = ($('cv-interets').value || '').trim();
+
+  const experiences = Array.from(document.querySelectorAll('#cv-experiences .cv-bloc')).map(b => ({
+    poste: b.querySelector('.cv-exp-poste').value || '',
+    entreprise: b.querySelector('.cv-exp-entreprise').value || '',
+    debut: b.querySelector('.cv-exp-debut').value || '',
+    fin: b.querySelector('.cv-exp-fin').value || '',
+    desc: b.querySelector('.cv-exp-desc').value || ''
+  })).filter(e => e.poste || e.entreprise);
+
+  const formations = Array.from(document.querySelectorAll('#cv-formations .cv-bloc')).map(b => ({
+    diplome: b.querySelector('.cv-form-diplome').value || '',
+    ecole: b.querySelector('.cv-form-ecole').value || '',
+    debut: b.querySelector('.cv-form-debut').value || '',
+    fin: b.querySelector('.cv-form-fin').value || ''
+  })).filter(f => f.diplome || f.ecole);
+
+  // Construction du HTML du CV (template épuré)
+  const cvHtml = `
+    <div style="font-family: Georgia, 'Times New Roman', serif; color: #1a1a1a; padding: 40px 50px; background: white; min-height: 297mm; line-height: 1.5; max-width: 210mm; margin: 0 auto;">
+      <header style="border-bottom: 3px solid #1a1a1a; padding-bottom: 20px; margin-bottom: 28px;">
+        <h1 style="margin: 0 0 6px 0; font-size: 32px; font-weight: 400; letter-spacing: -0.5px;">${nom}</h1>
+        ${titre ? `<div style="font-size: 16px; color: #666; margin-bottom: 10px;">${titre}</div>` : ''}
+        <div style="font-size: 13px; color: #555;">
+          ${email ? `<span>✉ ${email}</span>` : ''}
+          ${tel ? `<span style="margin-left: 14px;">☎ ${tel}</span>` : ''}
+          ${ville ? `<span style="margin-left: 14px;">📍 ${ville}</span>` : ''}
+        </div>
+      </header>
+
+      ${profil ? `
+      <section style="margin-bottom: 26px;">
+        <h2 style="font-size: 14px; text-transform: uppercase; letter-spacing: 1.5px; color: #1a1a1a; border-bottom: 1px solid #ddd; padding-bottom: 6px; margin: 0 0 10px 0;">Profil</h2>
+        <p style="margin: 0; font-size: 14px;">${profil}</p>
+      </section>` : ''}
+
+      ${experiences.length > 0 ? `
+      <section style="margin-bottom: 26px;">
+        <h2 style="font-size: 14px; text-transform: uppercase; letter-spacing: 1.5px; color: #1a1a1a; border-bottom: 1px solid #ddd; padding-bottom: 6px; margin: 0 0 12px 0;">Expériences</h2>
+        ${experiences.map(e => `
+          <div style="margin-bottom: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <strong style="font-size: 15px;">${e.poste}${e.entreprise ? ' — ' + e.entreprise : ''}</strong>
+              <span style="font-size: 12px; color: #666;">${e.debut}${e.fin ? ' → ' + e.fin : ''}</span>
+            </div>
+            ${e.desc ? `<p style="margin: 4px 0 0 0; font-size: 13px; color: #444;">${e.desc}</p>` : ''}
+          </div>
+        `).join('')}
+      </section>` : ''}
+
+      ${formations.length > 0 ? `
+      <section style="margin-bottom: 26px;">
+        <h2 style="font-size: 14px; text-transform: uppercase; letter-spacing: 1.5px; color: #1a1a1a; border-bottom: 1px solid #ddd; padding-bottom: 6px; margin: 0 0 12px 0;">Formation</h2>
+        ${formations.map(f => `
+          <div style="margin-bottom: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <strong style="font-size: 15px;">${f.diplome}</strong>
+              <span style="font-size: 12px; color: #666;">${f.debut}${f.fin ? ' → ' + f.fin : ''}</span>
+            </div>
+            ${f.ecole ? `<div style="font-size: 13px; color: #444;">${f.ecole}</div>` : ''}
+          </div>
+        `).join('')}
+      </section>` : ''}
+
+      ${competences ? `
+      <section style="margin-bottom: 26px;">
+        <h2 style="font-size: 14px; text-transform: uppercase; letter-spacing: 1.5px; color: #1a1a1a; border-bottom: 1px solid #ddd; padding-bottom: 6px; margin: 0 0 10px 0;">Compétences</h2>
+        <p style="margin: 0; font-size: 14px;">${competences}</p>
+      </section>` : ''}
+
+      ${langues ? `
+      <section style="margin-bottom: 26px;">
+        <h2 style="font-size: 14px; text-transform: uppercase; letter-spacing: 1.5px; color: #1a1a1a; border-bottom: 1px solid #ddd; padding-bottom: 6px; margin: 0 0 10px 0;">Langues</h2>
+        <p style="margin: 0; font-size: 14px;">${langues}</p>
+      </section>` : ''}
+
+      ${interets ? `
+      <section style="margin-bottom: 26px;">
+        <h2 style="font-size: 14px; text-transform: uppercase; letter-spacing: 1.5px; color: #1a1a1a; border-bottom: 1px solid #ddd; padding-bottom: 6px; margin: 0 0 10px 0;">Centres d'intérêt</h2>
+        <p style="margin: 0; font-size: 14px;">${interets}</p>
+      </section>` : ''}
+    </div>
+  `;
+
+  // Génération PDF via html2pdf
+  const container = document.createElement('div');
+  container.innerHTML = cvHtml;
+  document.body.appendChild(container);
+
+  const opt = {
+    margin: 0,
+    filename: `CV_${nom.replace(/\s+/g, '_')}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(container.firstElementChild).save().then(() => {
+    document.body.removeChild(container);
+  });
+}

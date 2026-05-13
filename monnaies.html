@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convertisseur de monnaies en temps réel — Calviro</title>
+<meta name="description" content="Convertisseur de monnaies gratuit avec taux de change en temps réel de la BCE. Euro, dollar, livre, yen, et 30+ devises. Pour voyages et achats.">
+<meta name="keywords" content="convertisseur monnaie, taux de change, euro dollar, convertir euro, convertir dollar, monnaie en temps réel">
+<meta property="og:title" content="Convertisseur de monnaies en temps réel">
+<meta property="og:description" content="Taux de change BCE mis à jour quotidiennement.">
+<link rel="canonical" href="https://calviro.vercel.app/monnaies.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>💱 Convertisseur de monnaies</h1>
+      <p>Taux de change en temps réel fournis par la Banque Centrale Européenne.</p>
+    </div>
+
+    <div class="field">
+      <label for="mon-montant">Montant</label>
+      <input type="number" id="mon-montant" placeholder="100" step="0.01" value="100">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="mon-de">De</label>
+        <select id="mon-de">
+          <option value="EUR" selected>EUR — Euro</option>
+          <option value="USD">USD — Dollar US</option>
+          <option value="GBP">GBP — Livre Sterling</option>
+          <option value="JPY">JPY — Yen japonais</option>
+          <option value="CHF">CHF — Franc Suisse</option>
+          <option value="CAD">CAD — Dollar canadien</option>
+          <option value="AUD">AUD — Dollar australien</option>
+          <option value="CNY">CNY — Yuan chinois</option>
+          <option value="INR">INR — Roupie indienne</option>
+          <option value="BRL">BRL — Real brésilien</option>
+          <option value="MXN">MXN — Peso mexicain</option>
+          <option value="NOK">NOK — Couronne norvégienne</option>
+          <option value="SEK">SEK — Couronne suédoise</option>
+          <option value="DKK">DKK — Couronne danoise</option>
+          <option value="PLN">PLN — Zloty polonais</option>
+          <option value="TRY">TRY — Livre turque</option>
+          <option value="ZAR">ZAR — Rand sud-africain</option>
+          <option value="SGD">SGD — Dollar de Singapour</option>
+          <option value="HKD">HKD — Dollar de Hong Kong</option>
+          <option value="KRW">KRW — Won sud-coréen</option>
+          <option value="THB">THB — Baht thaïlandais</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="mon-vers">Vers</label>
+        <select id="mon-vers">
+          <option value="USD" selected>USD — Dollar US</option>
+          <option value="EUR">EUR — Euro</option>
+          <option value="GBP">GBP — Livre Sterling</option>
+          <option value="JPY">JPY — Yen japonais</option>
+          <option value="CHF">CHF — Franc Suisse</option>
+          <option value="CAD">CAD — Dollar canadien</option>
+          <option value="AUD">AUD — Dollar australien</option>
+          <option value="CNY">CNY — Yuan chinois</option>
+          <option value="INR">INR — Roupie indienne</option>
+          <option value="BRL">BRL — Real brésilien</option>
+          <option value="MXN">MXN — Peso mexicain</option>
+          <option value="NOK">NOK — Couronne norvégienne</option>
+          <option value="SEK">SEK — Couronne suédoise</option>
+          <option value="DKK">DKK — Couronne danoise</option>
+          <option value="PLN">PLN — Zloty polonais</option>
+          <option value="TRY">TRY — Livre turque</option>
+          <option value="ZAR">ZAR — Rand sud-africain</option>
+          <option value="SGD">SGD — Dollar de Singapour</option>
+          <option value="HKD">HKD — Dollar de Hong Kong</option>
+          <option value="KRW">KRW — Won sud-coréen</option>
+          <option value="THB">THB — Baht thaïlandais</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn" onclick="calcMonnaie()">Convertir</button>
+
+    <div class="result" id="mon-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Un convertisseur basé sur des taux officiels</h2>
+    <p>Notre outil utilise les <strong>taux de change officiels de la Banque Centrale Européenne (BCE)</strong>, mis à jour quotidiennement en semaine via l'API gratuite Frankfurter. C'est la même source que celle utilisée par les institutions financières et les médias économiques. Pas de marge cachée, pas de manipulation : c'est le "taux interbancaire" pur.</p>
+
+    <h2>Pour quoi utiliser un convertisseur de monnaies ?</h2>
+    <ul>
+      <li><strong>Voyages à l'étranger</strong> : comparer un prix en monnaie locale avec ton budget en euros.</li>
+      <li><strong>Achats en ligne</strong> : un site américain affiche en dollars ? Vérifie ce que ça représente vraiment en euros.</li>
+      <li><strong>Salaire ou stage à l'étranger</strong> : comparer une offre en GBP, USD, CAD avec ce que tu gagnerais en France.</li>
+      <li><strong>Investissement</strong> : suivre les fluctuations entre devises pour décider d'un transfert.</li>
+      <li><strong>Cadeau international</strong> : envoyer ou recevoir de l'argent depuis l'étranger.</li>
+      <li><strong>Curiosité économique</strong> : suivre l'évolution de l'euro face au dollar.</li>
+    </ul>
+
+    <h2>Attention : taux interbancaire ≠ taux pratiqué</h2>
+    <p>C'est le <strong>piège majeur</strong> à comprendre. Le taux affiché par notre outil est le "vrai" taux du marché. Mais quand tu changes de l'argent à la banque, au bureau de change, ou avec ta carte bancaire à l'étranger, tu ne l'obtiens <strong>jamais</strong> exactement. Les intermédiaires prennent une marge :</p>
+    <ul>
+      <li><strong>Carte bancaire classique à l'étranger</strong> : marge de 2 à 3 % + frais de retrait DAB</li>
+      <li><strong>Bureau de change en aéroport</strong> : marge de 5 à 15 % (souvent les pires)</li>
+      <li><strong>Bureau de change en ville</strong> : marge de 2 à 5 %</li>
+      <li><strong>Banque (transfert classique SEPA hors zone euro)</strong> : marge de 1 à 3 % + frais fixes</li>
+      <li><strong>Néobanques (Revolut, Wise, N26)</strong> : marge de 0 à 1 % en moyenne, parfois au taux exact en semaine</li>
+    </ul>
+
+    <h2>Les principales devises mondiales</h2>
+    <table>
+      <thead><tr><th>Devise</th><th>Pays</th><th>Particularité</th></tr></thead>
+      <tbody>
+        <tr><td>EUR</td><td>Zone euro (20 pays)</td><td>2e monnaie de réserve mondiale</td></tr>
+        <tr><td>USD</td><td>États-Unis</td><td>Monnaie dominante du commerce mondial</td></tr>
+        <tr><td>JPY</td><td>Japon</td><td>Souvent utilisée comme refuge</td></tr>
+        <tr><td>GBP</td><td>Royaume-Uni</td><td>Plus ancienne devise encore en circulation</td></tr>
+        <tr><td>CHF</td><td>Suisse</td><td>Valeur refuge en période de crise</td></tr>
+        <tr><td>CNY</td><td>Chine</td><td>Contrôlée par la Banque Centrale chinoise</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Pourquoi les taux fluctuent-ils ?</h2>
+    <p>Les taux de change varient selon de nombreux facteurs économiques :</p>
+    <ul>
+      <li><strong>Politique monétaire des banques centrales</strong> : taux directeurs, programmes de rachat d'actifs.</li>
+      <li><strong>Différentiel de taux d'intérêt</strong> : les investisseurs placent leur argent là où les rendements sont les plus élevés.</li>
+      <li><strong>Inflation</strong> : une devise qui s'inflate perd de la valeur face aux autres.</li>
+      <li><strong>Balance commerciale</strong> : un pays qui exporte beaucoup voit sa devise se renforcer.</li>
+      <li><strong>Stabilité politique</strong> : les crises politiques font fuir les capitaux.</li>
+      <li><strong>Anticipations des marchés</strong> : les traders parient sur l'évolution future, ce qui crée des mouvements en avance.</li>
+    </ul>
+
+    <h2>Astuces pour voyager malin</h2>
+    <ul>
+      <li><strong>Ouvre un compte Wise ou Revolut</strong> avant ton voyage. Tu peux retirer dans la monnaie locale au taux quasi-réel, sans frais de change. Économies typiques sur un voyage : 30 à 100 €.</li>
+      <li><strong>Évite les bureaux de change d'aéroport</strong> : les pires taux du monde.</li>
+      <li><strong>Retire des sommes importantes en une fois</strong> plutôt que plein de petits retraits (les frais fixes par retrait grignotent).</li>
+      <li><strong>Paie en monnaie locale, pas en euros</strong>, quand le terminal te propose les deux ("Dynamic Currency Conversion" = arnaque, taux au pire pour toi).</li>
+      <li><strong>Garde un peu de cash en monnaie locale</strong> pour les petits achats, pourboires, taxis.</li>
+      <li><strong>Vérifie le taux du jour</strong> avant de changer ou de payer une grosse somme.</li>
+    </ul>
+
+    <h2>Crypto-monnaies : pourquoi pas dans notre outil ?</h2>
+    <p>Bitcoin, Ethereum et autres crypto-monnaies ne sont pas des "monnaies" au sens strict — elles ne sont émises par aucune banque centrale, leurs taux sont volatils et déterminés par la spéculation. Notre convertisseur se concentre sur les <strong>devises fiat reconnues internationalement</strong>. Pour les cryptos, utilise des sites spécialisés (CoinMarketCap, CoinGecko).</p>
+
+    <h2>Comment notre outil reste fiable</h2>
+    <p>Notre source (Frankfurter API) puise directement dans les <strong>taux de référence quotidiens de la BCE</strong>, publiés chaque jour ouvré vers 16h. Le week-end et les jours fériés, le dernier taux disponible est utilisé. Pour des conversions en temps réel ultra-précis (trading professionnel), il faut des sources spécialisées payantes — pour 99 % des usages quotidiens, notre précision est largement suffisante.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

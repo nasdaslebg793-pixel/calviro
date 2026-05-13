@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Générateur de mot de passe sécurisé en ligne — Calviro</title>
+<meta name="description" content="Générateur de mots de passe sécurisés, gratuit, instantané. Génération locale 100% chiffrée. Évaluation de la force, options personnalisables.">
+<meta name="keywords" content="générateur mot de passe, mot de passe sécurisé, créer mot de passe, mot de passe fort, password generator français">
+<meta property="og:title" content="Générateur de mot de passe sécurisé">
+<meta property="og:description" content="Génération locale, sans envoi sur internet. Évaluation de la force.">
+<link rel="canonical" href="https://calviro.vercel.app/mot-de-passe.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🔐 Générateur de mot de passe</h1>
+      <p>Génération locale et sécurisée, jamais envoyée sur internet.</p>
+    </div>
+
+    <div class="field">
+      <label for="mdp-longueur">Longueur (8 à 64 caractères)</label>
+      <input type="number" id="mdp-longueur" value="16" min="8" max="64">
+    </div>
+
+    <div class="field">
+      <label>Caractères à inclure</label>
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+        <label style="display:flex; align-items:center; gap:8px; font-weight:normal; cursor:pointer;">
+          <input type="checkbox" id="mdp-maj" checked> Lettres majuscules (A-Z)
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; font-weight:normal; cursor:pointer;">
+          <input type="checkbox" id="mdp-min" checked> Lettres minuscules (a-z)
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; font-weight:normal; cursor:pointer;">
+          <input type="checkbox" id="mdp-chiffres" checked> Chiffres (0-9)
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; font-weight:normal; cursor:pointer;">
+          <input type="checkbox" id="mdp-symboles" checked> Symboles (!@#$...)
+        </label>
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn" onclick="genererMotDePasse()">🎲 Générer</button>
+      <button class="btn btn-secondary" id="mdp-copy" onclick="copierMotDePasse()">📋 Copier</button>
+    </div>
+
+    <div class="result" id="mdp-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Pourquoi utiliser un générateur de mot de passe ?</h2>
+    <p>Choisir un mot de passe est une tâche pénible mais cruciale. Les humains sont mauvais à inventer du hasard : on tape souvent des suites prévisibles ("123456", "azerty", "motdepasse"), ou on adapte légèrement un mot familier ("Sophie2024!"). Un générateur produit du <strong>vrai aléa cryptographique</strong>, impossible à deviner même pour un attaquant qui connaîtrait ton entourage.</p>
+
+    <h2>Notre outil est-il vraiment sécurisé ?</h2>
+    <p>Oui. Trois principes :</p>
+    <ul>
+      <li><strong>Génération 100 % locale</strong> : tout se passe dans ton navigateur, ton mot de passe n'est <strong>jamais envoyé sur internet</strong> ni stocké chez nous.</li>
+      <li><strong>Cryptographie standard</strong> : nous utilisons <code>crypto.getRandomValues()</code>, la fonction de génération aléatoire sécurisée fournie par ton navigateur (Chrome, Firefox, Safari). C'est le même standard que les banques.</li>
+      <li><strong>Caractères ambigus exclus</strong> : on évite les paires confuses (O/0, I/l/1) pour faciliter la lecture et la saisie.</li>
+    </ul>
+
+    <h2>Quelle longueur choisir ?</h2>
+    <table>
+      <thead><tr><th>Longueur</th><th>Usage recommandé</th></tr></thead>
+      <tbody>
+        <tr><td>8-10 caractères</td><td>⚠ Minimum, mais cassable en quelques heures</td></tr>
+        <tr><td>12 caractères</td><td>✓ Acceptable pour des comptes peu sensibles</td></tr>
+        <tr><td>16 caractères</td><td>✓✓ Recommandé pour la plupart des comptes (notre défaut)</td></tr>
+        <tr><td>20-24 caractères</td><td>✓✓✓ Excellent pour comptes critiques (banque, email principal)</td></tr>
+        <tr><td>32+ caractères</td><td>✓✓✓✓ Paranoïa-friendly, à condition de l'avoir dans un gestionnaire</td></tr>
+      </tbody>
+    </table>
+    <p>Règle simple : avec un gestionnaire de mots de passe (que tu devrais utiliser), il n'y a aucune raison de te limiter. Vise <strong>16 caractères minimum</strong>.</p>
+
+    <h2>Comprendre la "force" d'un mot de passe</h2>
+    <p>La force se mesure en <strong>entropie</strong> (bits). Plus le mot de passe est long et utilise un alphabet varié, plus l'entropie est élevée. À titre de comparaison :</p>
+    <ul>
+      <li><strong>moins de 40 bits</strong> : faible, cassable en moins d'une journée</li>
+      <li><strong>40 à 60 bits</strong> : moyen, cassable en quelques semaines</li>
+      <li><strong>60 à 80 bits</strong> : fort, cassable en années</li>
+      <li><strong>80+ bits</strong> : très fort, cassable en milliers d'années avec la technologie actuelle</li>
+    </ul>
+    <p>Notre outil affiche l'entropie et le temps de crackage estimé pour t'aider à comprendre la solidité.</p>
+
+    <h2>Bonnes pratiques pour gérer tes mots de passe</h2>
+    <ol>
+      <li><strong>Un mot de passe différent par site</strong>. Sinon, si un site est piraté, tous tes autres comptes tombent.</li>
+      <li><strong>Utilise un gestionnaire de mots de passe</strong>. Bitwarden (gratuit, open source), 1Password, NordPass, Dashlane. Tu n'as plus qu'à retenir <strong>un seul</strong> mot de passe maître.</li>
+      <li><strong>Active la double authentification (2FA)</strong> sur les comptes importants. Un voleur de mot de passe ne pourra rien faire sans aussi avoir ton téléphone.</li>
+      <li><strong>Méfie-toi des questions de sécurité</strong> ("nom de jeune fille de ta mère"). Les réponses sont souvent trouvables sur Facebook. Mets-y plutôt des phrases aléatoires.</li>
+      <li><strong>Change tes mots de passe en cas de fuite</strong>. Vérifie sur <a href="https://haveibeenpwned.com" target="_blank" rel="noopener">haveibeenpwned.com</a> si tes comptes ont fuité.</li>
+    </ol>
+
+    <h2>Phrase de passe : l'alternative</h2>
+    <p>Si tu dois <strong>retenir</strong> un mot de passe (par exemple ton mot de passe maître), utilise une <strong>phrase de passe</strong> plutôt qu'un mot complexe. Exemple : <em>"poisson rouge danse sur trampoline orange"</em>. Six mots simples = entropie d'environ 70 bits (très fort) et tu peux la mémoriser facilement. C'est la méthode recommandée par les experts en sécurité (XKCD a fait un strip célèbre à ce sujet).</p>
+
+    <h2>Erreurs à éviter</h2>
+    <ul>
+      <li><strong>Substitutions évidentes</strong> : "P@ssw0rd" est <strong>aussi nul</strong> que "Password". Les attaquants connaissent toutes les substitutions @=a, 0=o, etc.</li>
+      <li><strong>Réutiliser le même mot de passe</strong>. C'est l'erreur n°1 mondiale.</li>
+      <li><strong>Stocker en clair</strong> dans un fichier "mots_de_passe.txt", un post-it, ou un email à toi-même.</li>
+      <li><strong>Partager par message</strong>. Si tu dois transmettre un mot de passe à quelqu'un, utilise un outil dédié (Bitwarden Send, 1Password sharing).</li>
+      <li><strong>Mot de passe basé sur infos personnelles</strong> (date de naissance, prénom, plaque d'immatriculation) : trouvables facilement.</li>
+    </ul>
+
+    <h2>Que faire après avoir généré un mot de passe ?</h2>
+    <ol>
+      <li>Clique sur "📋 Copier" pour le mettre dans ton presse-papier</li>
+      <li>Va sur le site où tu veux changer/créer ton mot de passe</li>
+      <li>Colle-le dans le champ adéquat</li>
+      <li>Sauvegarde-le dans ton gestionnaire de mots de passe (Bitwarden, navigateur, etc.)</li>
+      <li>Vide ton presse-papier en copiant n'importe quel autre texte</li>
+    </ol>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+<script>genererMotDePasse();</script>
+</body>
+</html>

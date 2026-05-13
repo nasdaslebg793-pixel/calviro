@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compteur de mots et caractères en ligne — Calviro</title>
+<meta name="description" content="Compteur de mots, caractères, phrases, paragraphes. Avec limites Twitter, SMS, meta description SEO. Gratuit, instantané, sans inscription.">
+<meta name="keywords" content="compteur de mots, compteur caractères, compter mots, compter caractères twitter, word counter français">
+<meta property="og:title" content="Compteur de mots et caractères — gratuit en ligne">
+<meta property="og:description" content="Compte tes mots, caractères, phrases en temps réel.">
+<link rel="canonical" href="https://calviro.vercel.app/compteur-mots.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🔤 Compteur de mots et caractères</h1>
+      <p>Compte tout en temps réel : mots, caractères, phrases, paragraphes.</p>
+    </div>
+
+    <div class="field">
+      <label for="cpt-text">Colle ou tape ton texte</label>
+      <textarea id="cpt-text" rows="10" placeholder="Commence à écrire ou colle ton texte ici..." oninput="compteurMaj()"></textarea>
+    </div>
+
+    <div class="btn-group" style="margin-bottom: 24px;">
+      <button class="btn btn-secondary" onclick="compteurVider()">Vider</button>
+    </div>
+
+    <div class="result visible">
+      <div class="result-detail" style="border:none; padding:0;">
+        <div class="result-detail-row"><span>Mots</span><strong id="cpt-mots">0</strong></div>
+        <div class="result-detail-row"><span>Caractères (avec espaces)</span><strong id="cpt-car-avec">0</strong></div>
+        <div class="result-detail-row"><span>Caractères (sans espaces)</span><strong id="cpt-car-sans">0</strong></div>
+        <div class="result-detail-row"><span>Phrases</span><strong id="cpt-phrases">0</strong></div>
+        <div class="result-detail-row"><span>Paragraphes</span><strong id="cpt-paragraphes">0</strong></div>
+        <div class="result-detail-row"><span>Lignes</span><strong id="cpt-lignes">0</strong></div>
+        <div class="result-detail-row"><span>Temps de lecture estimé</span><strong id="cpt-lecture">1 min</strong></div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <h3>Limites par plateforme</h3>
+    <div class="result visible">
+      <div class="result-detail" style="border:none; padding:0;">
+        <div class="result-detail-row"><span>Twitter / X (280 car.)</span><strong id="cpt-twitter">280 restants</strong></div>
+        <div class="result-detail-row"><span>SMS standard (160 car.)</span><strong id="cpt-sms">160 restants</strong></div>
+        <div class="result-detail-row"><span>Meta description SEO (160 car.)</span><strong id="cpt-meta">160 restants</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Pourquoi compter les mots et les caractères ?</h2>
+    <p>Tu écris une dissertation, un post LinkedIn, un mail formel, une description Instagram, ou tu prépares une publication SEO ? Connaître précisément <strong>la longueur de ton texte</strong> est essentiel. Beaucoup de plateformes ont des limites strictes (Twitter 280 caractères, SMS 160), et beaucoup de contextes recommandent une longueur cible (essai de 500 mots, post optimal 1 500 mots, mail concis 50-100 mots).</p>
+
+    <h2>Notre compteur fonctionne en temps réel</h2>
+    <p>Tape ou colle ton texte, et toutes les statistiques se mettent à jour <strong>instantanément</strong>. Pas besoin de cliquer sur un bouton "calculer". Tu peux donc rédiger et viser une longueur précise au fur et à mesure. Tout se passe localement dans ton navigateur, ton texte n'est <strong>jamais envoyé sur un serveur</strong>.</p>
+
+    <h2>Limites à connaître selon les plateformes</h2>
+    <table>
+      <thead><tr><th>Plateforme</th><th>Limite</th></tr></thead>
+      <tbody>
+        <tr><td>Twitter / X (post)</td><td>280 caractères</td></tr>
+        <tr><td>Twitter / X (Premium)</td><td>25 000 caractères</td></tr>
+        <tr><td>SMS standard</td><td>160 caractères</td></tr>
+        <tr><td>Instagram (légende)</td><td>2 200 caractères</td></tr>
+        <tr><td>Instagram (bio)</td><td>150 caractères</td></tr>
+        <tr><td>TikTok (description)</td><td>2 200 caractères</td></tr>
+        <tr><td>LinkedIn (post)</td><td>3 000 caractères</td></tr>
+        <tr><td>YouTube (description)</td><td>5 000 caractères</td></tr>
+        <tr><td>Meta description SEO</td><td>~155 caractères avant troncature</td></tr>
+        <tr><td>Title tag SEO</td><td>~60 caractères avant troncature</td></tr>
+        <tr><td>Email object (mobile)</td><td>30-40 caractères visibles</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Pour les étudiants : longueurs typiques</h2>
+    <p>Si tu prépares un devoir ou une dissertation, ces ordres de grandeur peuvent t'aider :</p>
+    <ul>
+      <li><strong>Commentaire de texte (Bac de français)</strong> : 1 000 à 1 500 mots</li>
+      <li><strong>Dissertation littéraire</strong> : 1 500 à 2 500 mots</li>
+      <li><strong>Mémoire de licence</strong> : 8 000 à 20 000 mots</li>
+      <li><strong>Mémoire de master</strong> : 20 000 à 50 000 mots</li>
+      <li><strong>Thèse de doctorat</strong> : 60 000 à 100 000 mots</li>
+      <li><strong>Lettre de motivation</strong> : 200 à 350 mots maximum</li>
+      <li><strong>Article scientifique</strong> : 3 000 à 8 000 mots</li>
+      <li><strong>Article de blog optimisé SEO</strong> : 1 000 à 2 500 mots</li>
+    </ul>
+
+    <h2>Le temps de lecture</h2>
+    <p>Notre compteur estime aussi le <strong>temps de lecture</strong>, basé sur une vitesse moyenne de 200 mots par minute. C'est la vitesse à laquelle un adulte lit confortablement un texte courant. Cette estimation est utile pour :</p>
+    <ul>
+      <li>Indiquer "5 min de lecture" en haut d'un article (très utilisé en blogs)</li>
+      <li>Calibrer un discours, une présentation orale, un podcast (à 150-180 mots/min à l'oral)</li>
+      <li>Estimer la durée d'un live ou d'une vidéo basée sur un script</li>
+    </ul>
+    <p>Pour la lecture rapide entraînée, on peut monter à 400-700 mots/min. Pour de la lecture technique ou dense, descends à 100-150 mots/min.</p>
+
+    <h2>Différence entre mots et caractères</h2>
+    <p>Un <strong>mot</strong> est un groupe de caractères séparé par des espaces. Notre compteur considère que "aujourd'hui" est un seul mot (présence du tiret), tandis que "tout à fait" en compte trois.</p>
+    <p>Un <strong>caractère</strong> compte chaque lettre, chiffre, signe de ponctuation et espace individuellement. Twitter compte les caractères, pas les mots. SMS aussi. L'espace après un point compte.</p>
+    <p>Pour les textes français, on compte en moyenne <strong>5 à 6 caractères par mot</strong> (espaces incluses). Donc 1 000 mots ≈ 5 500-6 000 caractères.</p>
+
+    <h2>Astuce SEO : la longueur idéale d'un article</h2>
+    <p>Les études Google montrent que les pages qui se classent en première page contiennent en moyenne <strong>1 500 à 2 500 mots</strong>. Mais attention : ce n'est pas la quantité qui compte, c'est la pertinence. 500 mots ultra-pertinents valent mieux que 3 000 mots de blabla. Notre compteur t'aide à voir si tu as la "masse critique" sans tomber dans le bourrage.</p>
+
+    <h2>Compteur de syllabes et autres métriques</h2>
+    <p>Notre outil se concentre sur les indicateurs <strong>les plus utiles au quotidien</strong>. Pour des analyses plus poussées (densité de mots-clés, lisibilité Flesch, syllabes, ton émotionnel), des outils spécialisés existent comme Yoast SEO, Antidote, ou les correcteurs avancés. Mais pour 95 % des besoins, savoir compter mots et caractères suffit largement.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+<script>compteurMaj();</script>
+</body>
+</html>

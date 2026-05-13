@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Générateur de CV gratuit en ligne : PDF instantané — Calviro</title>
+<meta name="description" content="Crée ton CV en quelques minutes et télécharge-le en PDF. Design épuré, sans inscription. Gratuit, instantané, modèle professionnel.">
+<meta name="keywords" content="générateur cv, créer cv, cv gratuit, modèle cv, cv pdf, cv en ligne, faire son cv">
+<meta property="og:title" content="Générateur de CV gratuit — PDF en quelques minutes">
+<meta property="og:description" content="Remplis, télécharge, envoie. Sans inscription.">
+<link rel="canonical" href="https://calviro.vercel.app/cv.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>📋 Générateur de CV</h1>
+      <p>Remplis le formulaire, télécharge ton CV en PDF prêt à envoyer.</p>
+    </div>
+
+    <h3 style="margin-top: 8px;">Informations personnelles</h3>
+    <div class="field-row">
+      <div class="field">
+        <label for="cv-nom">Nom complet *</label>
+        <input type="text" id="cv-nom" placeholder="Jean Dupont">
+      </div>
+      <div class="field">
+        <label for="cv-titre">Titre / Métier</label>
+        <input type="text" id="cv-titre" placeholder="Développeur Web Junior">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="cv-email">Email</label>
+        <input type="email" id="cv-email" placeholder="jean.dupont@email.com">
+      </div>
+      <div class="field">
+        <label for="cv-tel">Téléphone</label>
+        <input type="tel" id="cv-tel" placeholder="06 12 34 56 78">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="cv-ville">Ville / Localisation</label>
+      <input type="text" id="cv-ville" placeholder="Paris, France">
+    </div>
+
+    <hr class="divider">
+
+    <h3>Profil / À propos de moi</h3>
+    <div class="field">
+      <label for="cv-profil">Quelques lignes pour te présenter</label>
+      <textarea id="cv-profil" rows="3" placeholder="Développeur passionné avec 3 ans d'expérience en JavaScript et React. À la recherche de défis techniques dans une équipe ambitieuse."></textarea>
+    </div>
+
+    <hr class="divider">
+
+    <h3>Expériences professionnelles</h3>
+    <div id="cv-experiences"></div>
+    <button class="btn btn-secondary" onclick="cvAjouterExperience()" style="margin-bottom: 16px;">+ Ajouter une expérience</button>
+
+    <hr class="divider">
+
+    <h3>Formation</h3>
+    <div id="cv-formations"></div>
+    <button class="btn btn-secondary" onclick="cvAjouterFormation()" style="margin-bottom: 16px;">+ Ajouter une formation</button>
+
+    <hr class="divider">
+
+    <h3>Compétences, langues, centres d'intérêt</h3>
+    <div class="field">
+      <label for="cv-competences">Compétences techniques</label>
+      <textarea id="cv-competences" rows="2" placeholder="JavaScript, React, Node.js, Python, Git, SQL..."></textarea>
+    </div>
+
+    <div class="field">
+      <label for="cv-langues">Langues</label>
+      <input type="text" id="cv-langues" placeholder="Français (natif), Anglais (C1), Espagnol (B2)">
+    </div>
+
+    <div class="field">
+      <label for="cv-interets">Centres d'intérêt</label>
+      <input type="text" id="cv-interets" placeholder="Course à pied, photographie, lecture, voyages">
+    </div>
+
+    <button class="btn" onclick="genererCV()">📥 Télécharger mon CV en PDF</button>
+
+    <div class="note" style="margin-top: 20px;">
+      Le PDF est généré localement dans ton navigateur. Tes données ne sont jamais envoyées sur un serveur.
+    </div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Le CV, ta première impression</h2>
+    <p>Le CV (Curriculum Vitae) est le document <strong>le plus important</strong> de ta candidature. Un recruteur passe en moyenne <strong>7 secondes</strong> sur un CV au premier tri. C'est court. Tout doit être lisible, hiérarchisé, et donner envie d'aller plus loin. Notre générateur est conçu pour produire un CV propre, sobre, qui passe ce premier filtre en quelques secondes.</p>
+
+    <h2>Pourquoi notre générateur ?</h2>
+    <ul>
+      <li><strong>Aucune inscription</strong> : tu remplis, tu télécharges, c'est fini.</li>
+      <li><strong>Aucune donnée envoyée</strong> : tout se passe dans ton navigateur, ton CV n'est jamais sur un serveur.</li>
+      <li><strong>Design épuré et professionnel</strong> : sobre, lisible, sans fioritures qui désservent.</li>
+      <li><strong>Format A4 standard</strong> : prêt pour l'impression ou l'envoi par email.</li>
+      <li><strong>Gratuit</strong> : sans abonnement, sans limite.</li>
+    </ul>
+
+    <h2>Les rubriques essentielles d'un CV</h2>
+
+    <h3>1. Identité et contact</h3>
+    <p>Ton nom en grand, ton titre (métier ou objectif), email, téléphone, ville. <strong>N'écris plus ton adresse complète</strong> : c'est obsolète et un risque pour ta vie privée. Pas besoin de date de naissance non plus en France (et c'est même illégal de la demander selon le code du travail).</p>
+
+    <h3>2. Profil / Accroche</h3>
+    <p>2-3 lignes qui résument <strong>qui tu es et ce que tu cherches</strong>. C'est la partie la plus lue après ton nom. Évite les phrases creuses ("motivé et dynamique") et préfère du concret ("3 ans d'expérience en marketing digital, je cherche un rôle en équipe de growth dans une startup").</p>
+
+    <h3>3. Expériences professionnelles</h3>
+    <p>En ordre <strong>antichronologique</strong> (le plus récent en haut). Pour chaque poste : intitulé exact, entreprise, dates précises, et 2-3 lignes de missions/réalisations <strong>chiffrées si possible</strong>. "Gestion de 5 clients représentant 200 K€ de CA" vaut mieux que "Gestion d'un portefeuille de clients".</p>
+
+    <h3>4. Formation</h3>
+    <p>Diplômes obtenus en ordre antichronologique. Pour un jeune diplômé, c'est en haut. Pour un senior avec 15+ ans d'expérience, ça passe après les expériences. <strong>Mentionne uniquement le post-Bac</strong> (sauf si ton bac est très spécifique : prépa, scientifique avec mention, etc.).</p>
+
+    <h3>5. Compétences</h3>
+    <p>Spécifique à ton métier. Pour un développeur : langages et frameworks. Pour un commercial : techniques de vente, CRM. Pour un graphiste : logiciels (Photoshop, Figma, Illustrator). Vise une dizaine de compétences clés, sans en mettre 50.</p>
+
+    <h3>6. Langues</h3>
+    <p>Précise ton niveau avec une grille reconnue : <strong>A1, A2, B1, B2, C1, C2</strong> (cadre européen). "Anglais courant" est ambigu, "Anglais B2" est précis. Mentionne aussi tes certifications (TOEIC, TOEFL, Cambridge).</p>
+
+    <h3>7. Centres d'intérêt (optionnel)</h3>
+    <p>Permet au recruteur de se faire une idée de ta personnalité. Mentionne uniquement ce qui est <strong>authentique</strong> (sinon piège en entretien) et qui peut éveiller la conversation. Évite les généralités ("cinéma, lecture, sport") — préfère précis ("course de fond, photographie urbaine, romans d'anticipation").</p>
+
+    <h2>Les erreurs à ne pas faire</h2>
+    <ul>
+      <li><strong>Faute d'orthographe</strong> : motif de rejet immédiat dans 70 % des cas selon les recruteurs. Fais relire ton CV par un proche, ou utilise un correcteur (Antidote, Bonpatron).</li>
+      <li><strong>Photo</strong> : déconseillée en France (sauf métiers visibles comme commerce, hôtellerie, communication). Et jamais une photo de vacances ou recadrée d'un selfie.</li>
+      <li><strong>CV de plus de 2 pages</strong> : sauf si tu as 15+ ans d'expérience. Un jeune diplômé doit tenir sur 1 page.</li>
+      <li><strong>Mensonges</strong> : vérifiables (LinkedIn, contacts professionnels). Catastrophiques s'ils sont découverts.</li>
+      <li><strong>Information personnelle non pertinente</strong> : religion, situation familiale, opinions politiques.</li>
+      <li><strong>Email non professionnel</strong> : "jojolemignon69@hotmail.com" → poubelle.</li>
+      <li><strong>Trop de couleurs et de polices</strong> : sobriété, toujours.</li>
+      <li><strong>"Disponible immédiatement"</strong> en gros : signe de désespoir.</li>
+    </ul>
+
+    <h2>CV chronologique vs CV par compétences</h2>
+    <p>Deux grandes structures existent :</p>
+    <ul>
+      <li><strong>CV chronologique</strong> (notre modèle) : liste tes expériences dans l'ordre. C'est le format standard, attendu par 90 % des recruteurs. À privilégier sauf cas particulier.</li>
+      <li><strong>CV par compétences</strong> : organise par thématiques (gestion de projet, management, technique...) plutôt que par dates. Utile si tu as eu beaucoup de petits jobs courts, des trous dans ta carrière, ou une reconversion.</li>
+    </ul>
+
+    <h2>Lettre de motivation : encore d'actualité ?</h2>
+    <p>Cela dépend du secteur. Dans la <strong>tech, le marketing, les startups</strong> : la lettre est de plus en plus remplacée par un message court sur LinkedIn. Dans la <strong>fonction publique, l'industrie, le droit</strong> : la lettre reste obligatoire et formelle. En cas de doute, joins une lettre courte (15-20 lignes max). Mieux vaut une lettre que pas de lettre.</p>
+
+    <h2>CV en anglais</h2>
+    <p>Si tu postules à l'international ou dans une entreprise anglophone, tu auras besoin d'un CV en anglais. Quelques différences :</p>
+    <ul>
+      <li>Le terme est "<strong>Resume</strong>" aux États-Unis, "<strong>CV</strong>" au Royaume-Uni et en Europe</li>
+      <li>Pas de photo (jamais), surtout aux États-Unis (risque de discrimination)</li>
+      <li>Pas d'âge, pas de situation familiale</li>
+      <li>1 page maximum aux États-Unis (resume), 2 pages possibles ailleurs</li>
+      <li>Mets l'accent sur les <strong>réalisations chiffrées</strong> ("Increased sales by 35%")</li>
+    </ul>
+
+    <h2>Astuces pour passer les filtres ATS</h2>
+    <p>De nombreuses grandes entreprises utilisent des logiciels (ATS — Applicant Tracking Systems) qui filtrent les CV automatiquement avant qu'un humain les lise. Pour passer ces filtres :</p>
+    <ul>
+      <li><strong>Utilise des mots-clés de l'offre</strong> dans ton CV (compétences, technologies, certifications)</li>
+      <li><strong>Format simple, sans tableau ni colonne</strong> (les ATS lisent mal les colonnes — notre modèle est compatible)</li>
+      <li><strong>Polices standard</strong> (Arial, Georgia, Calibri, Helvetica)</li>
+      <li><strong>Fichier PDF</strong> de préférence (mieux que .docx pour la mise en page)</li>
+      <li><strong>Nom de fichier propre</strong> : "CV_Jean_Dupont.pdf" plutôt que "cv_v3_final_FINAL.pdf"</li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="script.js"></script>
+<script>
+  // Add one experience and one formation by default
+  cvAjouterExperience();
+  cvAjouterFormation();
+</script>
+</body>
+</html>
