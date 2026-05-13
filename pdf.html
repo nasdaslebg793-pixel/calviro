@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Générateur PDF — Calviro</title>
+<title>Convertir texte en PDF gratuit et instantané — Calviro</title>
+<meta name="description" content="Convertis ton texte en document PDF formaté en un clic. Outil gratuit, sans inscription, sans filigrane. Format A4 prêt à imprimer.">
+<meta name="keywords" content="texte en pdf, créer pdf, générateur pdf, convertir pdf, pdf gratuit">
+<meta property="og:title" content="Convertir texte en PDF gratuit">
+<meta property="og:description" content="Génère un PDF formaté depuis n'importe quel texte.">
+<link rel="canonical" href="https://calviro.vercel.app/pdf.html">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,8 +21,8 @@
 
   <div class="tool">
     <div class="tool-header">
-      <h1>📄 Générateur PDF</h1>
-      <p>Convertis ton texte en document PDF téléchargeable.</p>
+      <h1>📄 Convertir texte en PDF</h1>
+      <p>Génère un PDF propre depuis n'importe quel texte.</p>
     </div>
 
     <div class="field">
@@ -26,7 +31,7 @@
     </div>
 
     <div class="field">
-      <label for="pdf-contenu">Contenu</label>
+      <label for="pdf-contenu">Contenu du document</label>
       <textarea id="pdf-contenu" placeholder="Colle ou tape ton texte ici…" rows="10"></textarea>
     </div>
 
@@ -36,6 +41,112 @@
       Mise en page sobre, format A4, prêt à imprimer.
     </div>
   </div>
+
+  <section class="seo-content">
+    <h2>Convertir du texte en PDF facilement</h2>
+    <p>Le PDF (<em>Portable Document Format</em>) est le format de document le plus universel au monde. Inventé par Adobe en 1993 et devenu un standard ouvert ISO en 2008, il permet de partager des documents qui s'affichent exactement de la même façon sur tous les appareils : ordinateurs, smartphones, tablettes, imprimantes. C'est pour ça qu'il est devenu incontournable dans le monde professionnel et administratif.</p>
+
+    <h2>Pourquoi convertir un texte en PDF ?</h2>
+    <ul>
+      <li><strong>Universalité</strong> : un PDF s'ouvre sur n'importe quel appareil sans avoir besoin du logiciel d'origine.</li>
+      <li><strong>Mise en forme préservée</strong> : la mise en page reste identique à l'envoi comme à la réception.</li>
+      <li><strong>Impression fidèle</strong> : ce que tu vois à l'écran est exactement ce que tu obtiens à l'imprimante.</li>
+      <li><strong>Recevable officiellement</strong> : la plupart des administrations et entreprises n'acceptent que le PDF pour les pièces jointes.</li>
+      <li><strong>Sécurisable</strong> : un PDF peut être protégé par mot de passe, signé électroniquement, ou ses droits d'usage restreints.</li>
+      <li><strong>Léger</strong> : un PDF texte est souvent beaucoup plus petit qu'un document Word équivalent.</li>
+    </ul>
+
+    <h2>Comment fonctionne notre convertisseur ?</h2>
+    <p>Notre outil prend ton texte brut, applique une mise en forme professionnelle (titre en grand, paragraphes lisibles, format A4 standard) et génère un fichier PDF téléchargeable directement dans ton navigateur. <strong>Tout se passe en local sur ton ordinateur</strong> — ton texte n'est jamais envoyé sur un serveur. C'est plus rapide, plus respectueux de ta vie privée, et ça marche même sans internet une fois la page chargée.</p>
+
+    <h2>Cas d'usage fréquents</h2>
+    <ul>
+      <li><strong>Lettre de motivation</strong> : tape ton texte, ajoute un titre, télécharge un PDF prêt à envoyer.</li>
+      <li><strong>Notes de cours</strong> : convertis tes prises de notes en PDF pour les imprimer ou les partager.</li>
+      <li><strong>Recettes de cuisine</strong> : compile tes recettes préférées dans un PDF familial.</li>
+      <li><strong>Liste de courses, checklist</strong> : génère une version imprimable.</li>
+      <li><strong>Citation, devis simple</strong> : transmets un document plus officiel qu'un email.</li>
+      <li><strong>Manuscrit, écriture</strong> : envoie ton brouillon en PDF à un relecteur.</li>
+    </ul>
+
+    <h2>Limites de notre outil</h2>
+    <p>Notre convertisseur fait du texte brut vers PDF. Il ne gère pas (encore) :</p>
+    <ul>
+      <li>Les images ou tableaux complexes</li>
+      <li>Le formatage Markdown ou riche (gras, italique, listes)</li>
+      <li>Les conversions inverses (PDF → texte)</li>
+      <li>Les documents multi-pages avec en-têtes personnalisés</li>
+    </ul>
+    <p>Pour des besoins plus avancés, des outils comme LibreOffice, Google Docs ou Adobe Acrobat conviennent mieux. Notre force, c'est la simplicité : un texte, un titre, un PDF — en 3 secondes.</p>
+
+    <h2>PDF et accessibilité</h2>
+    <p>Pense aux malvoyants quand tu crées des PDF. Un PDF bien fait :</p>
+    <ul>
+      <li>Contient du texte sélectionnable (pas juste une image scannée)</li>
+      <li>Utilise une police lisible (notre outil utilise Georgia)</li>
+      <li>A des contrastes suffisants entre texte et fond</li>
+      <li>Respecte une taille de police d'au moins 11 points pour le corps de texte</li>
+    </ul>
+
+    <h2>PDF/A : la version pour l'archivage</h2>
+    <p>Le format <strong>PDF/A</strong> (PDF Archive) est une variante du PDF normalisée par l'ISO pour garantir la conservation à long terme des documents. Il impose plusieurs contraintes :</p>
+    <ul>
+      <li>Toutes les polices sont incorporées dans le fichier (pas de lien externe)</li>
+      <li>Pas de contenu dynamique (JavaScript interdit)</li>
+      <li>Pas de chiffrement</li>
+      <li>Métadonnées XMP obligatoires</li>
+    </ul>
+    <p>De nombreuses administrations européennes exigent désormais du PDF/A pour les documents officiels (contrats, archives notariales, dossiers médicaux). Si tu envoies un document à une administration et qu'il te dit "format non conforme", c'est souvent ça.</p>
+
+    <h2>Sécurité des PDF : ce qu'on peut faire</h2>
+    <p>Un PDF peut être sécurisé de plusieurs manières :</p>
+    <ul>
+      <li><strong>Mot de passe à l'ouverture</strong> : il faut le saisir avant de pouvoir lire le document. Utile pour des données sensibles envoyées par mail.</li>
+      <li><strong>Restrictions d'usage</strong> : tu peux empêcher l'impression, la copie de texte, la modification du document. Mais ces restrictions sont facilement contournables avec des outils gratuits — ne t'y fie pas pour des contenus très sensibles.</li>
+      <li><strong>Signature électronique</strong> : permet de prouver l'identité du signataire et la non-altération du document. Reconnue juridiquement en France si elle respecte le règlement eIDAS.</li>
+      <li><strong>Caviardage</strong> : occulter visuellement et techniquement des passages confidentiels (différent du simple marqueur noir qui peut être supprimé).</li>
+    </ul>
+
+    <h2>Astuces avancées pour vos PDF</h2>
+    <h3>Réduire le poids d'un PDF</h3>
+    <p>Si ton PDF est trop lourd pour un envoi par mail (limite Gmail : 25 Mo), plusieurs solutions :</p>
+    <ul>
+      <li>Utilise un outil de compression en ligne (ilovepdf.com, smallpdf.com)</li>
+      <li>Convertis les images en JPG plutôt qu'en PNG</li>
+      <li>Réduis la résolution des images embarquées (150 dpi suffisent pour la consultation écran)</li>
+      <li>Supprime les pages inutiles</li>
+    </ul>
+
+    <h3>Convertir PDF en Word ou Excel</h3>
+    <p>Pour modifier un PDF reçu, il faut le convertir. Google Drive le fait gratuitement : importe ton PDF dans Drive, clic droit "Ouvrir avec Google Docs". Pour des documents scannés (images), il faut un logiciel OCR (reconnaissance de caractères).</p>
+
+    <h3>Fusionner ou diviser des PDF</h3>
+    <p>Beaucoup d'outils gratuits permettent de fusionner plusieurs PDF en un seul (utile pour compiler un dossier de candidature) ou de séparer les pages d'un PDF (extraire une seule page d'un long document).</p>
+
+    <h2>PDF dans le monde professionnel</h2>
+    <p>Quelques chiffres pour mesurer l'importance du PDF :</p>
+    <ul>
+      <li>Plus de 2,5 trilliards de PDF circulent dans le monde chaque année</li>
+      <li>85 % des entreprises l'utilisent comme format principal pour la documentation client</li>
+      <li>C'est le format <strong>obligatoire</strong> pour la majorité des demandes administratives en France (CAF, impôts, France Travail)</li>
+      <li>C'est le seul format universellement accepté pour les factures électroniques en B2B</li>
+    </ul>
+    <p>La maîtrise des bases du PDF (créer, fusionner, signer, compresser) est devenue une compétence professionnelle de base.</p>
+
+    <h2>Les alternatives au PDF</h2>
+    <p>Selon le besoin, d'autres formats peuvent être plus adaptés :</p>
+    <ul>
+      <li><strong>Word (.docx)</strong> : si le destinataire doit modifier le document</li>
+      <li><strong>Markdown (.md)</strong> : pour des notes simples, lisibles sans outil spécialisé</li>
+      <li><strong>EPUB</strong> : pour les livres électroniques (rendu adaptatif, contrairement au PDF qui est figé)</li>
+      <li><strong>HTML</strong> : pour les contenus longs à consulter en ligne</li>
+    </ul>
+    <p>Mais aucun format n'a la <strong>portabilité universelle</strong> du PDF : c'est encore aujourd'hui le standard incontesté pour partager un document figé.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>

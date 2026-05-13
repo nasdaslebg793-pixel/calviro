@@ -3,7 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Convertisseur d'unités — Calviro</title>
+<title>Convertisseur d'unités : longueur, masse, volume, température — Calviro</title>
+<meta name="description" content="Convertisseur d'unités universel et gratuit : longueur (m, cm, pouce), masse (kg, livre), volume (L, mL), temps, énergie, température (°C, °F, K).">
+<meta name="keywords" content="convertisseur unité, conversion unité, convertir litre, convertir kilo, convertir mètre, convertir celsius fahrenheit, convertir joule">
+<meta property="og:title" content="Convertisseur d'unités gratuit en ligne">
+<meta property="og:description" content="Toutes les conversions d'unités en un seul outil simple et rapide.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://calviro.vercel.app/convertisseur.html">
+<link rel="canonical" href="https://calviro.vercel.app/convertisseur.html">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,8 +23,8 @@
 
   <div class="tool">
     <div class="tool-header">
-      <h1>🔄 Convertisseur</h1>
-      <p>Longueurs, masses, volumes, temps, énergies, températures.</p>
+      <h1>🔄 Convertisseur d'unités</h1>
+      <p>Longueurs, masses, volumes, temps, énergies et températures.</p>
     </div>
 
     <div class="field">
@@ -33,7 +40,7 @@
     </div>
 
     <div class="field">
-      <label for="conv-input">Valeur</label>
+      <label for="conv-input">Valeur à convertir</label>
       <input type="number" id="conv-input" placeholder="1" step="any">
     </div>
 
@@ -46,6 +53,108 @@
 
     <div class="result" id="conv-result"></div>
   </div>
+
+  <section class="seo-content">
+    <h2>Un convertisseur d'unités universel et gratuit</h2>
+    <p>Que tu sois étudiant en sciences, professionnel ou simplement curieux, notre <strong>convertisseur d'unités en ligne</strong> couvre les six catégories les plus utilisées au quotidien : longueurs, masses, volumes, temps, énergies et températures. Plus besoin de jongler entre plusieurs outils ou de faire des conversions à la main : tape ta valeur, choisis tes unités, le résultat s'affiche instantanément.</p>
+
+    <h2>Conversions de longueur</h2>
+    <p>Le mètre est l'unité de longueur du Système International (SI). Notre convertisseur gère les unités métriques (mm, cm, m, km) ainsi que les unités impériales encore courantes (pouce, pied, mile). Quelques équivalences à connaître :</p>
+    <table>
+      <thead><tr><th>Unité</th><th>Équivalent</th></tr></thead>
+      <tbody>
+        <tr><td>1 pouce (inch)</td><td>2,54 cm</td></tr>
+        <tr><td>1 pied (foot)</td><td>30,48 cm</td></tr>
+        <tr><td>1 mile</td><td>1,609 km</td></tr>
+        <tr><td>1 yard</td><td>0,914 m</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Conversions de masse et volume</h2>
+    <p>Pour la <strong>masse</strong>, l'unité de référence est le kilogramme. On convertit fréquemment entre kg, g, mg et tonnes pour le métrique ; livre (≈ 453,6 g) et once (≈ 28,35 g) pour l'impérial. Pour le <strong>volume</strong>, le litre est le plus pratique au quotidien (mL, cL, dL, L, m³).</p>
+    <p>Attention : la conversion entre masse et volume <strong>dépend de la densité</strong> du produit. 1 litre d'eau pèse 1 kg, mais 1 litre d'huile pèse environ 0,92 kg. Notre convertisseur ne fait que des conversions à l'intérieur de la même catégorie.</p>
+
+    <h2>Conversion de température : la subtilité</h2>
+    <p>Contrairement aux autres unités qui se convertissent par une simple multiplication, les températures nécessitent une formule avec décalage :</p>
+    <ul>
+      <li><strong>Celsius → Fahrenheit</strong> : (°C × 9/5) + 32</li>
+      <li><strong>Fahrenheit → Celsius</strong> : (°F − 32) × 5/9</li>
+      <li><strong>Celsius → Kelvin</strong> : °C + 273,15</li>
+      <li><strong>Kelvin → Celsius</strong> : K − 273,15</li>
+    </ul>
+    <p>Repères utiles : 0 °C = 32 °F = 273,15 K (point de congélation de l'eau). 100 °C = 212 °F = 373,15 K (ébullition).</p>
+
+    <h2>Conversion d'énergie</h2>
+    <p>Le joule (J) est l'unité d'énergie du SI, mais on rencontre souvent d'autres unités selon le contexte : la calorie pour la nutrition (1 cal = 4,184 J, et 1 kcal = 4 184 J), le watt-heure pour l'électricité (1 Wh = 3 600 J), ou encore le kWh pour les factures d'énergie (1 kWh = 3,6 millions de joules).</p>
+
+    <h2>Conversion de durées</h2>
+    <p>Le calcul du nombre exact de secondes dans une heure (3 600), un jour (86 400) ou une semaine (604 800) est utile pour la planification, les calculs sportifs ou la programmation. Notre convertisseur gère secondes, minutes, heures, jours et semaines.</p>
+
+    <h2>Pourquoi le Système International d'unités ?</h2>
+    <p>Le SI a été adopté en 1960 pour unifier les mesures à travers le monde. Il repose sur sept unités de base : mètre, kilogramme, seconde, ampère, kelvin, mole et candela. Tous les pays l'utilisent officiellement sauf les États-Unis, le Liberia et la Birmanie, qui continuent d'employer le système impérial — d'où la nécessité de conversions fréquentes.</p>
+
+    <h2>Cas pratiques : quand utilise-t-on les conversions ?</h2>
+    <h3>Voyager à l'étranger</h3>
+    <p>Aux États-Unis, tout est en système impérial : la météo en Fahrenheit, les distances en miles, le carburant en gallons, le poids en livres et onces, la taille en pieds et pouces. Au Royaume-Uni, c'est mixte : route en miles mais magasins en grammes. En Asie, le système métrique domine partout sauf pour des unités locales (le "tatami" au Japon pour les surfaces). Notre convertisseur est ton allié pour comprendre rapidement.</p>
+
+    <h3>Cuisine internationale</h3>
+    <p>Les recettes américaines utilisent souvent les "cups", "tablespoons" et "ounces". Petit lexique utile :</p>
+    <ul>
+      <li>1 US cup ≈ 237 ml (pas 250 ml !)</li>
+      <li>1 tablespoon ≈ 15 ml</li>
+      <li>1 teaspoon ≈ 5 ml</li>
+      <li>1 ounce ≈ 28,35 g (poids) ou 29,57 ml (volume)</li>
+      <li>1 stick of butter = 113 g (un demi-cup)</li>
+    </ul>
+    <p>Attention : les "cups" varient selon les pays. Le cup américain et le cup britannique ne font pas la même chose.</p>
+
+    <h3>Sport et fitness</h3>
+    <p>La musculation utilise souvent les livres ("lbs") car la culture du fitness vient des États-Unis. 1 lb ≈ 0,454 kg, donc une charge de 100 lbs = 45,4 kg. Une rapide division par 2 donne une estimation grossière. Pour la course, attention : un marathon fait 42,195 km, soit 26,2 miles.</p>
+
+    <h3>Bricolage et travaux</h3>
+    <p>Les pouces sont encore utilisés en plomberie ("tuyau en 1/2 pouce"), en menuiserie pour certaines pièces, et en informatique pour les écrans (taille d'un écran exprimée en pouces de diagonale). 1 pouce = 2,54 cm. Un écran de 27 pouces fait donc 68,58 cm de diagonale.</p>
+
+    <h2>Conversions à connaître par cœur</h2>
+    <p>Pour gagner du temps au quotidien, voici les conversions les plus utiles à retenir :</p>
+    <table>
+      <thead><tr><th>Conversion</th><th>Mémo rapide</th></tr></thead>
+      <tbody>
+        <tr><td>°C → °F</td><td>Multiplie par 2, ajoute 30 (approximatif)</td></tr>
+        <tr><td>km → miles</td><td>Multiplie par 0,62 (ou divise par 1,6)</td></tr>
+        <tr><td>kg → lbs</td><td>Multiplie par 2,2</td></tr>
+        <tr><td>m → pieds</td><td>Multiplie par 3,28</td></tr>
+        <tr><td>L → gallons US</td><td>Divise par 3,785</td></tr>
+        <tr><td>kcal → kJ</td><td>Multiplie par 4,184</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Pourquoi le système métrique a-t-il gagné ?</h2>
+    <p>Adopté pendant la Révolution française en 1795, le système métrique a séduit le monde pour plusieurs raisons :</p>
+    <ul>
+      <li><strong>Simplicité</strong> : tout est en base 10. Pas besoin de retenir "12 pouces dans un pied, 3 pieds dans une yard, 1760 yards dans un mile".</li>
+      <li><strong>Universalité</strong> : pas de variantes selon les pays (le "pied" anglais et le "pied" américain sont légèrement différents historiquement).</li>
+      <li><strong>Cohérence</strong> : les unités sont liées entre elles (1 litre d'eau pèse 1 kg, 1 calorie élève 1 g d'eau de 1 °C).</li>
+      <li><strong>Évolutivité</strong> : préfixes standardisés (kilo, méga, giga, milli, micro, nano) qui permettent de couvrir l'infiniment petit à l'infiniment grand.</li>
+    </ul>
+
+    <h2>Les unités exotiques</h2>
+    <p>Certaines unités ne figurent pas dans notre convertisseur mais sont amusantes à connaître :</p>
+    <ul>
+      <li><strong>L'année-lumière</strong> : distance parcourue par la lumière en un an, soit 9 461 milliards de km. Utilisée en astronomie.</li>
+      <li><strong>Le parsec</strong> : 3,26 années-lumière. Encore plus grand.</li>
+      <li><strong>L'Angström</strong> : 0,1 nanomètre. Utilisé pour les distances atomiques.</li>
+      <li><strong>Le nœud</strong> : 1,852 km/h. Unité de vitesse maritime et aéronautique.</li>
+      <li><strong>Le carat</strong> : 0,2 g. Pour les diamants et pierres précieuses.</li>
+      <li><strong>Le BTU</strong> : British Thermal Unit, 1 055 joules. Encore utilisé pour la climatisation.</li>
+    </ul>
+
+    <h2>Erreurs de conversion célèbres</h2>
+    <p>Le coût d'une erreur de conversion peut être colossal. En 1999, la NASA a perdu la sonde <strong>Mars Climate Orbiter</strong> (125 millions de dollars) parce qu'une équipe travaillait en pouces et l'autre en mètres. La sonde s'est désintégrée dans l'atmosphère martienne. La leçon : <strong>toujours vérifier les unités</strong> dans un projet critique. Notre convertisseur est gratuit, donc autant l'utiliser.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
 </div>
 
 <script src="script.js"></script>

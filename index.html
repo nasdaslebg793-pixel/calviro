@@ -3,9 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calviro — Multi-outils du quotidien</title>
-<meta name="description" content="14 calculateurs simples et rapides : salaire, BAC, IMC, impôts, chômage, retraite et plus.">
+<title>Calviro — 14 calculateurs gratuits du quotidien</title>
+<meta name="description" content="Calculateurs gratuits en ligne : Bac, salaire net brut, IMC, impôts, chômage, APL, retraite, Pomodoro, et plus. Simple, rapide, sans inscription.">
+<meta name="keywords" content="calculateur en ligne, simulateur gratuit, outils en ligne, calcul bac, salaire brut net, calcul imc">
+<meta property="og:title" content="Calviro — 14 calculateurs gratuits en ligne">
+<meta property="og:description" content="Tous les calculateurs du quotidien en un seul endroit. Gratuit, sans inscription.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://calviro.vercel.app/">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://calviro.vercel.app/">
 <link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Calviro",
+  "url": "https://calviro.vercel.app/",
+  "description": "14 calculateurs gratuits du quotidien : Bac, salaire, IMC, impôts, chômage, APL, retraite, Pomodoro et plus.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://calviro.vercel.app/?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -13,105 +34,130 @@
 
   <nav class="nav">
     <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="blog/" class="back">Blog →</a>
   </nav>
 
   <header style="margin-bottom: 40px;">
     <h1>Multi-outils.<br><span style="color: var(--text-muted);">Simple et rapide.</span></h1>
-    <p class="tagline">14 calculateurs pour la vie de tous les jours.</p>
+    <p class="tagline">14 calculateurs gratuits pour la vie de tous les jours.</p>
   </header>
 
-  <h3 style="margin-bottom: 16px;">Outils</h3>
+  <h3 style="margin-bottom: 16px;">Outils disponibles</h3>
 
   <div class="tools-grid">
 
     <a href="bac.html" class="tool-card">
       <span class="icon">🎓</span>
-      <span class="title">Calcul du BAC</span>
-      <span class="desc">Toutes filières, contrôle continu inclus.</span>
+      <span class="title">Calcul du Bac</span>
+      <span class="desc">Toutes filières, coefficients officiels, mention en direct.</span>
     </a>
 
     <a href="salaire.html" class="tool-card">
       <span class="icon">💰</span>
-      <span class="title">Salaire net ↔ brut</span>
-      <span class="desc">Conversion rapide selon ton statut.</span>
+      <span class="title">Salaire brut ↔ net</span>
+      <span class="desc">Conversion selon ton statut professionnel.</span>
     </a>
 
     <a href="imc.html" class="tool-card">
       <span class="icon">⚖️</span>
       <span class="title">Calcul IMC</span>
-      <span class="desc">Indice de masse corporelle.</span>
+      <span class="desc">Indice de masse corporelle et poids santé OMS.</span>
     </a>
 
     <a href="convertisseur.html" class="tool-card">
       <span class="icon">🔄</span>
       <span class="title">Convertisseur</span>
-      <span class="desc">Heures, joules, litres, mètres…</span>
+      <span class="desc">Longueurs, masses, volumes, températures…</span>
     </a>
 
     <a href="facture.html" class="tool-card">
       <span class="icon">🧾</span>
-      <span class="title">Calcul de facture</span>
-      <span class="desc">HT, TVA, TTC.</span>
+      <span class="title">Calcul TVA</span>
+      <span class="desc">HT en TTC, tous taux français.</span>
     </a>
 
     <a href="eau.html" class="tool-card">
       <span class="icon">💧</span>
       <span class="title">Besoin en eau</span>
-      <span class="desc">Quantité quotidienne recommandée.</span>
+      <span class="desc">Quantité quotidienne personnalisée.</span>
     </a>
 
     <a href="pomodoro.html" class="tool-card">
       <span class="icon">⏱️</span>
       <span class="title">Pomodoro</span>
-      <span class="desc">Chronomètre 25 / 5 minutes.</span>
+      <span class="desc">Timer 25 / 5 minutes paramétrable.</span>
     </a>
 
     <a href="pseudo.html" class="tool-card">
       <span class="icon">✨</span>
       <span class="title">Générateur de pseudo</span>
-      <span class="desc">Idées uniques en un clic.</span>
+      <span class="desc">Idées uniques pour tes comptes.</span>
     </a>
 
     <a href="probabilites.html" class="tool-card">
       <span class="icon">🎲</span>
       <span class="title">Probabilités</span>
-      <span class="desc">Avec ordres de grandeur concrets.</span>
+      <span class="desc">Comparaisons concrètes (loto, foudre, etc.).</span>
     </a>
 
     <a href="pdf.html" class="tool-card">
       <span class="icon">📄</span>
       <span class="title">Générateur PDF</span>
-      <span class="desc">Texte ou images vers PDF.</span>
+      <span class="desc">Texte vers document A4 imprimable.</span>
     </a>
 
     <a href="chomage.html" class="tool-card">
       <span class="icon">📉</span>
       <span class="title">Allocation chômage</span>
-      <span class="desc">Estimation ARE simplifiée.</span>
+      <span class="desc">Estimation ARE selon ton ancien salaire.</span>
     </a>
 
     <a href="impots.html" class="tool-card">
       <span class="icon">🏛️</span>
       <span class="title">Impôt sur le revenu</span>
-      <span class="desc">Barème 2025 simplifié.</span>
+      <span class="desc">Barème 2025, quotient familial.</span>
     </a>
 
     <a href="retraite.html" class="tool-card">
       <span class="icon">👴</span>
       <span class="title">Retraite</span>
-      <span class="desc">Estimation indicative.</span>
+      <span class="desc">Pension estimée selon ta carrière.</span>
     </a>
 
     <a href="apl.html" class="tool-card">
       <span class="icon">🏠</span>
       <span class="title">APL</span>
-      <span class="desc">Aide au logement estimative.</span>
+      <span class="desc">Aide au logement CAF simplifiée.</span>
     </a>
 
   </div>
 
+  <section class="seo-content" style="max-width: 720px;">
+    <h2>Tous les calculateurs essentiels en un seul endroit</h2>
+    <p>Calviro rassemble les <strong>14 calculateurs en ligne</strong> les plus utiles du quotidien français. Que tu sois étudiant en train de préparer le Bac, salarié qui veut comprendre sa fiche de paie, demandeur d'emploi qui veut savoir combien il va toucher, locataire qui se demande s'il a droit à l'APL, ou simplement curieux qui veut vérifier son IMC — tout est ici, gratuitement et sans inscription.</p>
+
+    <h2>Pourquoi Calviro ?</h2>
+    <ul>
+      <li><strong>100 % gratuit</strong> : aucun outil n'est payant, aucune publicité agressive, aucune limite d'utilisation.</li>
+      <li><strong>Sans inscription</strong> : tu n'as ni à donner d'email, ni à créer de compte, ni à fournir d'info personnelle.</li>
+      <li><strong>Calculs locaux</strong> : tout se passe dans ton navigateur. Tes données ne sont jamais envoyées sur un serveur.</li>
+      <li><strong>Mobile-first</strong> : optimisé pour téléphone, tablette et ordinateur.</li>
+      <li><strong>Design minimaliste</strong> : interface épurée pour aller à l'essentiel, sans publicité ni distraction.</li>
+    </ul>
+
+    <h2>Ressources et guides</h2>
+    <p>En plus des outils, consulte notre <a href="blog/">blog</a> qui rassemble des guides détaillés sur les sujets les plus demandés : calcul de salaire, méthode Pomodoro, mention au Bac, conseils pour optimiser ta retraite...</p>
+
+    <h2>Une suggestion d'outil ?</h2>
+    <p>Calviro est encore en développement. Si tu cherches un calculateur qui n'est pas encore sur le site, ou si tu remarques une erreur dans nos calculs, fais-le savoir sur la page <a href="https://github.com/nasdaslebg793-pixel/calviro" target="_blank" rel="noopener">GitHub du projet</a>.</p>
+  </section>
+
   <footer class="footer">
-    Calviro · 2026 · <a href="https://github.com/nasdaslebg793-pixel/calviro">GitHub</a>
+    <a href="index.html">Accueil</a>
+    <a href="blog/">Blog</a>
+    <a href="https://github.com/nasdaslebg793-pixel/calviro" target="_blank" rel="noopener">GitHub</a>
+    <br><br>
+    Calviro 2026 · Calculateurs gratuits du quotidien
   </footer>
 
 </div>

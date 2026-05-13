@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calcul IMC — Calviro</title>
+<title>Calcul IMC adulte : formule officielle OMS — Calviro</title>
+<meta name="description" content="Calcule ton IMC (Indice de Masse Corporelle) avec la formule officielle OMS. Tableau des catégories, fourchette de poids santé, conseils.">
+<meta name="keywords" content="calcul imc, indice de masse corporelle, imc adulte, calculer imc, formule imc, poids santé">
+<meta property="og:title" content="Calcul IMC — Indice de masse corporelle officiel">
+<meta property="og:description" content="Ton IMC en 2 secondes avec la formule officielle OMS.">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://calviro.vercel.app/imc.html">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,8 +22,8 @@
 
   <div class="tool">
     <div class="tool-header">
-      <h1>⚖️ Indice de masse corporelle</h1>
-      <p>Calcul de ton IMC et de la fourchette de poids santé.</p>
+      <h1>⚖️ Calcul de l'IMC</h1>
+      <p>Indice de Masse Corporelle et fourchette de poids santé.</p>
     </div>
 
     <div class="field-row">
@@ -35,6 +41,84 @@
 
     <div class="result" id="imc-result"></div>
   </div>
+
+  <section class="seo-content">
+    <h2>Qu'est-ce que l'IMC ?</h2>
+    <p>L'<strong>Indice de Masse Corporelle (IMC)</strong> est un indicateur développé par l'Organisation Mondiale de la Santé (OMS) pour évaluer rapidement le rapport entre le poids et la taille d'une personne adulte. Inventé au XIXe siècle par le mathématicien belge Adolphe Quetelet, c'est aujourd'hui la référence mondiale pour estimer la corpulence.</p>
+
+    <h2>La formule de l'IMC</h2>
+    <p>Le calcul est simple : <strong>IMC = poids (kg) ÷ taille² (m²)</strong>. Par exemple, une personne qui mesure 1,75 m et pèse 70 kg a un IMC de 70 ÷ (1,75 × 1,75) = <strong>22,9</strong>.</p>
+
+    <h2>Classification IMC selon l'OMS</h2>
+    <table>
+      <thead><tr><th>IMC</th><th>Catégorie</th></tr></thead>
+      <tbody>
+        <tr><td>Moins de 16,5</td><td>Dénutrition</td></tr>
+        <tr><td>16,5 à 18,4</td><td>Maigreur</td></tr>
+        <tr><td>18,5 à 24,9</td><td>Corpulence normale</td></tr>
+        <tr><td>25 à 29,9</td><td>Surpoids</td></tr>
+        <tr><td>30 à 34,9</td><td>Obésité modérée (classe I)</td></tr>
+        <tr><td>35 à 39,9</td><td>Obésité sévère (classe II)</td></tr>
+        <tr><td>40 et plus</td><td>Obésité morbide (classe III)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Limites de l'IMC</h2>
+    <p>L'IMC est un indicateur général qui ne tient pas compte de plusieurs facteurs importants :</p>
+    <ul>
+      <li><strong>Masse musculaire</strong> : un sportif très musclé peut avoir un IMC élevé sans être en surpoids</li>
+      <li><strong>Répartition de la graisse</strong> : la graisse abdominale est plus dangereuse que la graisse périphérique</li>
+      <li><strong>Âge</strong> : la composition corporelle change avec l'âge</li>
+      <li><strong>Sexe</strong> : les femmes ont naturellement plus de masse grasse que les hommes</li>
+      <li><strong>Origine ethnique</strong> : les seuils peuvent varier selon les populations</li>
+    </ul>
+    <p>Pour une évaluation complète de ta santé, complète l'IMC avec d'autres mesures comme le tour de taille ou l'analyse de la composition corporelle.</p>
+
+    <h2>L'IMC pour les enfants</h2>
+    <p>Pour les enfants et adolescents (moins de 18 ans), l'IMC se lit sur des courbes de corpulence spécifiques au sexe et à l'âge, disponibles dans le carnet de santé. Notre calculateur n'est <strong>valable que pour les adultes</strong>. Chez l'enfant, un IMC à 17 peut être totalement normal, alors qu'il serait catégorisé "maigreur" chez l'adulte.</p>
+
+    <h2>Comment bien mesurer son poids et sa taille</h2>
+    <p>Pour avoir un IMC fiable, il faut des mesures précises :</p>
+    <ul>
+      <li><strong>Le poids</strong> : pèse-toi le matin à jeun, après être passé aux toilettes, sans vêtements ou en sous-vêtements. Toujours sur la même balance, de préférence électronique, posée sur un sol dur (pas sur de la moquette qui fausse les mesures).</li>
+      <li><strong>La taille</strong> : mesure-toi pieds nus, dos contre un mur, talons collés, regard horizontal. Place un objet plat sur ton crâne et marque la hauteur. Mesure ensuite avec un mètre ruban depuis le sol. Idéalement le matin, avant que la colonne vertébrale ne se tasse au cours de la journée (on perd 1 à 2 cm entre le matin et le soir).</li>
+    </ul>
+    <p>Une erreur de 2 cm sur la taille peut faire basculer ton IMC d'une catégorie à l'autre. Prends ton temps pour mesurer correctement.</p>
+
+    <h2>Alternatives à l'IMC pour évaluer ta santé</h2>
+    <p>Si tu doutes de la pertinence de ton IMC, plusieurs autres mesures complémentaires existent :</p>
+    <ul>
+      <li><strong>Le tour de taille</strong> : se mesure avec un mètre ruban au niveau du nombril. Les seuils de risque : 88 cm pour une femme, 102 cm pour un homme. C'est la mesure la plus simple et la plus pertinente pour évaluer le risque cardiovasculaire.</li>
+      <li><strong>Le rapport taille/hanches</strong> : tour de taille divisé par tour de hanches. Un ratio supérieur à 0,85 (femme) ou 0,90 (homme) indique un risque élevé.</li>
+      <li><strong>Le pourcentage de masse grasse</strong> : mesuré par impédancemétrie (balances connectées), pli cutané, ou méthode DEXA (rayons X). Plus précis que l'IMC mais matériel nécessaire.</li>
+      <li><strong>Le rapport taille/taille (waist-to-height)</strong> : tour de taille divisé par la taille en cm. Doit être inférieur à 0,5. Très simple et corrélé aux risques cardiovasculaires.</li>
+    </ul>
+
+    <h2>Que faire si mon IMC est élevé ?</h2>
+    <p>Si ton IMC dépasse 25 et que tu ne fais pas de musculation intensive (qui fausse le résultat), c'est un signal à prendre au sérieux mais pas une catastrophe. Les recommandations générales :</p>
+    <ul>
+      <li><strong>Consulte ton médecin traitant</strong> avant tout. Lui seul peut évaluer ton risque global et te guider.</li>
+      <li><strong>Pas de régime restrictif drastique</strong>. Les pertes rapides sont presque toujours reprises avec intérêt (effet yo-yo).</li>
+      <li><strong>Privilégie une activité physique régulière</strong> : 30 minutes de marche par jour ont plus d'impact qu'on le croit.</li>
+      <li><strong>Modifie tes habitudes alimentaires progressivement</strong> : moins de produits ultra-transformés, plus de légumes, plus de protéines, moins de sucres ajoutés.</li>
+      <li><strong>Surveille ton sommeil</strong> : moins de 6h par nuit favorise la prise de poids (perturbation des hormones de la faim).</li>
+      <li><strong>Gère ton stress</strong> : le cortisol chronique favorise la graisse abdominale.</li>
+    </ul>
+
+    <h2>FAQ sur l'IMC</h2>
+    <h3>L'IMC est-il fiable pour les femmes enceintes ?</h3>
+    <p>Non. Pendant la grossesse, l'IMC n'a aucun sens. Les médecins utilisent l'IMC d'<strong>avant grossesse</strong> pour déterminer la prise de poids recommandée pendant les 9 mois (entre 7 et 18 kg selon ton IMC initial).</p>
+
+    <h3>Mon IMC change-t-il avec l'âge ?</h3>
+    <p>Oui. Avec l'âge, on perd naturellement du muscle (sarcopénie) et on gagne de la graisse, même à poids égal. Pour les seniors, certains gériatres recommandent un IMC entre 22 et 27 plutôt que 18,5-25, car un IMC trop bas chez la personne âgée est associé à plus de fragilité.</p>
+
+    <h3>Peut-on avoir un IMC parfait et être en mauvaise santé ?</h3>
+    <p>Absolument. On parle de "skinny fat" : une personne mince à l'extérieur mais avec peu de muscle et beaucoup de graisse viscérale. Inversement, une personne en "surpoids" sportive peut être métaboliquement très saine. L'IMC ne fait pas tout.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
 </div>
 
 <script src="script.js"></script>

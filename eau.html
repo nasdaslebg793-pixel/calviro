@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Besoin en eau — Calviro</title>
+<title>Combien d'eau boire par jour : calcul personnalisé — Calviro</title>
+<meta name="description" content="Calcule ton besoin en eau quotidien selon ton poids et ton activité physique. Recommandations OMS, signes de déshydratation, conseils.">
+<meta name="keywords" content="combien d'eau par jour, besoin eau quotidien, hydratation, calculer eau, eau corps, déshydratation">
+<meta property="og:title" content="Combien d'eau boire par jour ?">
+<meta property="og:description" content="Ton besoin en eau personnalisé selon ton poids et ton activité.">
+<link rel="canonical" href="https://calviro.vercel.app/eau.html">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,8 +21,8 @@
 
   <div class="tool">
     <div class="tool-header">
-      <h1>💧 Besoin en eau quotidien</h1>
-      <p>Quantité recommandée selon ton poids et ton activité.</p>
+      <h1>💧 Combien d'eau boire par jour ?</h1>
+      <p>Calcul personnalisé selon ton poids et ton activité physique.</p>
     </div>
 
     <div class="field">
@@ -26,14 +31,116 @@
     </div>
 
     <div class="field">
-      <label for="eau-sport">Heures de sport / jour</label>
+      <label for="eau-sport">Heures de sport par jour</label>
       <input type="number" id="eau-sport" placeholder="0" min="0" step="0.5" value="0">
     </div>
 
-    <button class="btn" onclick="calcEau()">Calculer</button>
+    <button class="btn" onclick="calcEau()">Calculer mon besoin</button>
 
     <div class="result" id="eau-result"></div>
   </div>
+
+  <section class="seo-content">
+    <h2>L'eau, élément vital du corps humain</h2>
+    <p>Le corps humain est composé à environ <strong>60 % d'eau</strong>. Cette eau intervient dans toutes les fonctions vitales : régulation de la température, transport des nutriments, élimination des déchets, lubrification des articulations, fonctionnement du cerveau. Une perte de seulement 2 % d'eau corporelle suffit à provoquer une baisse des performances physiques et mentales.</p>
+
+    <h2>La règle des 35 ml par kilo</h2>
+    <p>Les recommandations actuelles préconisent <strong>environ 35 ml d'eau par kilogramme de poids corporel par jour</strong> pour un adulte en bonne santé, à activité modérée et climat tempéré. Pour une personne de 70 kg, cela représente 2,45 litres d'eau quotidiens. Cette quantité inclut l'eau pure mais aussi celle contenue dans les aliments (fruits, légumes, soupes) — environ 20 à 30 % des apports.</p>
+
+    <table>
+      <thead><tr><th>Poids</th><th>Besoin de base</th><th>Avec 1 h de sport</th></tr></thead>
+      <tbody>
+        <tr><td>50 kg</td><td>1,75 L</td><td>2,25 L</td></tr>
+        <tr><td>60 kg</td><td>2,10 L</td><td>2,60 L</td></tr>
+        <tr><td>70 kg</td><td>2,45 L</td><td>2,95 L</td></tr>
+        <tr><td>80 kg</td><td>2,80 L</td><td>3,30 L</td></tr>
+        <tr><td>90 kg</td><td>3,15 L</td><td>3,65 L</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Quand augmenter sa consommation d'eau ?</h2>
+    <ul>
+      <li><strong>Activité physique</strong> : prévoir 500 à 1 000 ml d'eau supplémentaire par heure de sport intense.</li>
+      <li><strong>Forte chaleur</strong> : la transpiration peut faire perdre 1 à 2 litres d'eau par heure en pleine canicule.</li>
+      <li><strong>Grossesse</strong> : besoins augmentés de 300 ml/jour environ.</li>
+      <li><strong>Allaitement</strong> : besoins augmentés de 700 ml/jour.</li>
+      <li><strong>Fièvre, diarrhée, vomissements</strong> : compenser les pertes hydriques par de l'eau salée et sucrée.</li>
+      <li><strong>Climatisation, chauffage</strong> : assèchent l'air et augmentent les besoins.</li>
+    </ul>
+
+    <h2>Signes de déshydratation</h2>
+    <p>Une déshydratation, même légère, se manifeste par plusieurs symptômes auxquels il faut être attentif :</p>
+    <ul>
+      <li>Soif (mais c'est déjà un signe tardif)</li>
+      <li>Urines foncées, jaune intense</li>
+      <li>Bouche sèche, lèvres craquelées</li>
+      <li>Fatigue inhabituelle, maux de tête</li>
+      <li>Étourdissements, baisse de concentration</li>
+      <li>Peau peu élastique (pincée, elle reste froncée)</li>
+    </ul>
+    <p>Une astuce simple pour vérifier ton hydratation : observe la couleur de tes urines. Plus elles sont claires, mieux tu es hydraté (sauf au réveil, où elles sont naturellement plus concentrées).</p>
+
+    <h2>Peut-on boire trop d'eau ?</h2>
+    <p>Oui, mais c'est rare. L'<strong>hyponatrémie</strong> (excès d'eau qui dilue le sodium sanguin) survient surtout lors d'efforts d'endurance très longs où on boit beaucoup d'eau pure sans compenser en sels minéraux. Pour la grande majorité des gens, la sur-hydratation n'est pas un risque.</p>
+
+    <h2>Comment répartir sa consommation d'eau ?</h2>
+    <ul>
+      <li>Commence ta journée par 1 ou 2 grands verres au réveil</li>
+      <li>Bois régulièrement par petites gorgées plutôt que beaucoup d'un coup</li>
+      <li>Garde une bouteille ou gourde toujours à portée de main</li>
+      <li>Limite les boissons riches en sodium ou en sucre qui peuvent déshydrater</li>
+      <li>Évite de boire de grandes quantités juste avant de te coucher</li>
+    </ul>
+
+    <h2>Eau du robinet, eau en bouteille, eau filtrée ?</h2>
+    <p>En France, l'eau du robinet est l'<strong>aliment le plus contrôlé</strong> : plus de 50 paramètres sont surveillés en continu. Dans la majorité des communes, elle est parfaitement potable, souvent plus que certaines eaux minérales (qui peuvent être riches en sodium, en nitrates, etc.).</p>
+    <ul>
+      <li><strong>Eau du robinet</strong> : ~0,003 €/L. Écologique, sûre. Peut avoir un goût de chlore (laisser reposer 30 min ou utiliser une carafe filtrante résout le problème).</li>
+      <li><strong>Eau minérale en bouteille</strong> : 0,15 à 1 €/L. Composition stable, parfois plus riche en minéraux. Mauvais bilan écologique (bouteilles plastique).</li>
+      <li><strong>Eau de source</strong> : 0,10 à 0,50 €/L. Moins minéralisée que la minérale, doit respecter les critères de potabilité.</li>
+      <li><strong>Eau filtrée (carafe ou filtre robinet)</strong> : élimine le chlore et certains résidus. Pas de bénéfice santé majeur sur eau potable.</li>
+    </ul>
+    <p>Si tu vis dans une zone à eau dure (calcaire), un adoucisseur peut être utile pour les appareils ménagers mais l'eau reste potable.</p>
+
+    <h2>Boissons qui hydratent (ou pas)</h2>
+    <p>L'eau pure n'est pas la seule source d'hydratation, mais toutes les boissons ne se valent pas :</p>
+    <ul>
+      <li><strong>Hydratantes</strong> : eau, tisanes, thé léger, soupe, eau de coco, lait écrémé, fruits riches en eau (pastèque, concombre, orange à 90 %+ d'eau)</li>
+      <li><strong>Hydratantes mais avec des bémols</strong> : sodas (très sucrés, faux signal au cerveau), jus de fruits (sucre rapide), boissons énergisantes (caféine + sucre)</li>
+      <li><strong>Plutôt diurétiques (font éliminer plus qu'elles n'apportent)</strong> : café, alcool. Un café noir n'est pas "anti-hydratant" comme on l'a longtemps dit, mais l'alcool oui — il faut compenser chaque verre de vin par un verre d'eau pour rééquilibrer.</li>
+    </ul>
+
+    <h2>L'hydratation chez les enfants et les seniors</h2>
+    <p>Deux populations à risque particulier :</p>
+    <h3>Les enfants</h3>
+    <p>Les enfants ont une <strong>proportion d'eau corporelle plus élevée</strong> que les adultes (75 % chez le nourrisson, 65 % à 10 ans). Leur sensation de soif est moins développée, et ils ne pensent pas à boire spontanément. À l'école, en activité, en été : les inciter à boire régulièrement est essentiel. Besoins indicatifs : 0,5 L (1 an), 1 L (3-5 ans), 1,5 L (8-12 ans), 2 L (à partir de 13 ans).</p>
+
+    <h3>Les seniors</h3>
+    <p>Avec l'âge, la <strong>sensation de soif diminue</strong> drastiquement. Beaucoup de personnes âgées sont en déshydratation chronique sans le savoir, ce qui peut provoquer confusion, chutes, infections urinaires. Recommandation : 1,5 à 2 L par jour, même sans soif. Pendant les canicules, c'est une question de survie : la mortalité augmente fortement chez les personnes âgées déshydratées.</p>
+
+    <h2>Sport et hydratation : ce qu'il faut savoir</h2>
+    <p>L'exercice physique fait perdre énormément d'eau par la sudation. Quelques règles pour un sportif :</p>
+    <ul>
+      <li><strong>Avant l'effort</strong> : boire 500 ml dans les 2 heures précédentes pour partir bien hydraté</li>
+      <li><strong>Pendant l'effort</strong> : 150 à 250 ml toutes les 15-20 minutes, en petites gorgées</li>
+      <li><strong>Effort longue durée (+1 h)</strong> : ajouter du sel (boissons isotoniques, eau légèrement salée) pour compenser les pertes de sodium</li>
+      <li><strong>Après l'effort</strong> : peser-toi avant et après. Pour chaque kilo perdu, boire 1,5 L (l'eau perdue inclut aussi du sodium qu'il faut compenser)</li>
+    </ul>
+    <p>L'erreur du débutant : boire 1 L d'eau pure d'un coup après un long footing. Risque d'<strong>hyponatrémie</strong> (dilution du sodium sanguin) qui peut causer maux de tête, nausées, voire dans les cas extrêmes des troubles neurologiques.</p>
+
+    <h2>Mythes courants sur l'eau</h2>
+    <ul>
+      <li><strong>"Il faut boire 8 verres par jour."</strong> Cette règle est sans fondement scientifique solide. Le besoin dépend de toi.</li>
+      <li><strong>"L'eau citronnée détoxifie."</strong> Faux. Le foie et les reins font le travail, l'eau citronnée n'a pas de vertu particulière (à part être agréable à boire).</li>
+      <li><strong>"Boire glacé fait grossir."</strong> Faux. L'effet thermique est négligeable.</li>
+      <li><strong>"Boire pendant les repas dilue les sucs digestifs."</strong> Faux. L'estomac régule très bien, boire un verre d'eau pendant un repas ne pose aucun problème.</li>
+      <li><strong>"Il faut boire avant d'avoir soif."</strong> Vrai pour les enfants, seniors et sportifs. Pour un adulte sain, la soif est un signal fiable.</li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
 </div>
 
 <script src="script.js"></script>

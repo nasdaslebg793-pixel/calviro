@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Retraite — Calviro</title>
+<title>Calcul retraite : pension mensuelle, trimestres, taux plein — Calviro</title>
+<meta name="description" content="Estime ta pension de retraite selon ton salaire, tes trimestres et ton âge de départ. Décote, surcote, taux plein, retraite complémentaire.">
+<meta name="keywords" content="calcul retraite, simulateur retraite, pension retraite, trimestres retraite, taux plein, age retraite, decote retraite">
+<meta property="og:title" content="Simulateur de retraite 2026">
+<meta property="og:description" content="Estime ta pension mensuelle en fonction de ta carrière.">
+<link rel="canonical" href="https://calviro.vercel.app/retraite.html">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,7 +21,7 @@
 
   <div class="tool">
     <div class="tool-header">
-      <h1>👴 Estimation retraite</h1>
+      <h1>👴 Estimation de retraite</h1>
       <p>Pension mensuelle approximative selon ta carrière.</p>
     </div>
 
@@ -27,11 +32,11 @@
 
     <div class="field-row">
       <div class="field">
-        <label for="ret-trimestres">Trimestres cotisés</label>
+        <label for="ret-trimestres">Trimestres déjà cotisés</label>
         <input type="number" id="ret-trimestres" placeholder="172" min="0" max="200">
       </div>
       <div class="field">
-        <label for="ret-age">Âge de départ</label>
+        <label for="ret-age">Âge de départ envisagé</label>
         <input type="number" id="ret-age" placeholder="64" min="55" max="75">
       </div>
     </div>
@@ -40,6 +45,128 @@
 
     <div class="result" id="ret-result"></div>
   </div>
+
+  <section class="seo-content">
+    <h2>Comprendre le système de retraite français</h2>
+    <p>Le système de retraite français fonctionne par <strong>répartition</strong> : les cotisations des actifs payent les pensions des retraités actuels. C'est un pacte intergénérationnel. Il repose sur deux étages :</p>
+    <ul>
+      <li><strong>Le régime de base</strong> : géré par l'Assurance retraite (CNAV) pour les salariés du privé, par la fonction publique pour ses agents, ou par les régimes spéciaux (SNCF, RATP en extinction).</li>
+      <li><strong>Le régime complémentaire</strong> obligatoire : Agirc-Arrco pour le privé, RAFP pour les fonctionnaires. C'est un régime à points.</li>
+    </ul>
+    <p>La retraite totale d'un retraité = retraite de base + retraite complémentaire. Selon le profil, le complémentaire représente entre 20 % (non-cadre modeste) et 50 % (cadre supérieur) de la pension totale.</p>
+
+    <h2>L'âge légal et le taux plein</h2>
+    <p>Depuis la réforme de 2023, l'<strong>âge légal de départ</strong> est passé progressivement de 62 à 64 ans pour les générations nées à partir de 1968. Mais l'âge légal n'est pas l'âge où tu touches le maximum : pour avoir le <strong>taux plein</strong> (50 % de ton salaire de référence pour le régime général), il faut aussi avoir cotisé le bon nombre de trimestres.</p>
+
+    <table>
+      <thead><tr><th>Année de naissance</th><th>Âge légal</th><th>Trimestres requis</th></tr></thead>
+      <tbody>
+        <tr><td>1961-1963</td><td>62 ans + 3 à 9 mois</td><td>168-170</td></tr>
+        <tr><td>1964-1966</td><td>63 ans + 0 à 6 mois</td><td>171</td></tr>
+        <tr><td>1967</td><td>63 ans + 9 mois</td><td>172</td></tr>
+        <tr><td>1968 et après</td><td>64 ans</td><td>172</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Décote et surcote</h2>
+    <p>Si tu pars <strong>avant d'avoir tous tes trimestres</strong>, tu subis une <strong>décote</strong> : ton taux de pension baisse de 1,25 % par trimestre manquant (5 % par an), dans la limite de 20 trimestres. Inversement, si tu continues à travailler <strong>après</strong> avoir atteint le taux plein, tu bénéficies d'une <strong>surcote</strong> : +1,25 % par trimestre supplémentaire travaillé (5 % par an), sans plafond.</p>
+
+    <p>Exemple : un salarié qui part à 62 ans alors qu'il faudrait attendre 64 ans (soit 8 trimestres manquants) subit une décote de 10 % sur sa pension. Cumulé à l'absence de trimestres, ça peut faire perdre 30 % ou plus de pension.</p>
+
+    <h2>Comment ta pension est-elle calculée ?</h2>
+    <p>Pour le <strong>régime de base</strong> (salariés du privé) :</p>
+    <p><strong>Pension = Salaire annuel moyen (SAM) × Taux × (Trimestres cotisés / Trimestres requis)</strong></p>
+    <ul>
+      <li><strong>SAM</strong> : moyenne des 25 meilleures années de salaire (revalorisées avec l'inflation)</li>
+      <li><strong>Taux</strong> : 50 % au taux plein, réduit par la décote</li>
+      <li><strong>Proratisation</strong> : si tu as moins de trimestres que le requis</li>
+    </ul>
+    <p>Pour la <strong>retraite complémentaire Agirc-Arrco</strong>, c'est un calcul par points : tu accumules des points tout au long de ta carrière, et au moment du départ, ils sont multipliés par la valeur du point (1,4159 € en 2024).</p>
+
+    <h2>Préparer sa retraite : conseils pratiques</h2>
+    <ul>
+      <li><strong>Consulte ton relevé de carrière</strong> régulièrement sur <a href="https://www.info-retraite.fr" target="_blank" rel="noopener">info-retraite.fr</a>. Des erreurs (trimestres manquants, salaires oubliés) sont fréquentes et plus faciles à corriger tôt.</li>
+      <li><strong>Rachète des trimestres</strong> si tu as fait des études supérieures sans cotiser, ou si tu as des années incomplètes. C'est cher mais déductible des impôts.</li>
+      <li><strong>Ouvre un PER</strong> (Plan d'Épargne Retraite) pour te constituer un complément, avec déduction d'impôt à l'entrée.</li>
+      <li><strong>Pense à la retraite progressive</strong> : tu peux passer à temps partiel à partir de 60 ans tout en touchant une partie de ta retraite.</li>
+      <li><strong>Anticipe les coups durs</strong> : enfants, chômage longue durée, maladie créent des trous dans la carrière. Certains sont compensés (trimestres pour enfant, période chômage indemnisée).</li>
+    </ul>
+
+    <h2>Limites de notre estimation</h2>
+    <p>Notre simulateur donne un <strong>ordre de grandeur</strong>. Le calcul officiel est beaucoup plus complexe : il prend en compte les revalorisations annuelles, le Smic horaire, les trimestres acquis hors emploi (chômage, maternité, service militaire), les régimes multiples si tu as changé de statut, et bien d'autres paramètres. Pour un calcul officiel, va sur <a href="https://www.info-retraite.fr" target="_blank" rel="noopener">info-retraite.fr</a> — c'est gratuit et le simulateur prend en compte ta vraie carrière.</p>
+
+    <h2>Les trimestres : comment ils s'acquièrent</h2>
+    <p>Tu valides un trimestre dès que tu cotises sur un salaire au moins égal à <strong>150 fois le SMIC horaire</strong>, soit environ 1 782 € brut en 2025. Mais attention :</p>
+    <ul>
+      <li>Maximum <strong>4 trimestres par année civile</strong>, quel que soit ton salaire (un cadre à 100 000 €/an et un employé à 9 000 €/an valident pareil : 4 trimestres).</li>
+      <li>Les <strong>périodes de chômage indemnisées</strong> valident des trimestres "assimilés" (sans contrepartie de cotisations supplémentaires).</li>
+      <li>Le <strong>service militaire</strong> (pour les générations concernées) compte aussi.</li>
+      <li>Les <strong>congés maternité</strong> donnent droit à 4 trimestres par enfant biologique pour la mère.</li>
+      <li>Les <strong>études supérieures</strong> ne valident rien automatiquement, mais peuvent être rachetées (cher).</li>
+    </ul>
+
+    <h2>Le rachat de trimestres : est-ce rentable ?</h2>
+    <p>Si tu as des trimestres manquants (études, années travaillées à l'étranger, années incomplètes), tu peux en racheter jusqu'à 12 trimestres. Le coût dépend de ton âge et de tes revenus :</p>
+    <ul>
+      <li><strong>20-40 ans</strong> : entre 1 500 et 3 000 €/trimestre</li>
+      <li><strong>40-55 ans</strong> : entre 3 500 et 6 000 €/trimestre</li>
+      <li><strong>55-65 ans</strong> : entre 5 500 et 7 500 €/trimestre</li>
+    </ul>
+    <p>Le coût est <strong>déductible de tes revenus imposables</strong>, ce qui en récupère 30-45 % via la baisse d'impôt. La rentabilité dépend de ta longévité prévue : on estime qu'un rachat est rentable si tu vis au moins 12-15 ans après le départ. Faire des simulations chiffrées avant tout rachat.</p>
+
+    <h2>La retraite progressive : un dispositif sous-utilisé</h2>
+    <p>À partir de <strong>60 ans</strong> (sous certaines conditions), tu peux passer à temps partiel et toucher en complément une fraction de ta retraite. Avantages :</p>
+    <ul>
+      <li>Tu réduis ta charge de travail tout en gardant un revenu correct</li>
+      <li>Tu continues à cotiser et à acquérir des trimestres</li>
+      <li>Tu peux tester la "transition" vers la retraite définitive</li>
+      <li>Tu peux préparer la transmission de tes responsabilités à un successeur</li>
+    </ul>
+    <p>Conditions : avoir au moins 60 ans (passé 62 ans depuis la réforme 2023), avoir validé 150 trimestres, et passer à un temps partiel entre 40 et 80 %.</p>
+
+    <h2>Carrière longue : partir avant l'âge légal</h2>
+    <p>Si tu as commencé à travailler très jeune, tu peux partir <strong>avant l'âge légal</strong> sans décote. Les conditions actuelles (post-réforme 2023) :</p>
+    <ul>
+      <li><strong>Avant 16 ans</strong> : départ possible dès 58 ans</li>
+      <li><strong>Avant 18 ans</strong> : départ possible dès 60 ans</li>
+      <li><strong>Avant 20 ans</strong> : départ possible dès 62 ans</li>
+      <li><strong>Avant 21 ans</strong> : départ possible dès 63 ans</li>
+    </ul>
+    <p>Il faut aussi avoir validé tous tes trimestres requis. Ce dispositif concerne surtout les ouvriers et employés qui ont commencé tôt après un CAP.</p>
+
+    <h2>Le minimum vieillesse (ASPA)</h2>
+    <p>Si ta retraite est très faible, tu peux compléter avec l'<strong>ASPA</strong> (Allocation de Solidarité aux Personnes Âgées), ex-"minimum vieillesse". Conditions principales :</p>
+    <ul>
+      <li>Avoir 65 ans (ou l'âge légal selon les cas)</li>
+      <li>Résider en France 6 mois par an</li>
+      <li>Pension totale inférieure aux plafonds : 1 034 €/mois (personne seule) ou 1 605 €/mois (couple) en 2025</li>
+    </ul>
+    <p>L'ASPA est <strong>récupérable sur ta succession</strong> au-delà de 39 000 € de patrimoine. Ce n'est pas un cadeau de l'État : si tu laisses du patrimoine à tes héritiers, ils devront en partie rembourser. À considérer dans tes décisions patrimoniales.</p>
+
+    <h2>Régimes spéciaux : qui est concerné ?</h2>
+    <p>Certains corps de métier ont historiquement leurs propres régimes :</p>
+    <ul>
+      <li><strong>SNCF, RATP, EDF-GDF, Marins, Mines</strong> : régimes spéciaux en extinction depuis 2023, mais avec maintien pour les agents recrutés avant la réforme</li>
+      <li><strong>Fonction publique (État, territoriale, hospitalière)</strong> : calcul sur les 6 derniers mois de salaire (plus avantageux que les 25 meilleures années du privé)</li>
+      <li><strong>Professions libérales</strong> : régimes propres (CARMF pour les médecins, CNBF pour les avocats, etc.)</li>
+      <li><strong>Agriculteurs</strong> : MSA</li>
+    </ul>
+    <p>Si tu as changé de statut au cours de ta carrière, tu auras plusieurs retraites cumulées (poly-pensionné). Le total est généralement plus avantageux qu'une carrière monolithique grâce aux règles du "régime général".</p>
+
+    <h2>Préparer sa retraite financièrement</h2>
+    <p>La retraite remplace en moyenne <strong>60 à 75 % du dernier salaire</strong> pour un salarié du privé moyennement payé. Si ton train de vie demande plus, il faut épargner. Quelques outils :</p>
+    <ul>
+      <li><strong>PER (Plan d'Épargne Retraite)</strong> : versements déductibles d'impôt, capital ou rente à la sortie</li>
+      <li><strong>Assurance vie</strong> : fiscalité avantageuse après 8 ans, souple</li>
+      <li><strong>Investissement immobilier locatif</strong> : revenus locatifs à la retraite</li>
+      <li><strong>PEA (Plan d'Épargne en Actions)</strong> : exonération d'impôt après 5 ans (hors prélèvements sociaux)</li>
+    </ul>
+    <p>Commencer à 30 ans avec 100 €/mois donne souvent plus que commencer à 50 ans avec 400 €/mois — c'est la puissance des intérêts composés. Le temps est ton meilleur allié.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
 </div>
 
 <script src="script.js"></script>

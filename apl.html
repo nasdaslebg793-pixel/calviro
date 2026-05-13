@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>APL — Calviro</title>
+<title>Calcul APL 2026 : simulateur aide au logement CAF — Calviro</title>
+<meta name="description" content="Simulateur APL gratuit : estime ton aide au logement CAF en quelques secondes. Conditions, plafonds, zones, démarches.">
+<meta name="keywords" content="calcul apl, simulateur apl, aide au logement, caf apl, allocation logement, apl étudiant">
+<meta property="og:title" content="Calcul APL : simulateur aide au logement 2026">
+<meta property="og:description" content="Combien tu peux toucher d'APL chaque mois.">
+<link rel="canonical" href="https://calviro.vercel.app/apl.html">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,7 +21,7 @@
 
   <div class="tool">
     <div class="tool-header">
-      <h1>🏠 APL — Aide au logement</h1>
+      <h1>🏠 Calcul APL — Aide au logement</h1>
       <p>Estimation indicative de l'aide personnalisée au logement.</p>
     </div>
 
@@ -32,19 +37,19 @@
 
     <div class="field-row">
       <div class="field">
-        <label for="apl-zone">Zone</label>
+        <label for="apl-zone">Zone géographique</label>
         <select id="apl-zone">
-          <option value="1">Zone 1 — Paris & banlieue</option>
-          <option value="2" selected>Zone 2 — Grandes villes</option>
+          <option value="1">Zone 1 — Paris & proche banlieue</option>
+          <option value="2" selected>Zone 2 — Grandes agglomérations</option>
           <option value="3">Zone 3 — Reste du territoire</option>
         </select>
       </div>
       <div class="field">
-        <label for="apl-compo">Situation</label>
+        <label for="apl-compo">Composition du foyer</label>
         <select id="apl-compo">
-          <option value="seul">Seul</option>
-          <option value="couple">Couple</option>
-          <option value="famille">Avec enfant(s)</option>
+          <option value="seul">Personne seule</option>
+          <option value="couple">Couple sans enfant</option>
+          <option value="famille">Avec enfant(s) à charge</option>
         </select>
       </div>
     </div>
@@ -53,6 +58,77 @@
 
     <div class="result" id="apl-result"></div>
   </div>
+
+  <section class="seo-content">
+    <h2>L'APL, c'est quoi exactement ?</h2>
+    <p>L'<strong>Aide Personnalisée au Logement (APL)</strong> est une aide versée chaque mois par la <strong>CAF</strong> (Caisse d'Allocations Familiales) ou la MSA pour les agriculteurs. Elle vise à réduire le coût du logement pour les ménages aux revenus modestes. L'APL existe depuis 1977 et concerne en France plus de 6 millions de foyers chaque année.</p>
+
+    <h2>Qui peut toucher l'APL ?</h2>
+    <p>L'APL n'est pas réservée aux familles : tu peux en bénéficier si tu remplis l'ensemble de ces conditions :</p>
+    <ul>
+      <li><strong>Avoir un logement éligible</strong> : la résidence doit être ta résidence principale, occupée au moins 8 mois par an, respecter des critères de surface et de décence.</li>
+      <li><strong>Avoir un bail à ton nom</strong> (ou être sous-locataire déclaré) ou bien rembourser un prêt immobilier.</li>
+      <li><strong>Être de nationalité française</strong>, ou ressortissant européen, ou étranger en situation régulière.</li>
+      <li><strong>Avoir des ressources sous certains plafonds</strong> : ils dépendent de la zone et de la composition du foyer.</li>
+      <li><strong>Le logement doit être conventionné</strong> avec l'État (la plupart des logements le sont, demande au propriétaire en cas de doute).</li>
+    </ul>
+    <p>Les <strong>étudiants</strong> peuvent toucher l'APL même s'ils sont rattachés fiscalement à leurs parents (sauf si les parents touchent la prime d'activité ou des allocations familiales pour eux). C'est le cas le plus fréquent.</p>
+
+    <h2>Les 3 zones APL</h2>
+    <table>
+      <thead><tr><th>Zone</th><th>Définition</th><th>Plafond loyer (seul)</th></tr></thead>
+      <tbody>
+        <tr><td>Zone 1</td><td>Paris et communes limitrophes</td><td>~327 €</td></tr>
+        <tr><td>Zone 2</td><td>Grandes agglomérations (Lyon, Marseille, etc.)</td><td>~285 €</td></tr>
+        <tr><td>Zone 3</td><td>Reste du territoire métropolitain</td><td>~267 €</td></tr>
+      </tbody>
+    </table>
+    <p>Si ton loyer est supérieur au plafond de ta zone, la CAF calcule l'APL sur la base du plafond, pas du loyer réel. C'est une limite importante : si tu paies 800 € à Paris, seuls ~327 € sont pris en compte pour le calcul.</p>
+
+    <h2>Comment l'APL est calculée ?</h2>
+    <p>Le calcul officiel de la CAF est volontairement complexe et opaque. Il intègre une trentaine de paramètres :</p>
+    <ul>
+      <li>Ton revenu fiscal de référence (sur les 12 derniers mois en temps réel depuis 2021)</li>
+      <li>Le loyer (plafonné selon ta zone et ta situation familiale)</li>
+      <li>La composition de ton foyer (célibataire, couple, enfants)</li>
+      <li>La zone géographique du logement</li>
+      <li>Le type de logement (locatif, accession à la propriété, foyer)</li>
+      <li>Le statut (étudiant, salarié, demandeur d'emploi…)</li>
+    </ul>
+    <p>Notre estimation se base sur une <strong>formule simplifiée</strong>. Pour avoir le montant exact, utilise le simulateur officiel sur <a href="https://www.caf.fr" target="_blank" rel="noopener">caf.fr</a> — c'est gratuit et plus précis.</p>
+
+    <h2>Le calcul "temps réel" depuis 2021</h2>
+    <p>Avant 2021, la CAF se basait sur tes revenus d'il y a deux ans. Depuis la réforme de 2021, le calcul est <strong>"contemporanéisé"</strong> : la CAF recalcule ton APL tous les <strong>3 mois</strong> en se basant sur tes 12 derniers mois de revenus. Conséquence : si tu commences à travailler, ton APL baisse rapidement. Inversement, si tu perds ton emploi, elle remonte plus vite.</p>
+
+    <h2>Démarches pour faire ta demande</h2>
+    <ol>
+      <li><strong>Crée ton compte</strong> sur <a href="https://www.caf.fr" target="_blank" rel="noopener">caf.fr</a> (ou connecte-toi si tu en as déjà un).</li>
+      <li><strong>Fais la simulation</strong> officielle pour vérifier ton éligibilité.</li>
+      <li><strong>Remplis le formulaire</strong> en ligne avec : tes infos d'identité, ton bail signé, tes derniers avis d'imposition, le RIB du propriétaire ou bailleur.</li>
+      <li><strong>Envoie ta demande</strong>. Le délai de traitement est généralement de 1 à 2 mois.</li>
+      <li><strong>L'APL est versée à terme échu</strong> chaque mois (en général le 5).</li>
+    </ol>
+    <p>L'APL peut être versée directement à toi ou directement au propriétaire (déduction du loyer). Le choix dépend des accords avec le bailleur et du conventionnement du logement.</p>
+
+    <h2>APL et colocation</h2>
+    <p>En colocation, chaque colocataire peut faire sa propre demande d'APL <strong>si chacun est titulaire d'un bail individuel</strong> (ou colocataire dans un bail unique avec clause de solidarité). Le loyer est divisé proportionnellement entre les colocataires. C'est souvent intéressant pour les étudiants.</p>
+
+    <h2>APL pour les propriétaires</h2>
+    <p>Oui, les <strong>propriétaires accédants</strong> (qui remboursent un prêt immobilier) peuvent toucher l'APL accession, sous conditions strictes. Le dispositif a été restreint depuis 2018 et ne concerne plus que les achats dans l'ancien en zone détendue, et les rachats de prêts conventionnés. Renseigne-toi au cas par cas.</p>
+
+    <h2>ALS, ALF, APL : la jungle des sigles</h2>
+    <p>Il existe trois aides au logement, et tu ne peux en toucher qu'une seule :</p>
+    <ul>
+      <li><strong>APL</strong> : pour les logements conventionnés (la majorité). C'est la plus connue.</li>
+      <li><strong>ALF</strong> (Allocation de Logement Familiale) : pour les familles avec enfants en logement non-conventionné.</li>
+      <li><strong>ALS</strong> (Allocation de Logement Sociale) : pour les autres (personnes seules, étudiants, retraités) en logement non-conventionné.</li>
+    </ul>
+    <p>Pour toi, c'est transparent : la CAF te verse l'aide à laquelle tu as droit selon ta situation.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
 </div>
 
 <script src="script.js"></script>

@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Probabilités — Calviro</title>
+<title>Calcul de probabilités avec exemples concrets — Calviro</title>
+<meta name="description" content="Calcule une probabilité simple et compare-la à des événements connus : Loto, EuroMillions, foudre, accident. Explication, exemples, formules.">
+<meta name="keywords" content="calcul probabilité, probabilité loto, probabilité euromillions, calculer chance, statistiques">
+<meta property="og:title" content="Calcul de probabilités avec comparaisons concrètes">
+<meta property="og:description" content="Tes chances comparées au Loto, à la foudre, aux accidents...">
+<link rel="canonical" href="https://calviro.vercel.app/probabilites.html">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,7 +22,7 @@
   <div class="tool">
     <div class="tool-header">
       <h1>🎲 Calculateur de probabilités</h1>
-      <p>Avec ordres de grandeur concrets (loto, foudre, accident…).</p>
+      <p>Comparaisons avec des événements concrets pour visualiser tes chances.</p>
     </div>
 
     <div class="field-row">
@@ -39,6 +44,93 @@
       <strong style="color:var(--text);">Exemples :</strong> 1 / 19 068 840 = Loto · 1 / 13 = tirer un as · 1 / 6 = dé.
     </div>
   </div>
+
+  <section class="seo-content">
+    <h2>Qu'est-ce qu'une probabilité ?</h2>
+    <p>Une <strong>probabilité</strong> est un nombre compris entre 0 et 1 (ou entre 0 % et 100 %) qui mesure la chance qu'un événement se produise. À 0, l'événement est impossible. À 1, il est certain. Entre les deux, c'est l'incertitude. La formule de base s'écrit :</p>
+    <p><strong>Probabilité = (Nombre de cas favorables) ÷ (Nombre de cas possibles)</strong></p>
+    <p>Exemple classique : la probabilité de tirer un cœur dans un jeu de 52 cartes. Il y a 13 cartes de cœur (cas favorables) sur 52 cartes totales (cas possibles), soit 13/52 = 1/4 = 25 %.</p>
+
+    <h2>Pourquoi comparer à des événements concrets ?</h2>
+    <p>Notre cerveau est très mauvais pour appréhender les très petites probabilités. "Une chance sur 19 millions" ne veut pas dire grand-chose pour la plupart des gens. C'est pourquoi notre outil compare ton résultat à des références bien connues : il devient beaucoup plus parlant de dire qu'un événement est <em>1 000 fois plus probable que de gagner au Loto</em> ou <em>2 fois moins probable que d'être touché par la foudre</em>.</p>
+
+    <h2>Quelques probabilités étonnantes</h2>
+    <table>
+      <thead><tr><th>Événement</th><th>Probabilité</th><th>Soit 1 chance sur…</th></tr></thead>
+      <tbody>
+        <tr><td>Gagner le jackpot du Loto (1 grille)</td><td>0,0000052 %</td><td>19 068 840</td></tr>
+        <tr><td>Gagner le jackpot EuroMillions</td><td>0,00000071 %</td><td>139 838 160</td></tr>
+        <tr><td>Naître jumeaux (en France)</td><td>1,3 %</td><td>77</td></tr>
+        <tr><td>Être touché par la foudre dans une vie</td><td>0,0001 %</td><td>1 000 000</td></tr>
+        <tr><td>Avoir un accident de voiture par an</td><td>0,01 %</td><td>11 500</td></tr>
+        <tr><td>Avoir un avion qui se crashe (par vol)</td><td>0,00009 %</td><td>1 100 000</td></tr>
+        <tr><td>Faire un 6 avec un dé</td><td>16,7 %</td><td>6</td></tr>
+        <tr><td>Pile à pile ou face</td><td>50 %</td><td>2</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Le piège des grandes intuitions</h2>
+    <p>Le paradoxe des anniversaires illustre bien le décalage entre intuition et probabilités réelles. Dans un groupe de seulement <strong>23 personnes</strong>, la probabilité que deux personnes aient le même jour d'anniversaire est de plus de 50 %. Beaucoup pensent qu'il faut être 100 ou 200 pour atteindre ce seuil. Le calcul nous trompe parce qu'on imagine "moi vs les autres" alors qu'il faut considérer toutes les paires possibles.</p>
+
+    <h2>Probabilités et jeux d'argent : la vérité</h2>
+    <p>Les jeux d'argent ont une "espérance de gain" négative pour le joueur. Au Loto, sur 100 € misés, l'État et la Française des Jeux reversent environ 65 € en gains. Les 35 € restants servent à la fiscalité, à la marge et aux frais. Sur le long terme, jouer au Loto, c'est mathématiquement perdre de l'argent. C'est pour ça qu'on parle de "rêve à 2 €" plus que de "stratégie financière".</p>
+
+    <h2>Probabilités au Loto : combien faut-il jouer ?</h2>
+    <p>Pour avoir 50 % de chances de gagner au Loto dans ta vie, il faudrait jouer environ <strong>13 millions de fois</strong>. À 2 € la grille, ça représente 26 millions d'euros... soit beaucoup plus que le jackpot moyen. Le calcul est sans appel : statistiquement, jouer "rationnellement" au Loto n'a pas de sens.</p>
+
+    <h2>Indépendance des événements</h2>
+    <p>Une erreur classique : croire qu'après une série de noirs à la roulette, le rouge devient "plus probable". C'est faux. Les tirages successifs sont <strong>indépendants</strong> : la roulette n'a pas de mémoire. Cette illusion s'appelle le "sophisme du parieur" (gambler's fallacy en anglais), et elle ruine beaucoup de joueurs.</p>
+
+    <h2>Probabilités conditionnelles : le piège du test médical</h2>
+    <p>Voici un exemple classique qui défie l'intuition. Imagine un test médical fiable à 99 % qui détecte une maladie touchant 1 personne sur 10 000. Si tu es testé positif, quelle est la probabilité que tu sois réellement malade ?</p>
+    <p>Réponse intuitive : 99 %. <strong>Réponse mathématique : moins de 1 %.</strong></p>
+    <p>Pourquoi ? Sur 10 000 personnes testées, 1 seule est malade (et probablement détectée). Mais 99 personnes saines (1 % d'erreur sur les 9 999 saines) seront aussi testées positives. Donc sur 100 tests positifs, seulement 1 est vraiment malade — soit 1 % de probabilité d'être réellement malade.</p>
+    <p>Ce raisonnement, appelé <strong>théorème de Bayes</strong>, explique pourquoi les tests de dépistage de masse posent des questions complexes : un test très fiable peut quand même produire beaucoup de faux positifs si la maladie est rare.</p>
+
+    <h2>Loi des grands nombres</h2>
+    <p>Si tu lances un dé une fois, n'importe quel résultat est possible. Si tu le lances 1 000 fois, la moyenne des résultats sera très proche de 3,5 (la moyenne théorique). C'est la <strong>loi des grands nombres</strong> : plus on répète une expérience aléatoire, plus le résultat moyen se rapproche de l'espérance théorique.</p>
+    <p>Application pratique : les <strong>assurances</strong>. Un assureur ne sait pas si TU vas avoir un accident l'an prochain. Mais sur 100 000 clients, il sait avec une bonne précision combien auront un accident — assez pour fixer les primes et faire un bénéfice.</p>
+
+    <h2>Combinaisons et arrangements</h2>
+    <p>Comment compter les cas possibles dans des situations complexes ?</p>
+    <ul>
+      <li><strong>Arrangements (ordre important)</strong> : combien de podiums possibles dans une course de 10 personnes ? 10 × 9 × 8 = 720.</li>
+      <li><strong>Combinaisons (ordre sans importance)</strong> : combien de mains de poker (5 cartes) avec 52 cartes ? C(52,5) = 2 598 960.</li>
+      <li><strong>Avec remise</strong> : combien de codes PIN à 4 chiffres ? 10 × 10 × 10 × 10 = 10 000.</li>
+      <li><strong>Sans remise</strong> : combien de combinaisons pour 6 numéros du Loto sur 49 ? C(49,6) = 13 983 816.</li>
+    </ul>
+
+    <h2>La probabilité dans la vie quotidienne</h2>
+    <p>Les probabilités ne servent pas qu'aux mathématiciens. Elles sont partout :</p>
+    <ul>
+      <li><strong>Météo</strong> : "30 % de risque de pluie" = sur 100 situations similaires, il pleut 30 fois.</li>
+      <li><strong>Médecine</strong> : "ce traitement réussit dans 70 % des cas" = aide à choisir parmi plusieurs options.</li>
+      <li><strong>Assurance</strong> : calcul des primes selon le risque d'accident.</li>
+      <li><strong>Finance</strong> : évaluation des risques de défaut de paiement, des fluctuations boursières.</li>
+      <li><strong>Sport</strong> : cotes des bookmakers basées sur des probabilités estimées.</li>
+      <li><strong>Élections</strong> : sondages avec marges d'erreur statistiques.</li>
+      <li><strong>Intelligence artificielle</strong> : les modèles comme ChatGPT prédisent la probabilité du mot suivant à chaque instant.</li>
+    </ul>
+
+    <h2>Le théorème central limite</h2>
+    <p>Si tu prends la moyenne de nombreuses mesures aléatoires, leur distribution suit une <strong>courbe en cloche</strong> (loi normale), même si les mesures individuelles ne sont pas normalement distribuées. C'est un résultat profond qui explique pourquoi la courbe en cloche apparaît partout dans la nature : tailles humaines, QI, erreurs de mesure, etc.</p>
+    <p>Application : les sondages. Si on interroge 1 000 personnes au hasard, la marge d'erreur est d'environ ±3 %. Si on en interroge 10 000, la marge tombe à ±1 %. C'est pour ça que les sondages ne vont pas plus haut : doubler la taille de l'échantillon ne divise pas la marge par deux (juste par √2).</p>
+
+    <h2>Espérance et risque : raisonner comme un actuaire</h2>
+    <p>L'<strong>espérance mathématique</strong> d'un jeu, c'est ce qu'on gagne ou perd en moyenne sur un grand nombre de parties :</p>
+    <p>Espérance = (probabilité de gagner × gain) − (probabilité de perdre × mise)</p>
+    <p>Exemples :</p>
+    <ul>
+      <li><strong>Loto à 2 €</strong> : espérance d'environ −1,30 € par grille (tu perds en moyenne 1,30 € par jeu sur le long terme).</li>
+      <li><strong>Roulette française (1 numéro)</strong> : 1/37 chance de gagner 35× la mise. Espérance : −2,7 % de la mise.</li>
+      <li><strong>Investissement en action</strong> : espérance historique de +7 % par an sur les marchés diversifiés long terme.</li>
+    </ul>
+    <p>Les jeux d'argent ont systématiquement une espérance négative pour le joueur. L'épargne et l'investissement, sur le long terme, ont une espérance positive. C'est tout le sens des choix financiers rationnels.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
 </div>
 
 <script src="script.js"></script>

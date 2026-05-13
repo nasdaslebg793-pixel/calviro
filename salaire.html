@@ -3,7 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Salaire net ↔ brut — Calviro</title>
+<title>Salaire brut en net : calcul instantané 2026 — Calviro</title>
+<meta name="description" content="Convertis ton salaire brut en net (et inversement) en un clic. Calcul gratuit pour cadres, non-cadres et fonction publique. Estimation 2026.">
+<meta name="keywords" content="salaire brut net, calcul salaire net, convertir brut en net, salaire mensuel net, simulateur salaire">
+<meta property="og:title" content="Calcul salaire brut en net — gratuit et instantané">
+<meta property="og:description" content="Convertis ton salaire brut en net en quelques secondes selon ton statut.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://calviro.vercel.app/salaire.html">
+<link rel="canonical" href="https://calviro.vercel.app/salaire.html">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,7 +23,7 @@
 
   <div class="tool">
     <div class="tool-header">
-      <h1>💰 Salaire net ↔ brut</h1>
+      <h1>💰 Salaire brut ↔ net</h1>
       <p>Conversion rapide selon ton statut professionnel.</p>
     </div>
 
@@ -47,6 +54,96 @@
 
     <div class="result" id="sal-result"></div>
   </div>
+
+  <section class="seo-content">
+    <h2>Salaire brut vs net : c'est quoi la différence ?</h2>
+    <p>Le <strong>salaire brut</strong> est le montant inscrit sur ton contrat de travail. C'est la rémunération avant déduction des cotisations sociales. Le <strong>salaire net</strong>, lui, correspond à ce que tu touches réellement sur ton compte chaque mois. La différence est composée des cotisations sociales (sécurité sociale, retraite, chômage, CSG, CRDS) prélevées par l'employeur pour le compte de l'État.</p>
+
+    <h2>Taux de prélèvement moyens en France</h2>
+    <table>
+      <thead><tr><th>Statut</th><th>Taux moyen</th><th>Exemple sur 2 500 € brut</th></tr></thead>
+      <tbody>
+        <tr><td>Non-cadre (privé)</td><td>~22 %</td><td>≈ 1 950 € net</td></tr>
+        <tr><td>Cadre (privé)</td><td>~25 %</td><td>≈ 1 875 € net</td></tr>
+        <tr><td>Fonction publique</td><td>~15 %</td><td>≈ 2 125 € net</td></tr>
+      </tbody>
+    </table>
+    <p>Ces taux sont des moyennes. Le taux exact dépend de ta convention collective, de la mutuelle d'entreprise, de la prévoyance, des heures supplémentaires et de ton lieu de travail (Alsace-Moselle a un régime spécifique).</p>
+
+    <h2>Qu'est-ce qui est déduit du salaire brut ?</h2>
+    <ul>
+      <li><strong>Sécurité sociale</strong> : maladie, maternité, invalidité, décès</li>
+      <li><strong>Retraite</strong> : base + complémentaire (Agirc-Arrco pour les cadres)</li>
+      <li><strong>Chômage</strong> : seule l'employeur cotise désormais</li>
+      <li><strong>CSG et CRDS</strong> : contributions sociales</li>
+      <li><strong>Cotisations spécifiques</strong> : APEC (cadres), prévoyance, mutuelle obligatoire</li>
+    </ul>
+
+    <h2>Salaire net avant ou après impôt ?</h2>
+    <p>Notre calcul donne le <strong>salaire net avant impôt sur le revenu</strong>. Depuis 2019, le prélèvement à la source déduit directement l'impôt de ton salaire — le "net à payer" sur ton bulletin est donc inférieur au "net imposable". Pour estimer ton impôt, utilise notre <a href="impots.html">calculateur d'impôt sur le revenu</a>.</p>
+
+    <h2>FAQ</h2>
+    <h3>Pourquoi les cadres payent plus de charges ?</h3>
+    <p>Les cadres cotisent à des caisses complémentaires plus élevées (Agirc-Arrco tranches B/C) et payent l'APEC. En contrepartie, ils touchent une retraite complémentaire plus importante.</p>
+
+    <h3>Le salaire net dépend-il du nombre d'heures travaillées ?</h3>
+    <p>Oui pour les temps partiels (la base de calcul change). Les heures supplémentaires sont elles défiscalisées et exonérées de cotisations dans la limite de 7 500 €/an.</p>
+
+    <h2>Salaire brut, super brut, charges patronales : la vue d'ensemble</h2>
+    <p>Le brut affiché sur ton contrat n'est en réalité que la <strong>moitié visible</strong> du coût réel pour ton employeur. À ton salaire brut, l'employeur ajoute des <strong>charges patronales</strong> (cotisations payées par l'entreprise) qui représentent 25 à 45 % du brut selon le statut. Pour un brut de 2 500 €, le coût total pour l'employeur est généralement autour de 3 500 €. On appelle parfois ce montant le "super brut" ou "coût employeur".</p>
+
+    <h3>Décomposition typique pour 2 500 € brut/mois (non-cadre)</h3>
+    <ul>
+      <li>Coût employeur : ~ 3 500 €</li>
+      <li>Salaire brut : 2 500 €</li>
+      <li>Salaire net avant impôt : ~ 1 950 €</li>
+      <li>Salaire net après prélèvement à la source : ~ 1 750 € (varie selon ta situation fiscale)</li>
+    </ul>
+    <p>Bilan : sur 3 500 € que ton employeur déboursé chaque mois, tu en touches en moyenne 1 750 € — soit 50 %. Le reste finance la sécu, la retraite, le chômage, et l'impôt.</p>
+
+    <h2>Le SMIC en 2026</h2>
+    <p>Le <strong>Salaire Minimum Interprofessionnel de Croissance (SMIC)</strong> est revalorisé chaque année au 1er janvier en fonction de l'inflation. Au 1er janvier 2025, il est fixé à <strong>11,88 €/h brut</strong>, soit environ <strong>1 801,80 € brut/mois</strong> pour un temps plein (35 h/semaine), ce qui correspond à environ <strong>1 425 € net/mois</strong>.</p>
+    <p>Le SMIC concerne plus de 17 % des salariés du privé en France, soit près de 3 millions de personnes. Une revalorisation supplémentaire est possible en cours d'année si l'inflation dépasse 2 % (coup de pouce automatique).</p>
+
+    <h2>Spécificités régionales : Alsace-Moselle</h2>
+    <p>Si tu travailles en Alsace ou en Moselle (départements 67, 68, 57), tu cotises à un <strong>régime local de sécurité sociale</strong> qui prélève une cotisation supplémentaire de 1,3 % sur ton brut. En contrepartie, tu es mieux remboursé sur certains soins. Concrètement, ton net est environ 1,3 % inférieur à un équivalent national.</p>
+
+    <h2>Avantages en nature : ce qu'il faut savoir</h2>
+    <p>Si ton employeur te fournit une voiture, un téléphone, un logement, ou des tickets restaurant, ces avantages sont considérés comme des <strong>compléments de salaire</strong> et sont soumis aux cotisations sociales. Ils apparaissent sur ta fiche de paie dans la rubrique "avantages en nature" :</p>
+    <ul>
+      <li><strong>Voiture de fonction</strong> : ajoute 9 à 12 % du prix d'achat du véhicule par an au salaire imposable</li>
+      <li><strong>Logement de fonction</strong> : évalué selon un barème forfaitaire ou la valeur locative réelle</li>
+      <li><strong>Téléphone portable, internet</strong> : évalués au coût mensuel</li>
+      <li><strong>Tickets restaurant</strong> : la part patronale n'est exonérée que jusqu'à un certain plafond</li>
+    </ul>
+
+    <h2>Comment vérifier sa fiche de paie ?</h2>
+    <p>Une fiche de paie française doit obligatoirement contenir :</p>
+    <ul>
+      <li>Tes coordonnées et celles de l'employeur (raison sociale, SIRET, adresse)</li>
+      <li>Ta convention collective et ta classification</li>
+      <li>Les heures travaillées (normales et supplémentaires)</li>
+      <li>Le détail des cotisations salariales et patronales par poste</li>
+      <li>Le salaire brut, net imposable, net à payer avant et après impôt</li>
+      <li>Les congés payés acquis et pris</li>
+      <li>Le taux et le montant du prélèvement à la source</li>
+    </ul>
+    <p>Vérifie chaque mois que tes heures sont bien comptées, que tes congés sont à jour, et que ta convention collective est mentionnée. En cas de doute, demande des explications à ton service RH ou consulte un conseiller du Conseil de Prud'hommes.</p>
+
+    <h2>FAQ complémentaire</h2>
+    <h3>Mon salaire net est-il imposable en totalité ?</h3>
+    <p>Le salaire net "imposable" est légèrement supérieur au "net à payer" car certaines cotisations (CSG/CRDS non déductible) sont réintégrées. C'est ce net imposable qui sert de base à l'impôt sur le revenu, pas le net à payer.</p>
+
+    <h3>Peut-on négocier en net plutôt qu'en brut ?</h3>
+    <p>Officiellement, les contrats français sont toujours libellés en brut. Mais lors des négociations, demande clairement ce qui sera versé en net pour éviter les mauvaises surprises. Un employeur honnête te donnera les deux chiffres.</p>
+
+    <h3>Quelle différence entre salaire brut et salaire de base ?</h3>
+    <p>Le salaire de base est le montant principal du contrat. Le salaire brut total inclut le salaire de base + primes diverses (13e mois, ancienneté, prime de performance) + heures sup. Le brut total est toujours supérieur ou égal au salaire de base.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
 </div>
 
 <script src="script.js"></script>

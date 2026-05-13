@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Impôt sur le revenu — Calviro</title>
+<title>Calcul impôt sur le revenu 2025 : barème officiel — Calviro</title>
+<meta name="description" content="Estime ton impôt sur le revenu 2025 selon le barème officiel. Quotient familial, taux marginal, calcul mensuel. Gratuit et instantané.">
+<meta name="keywords" content="calcul impot, impot sur le revenu, bareme impot 2025, simulateur impot, quotient familial, taux marginal">
+<meta property="og:title" content="Calcul impôt sur le revenu 2025">
+<meta property="og:description" content="Combien d'impôt vas-tu payer cette année ?">
+<link rel="canonical" href="https://calviro.vercel.app/impots.html">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,24 +21,24 @@
 
   <div class="tool">
     <div class="tool-header">
-      <h1>🏛️ Impôt sur le revenu</h1>
-      <p>Estimation selon le barème 2025 (revenus 2024).</p>
+      <h1>🏛️ Impôt sur le revenu 2025</h1>
+      <p>Estimation selon le barème officiel pour les revenus 2024.</p>
     </div>
 
     <div class="field">
-      <label for="imp-revenu">Revenu annuel net imposable (€)</label>
+      <label for="imp-revenu">Revenu annuel net (€)</label>
       <input type="number" id="imp-revenu" placeholder="30 000" min="0">
     </div>
 
     <div class="field">
-      <label for="imp-parts">Nombre de parts fiscales</label>
+      <label for="imp-parts">Quotient familial (nombre de parts)</label>
       <select id="imp-parts">
-        <option value="1">1 part (célibataire)</option>
-        <option value="1.5">1,5 part (célibataire + 1 enfant)</option>
-        <option value="2">2 parts (couple)</option>
-        <option value="2.5">2,5 parts (couple + 1 enfant)</option>
-        <option value="3">3 parts (couple + 2 enfants)</option>
-        <option value="4">4 parts (couple + 3 enfants)</option>
+        <option value="1">1 part — célibataire</option>
+        <option value="1.5">1,5 part — célibataire + 1 enfant</option>
+        <option value="2">2 parts — couple sans enfant</option>
+        <option value="2.5">2,5 parts — couple + 1 enfant</option>
+        <option value="3">3 parts — couple + 2 enfants</option>
+        <option value="4">4 parts — couple + 3 enfants</option>
       </select>
     </div>
 
@@ -41,6 +46,123 @@
 
     <div class="result" id="imp-result"></div>
   </div>
+
+  <section class="seo-content">
+    <h2>Comment fonctionne l'impôt sur le revenu en France ?</h2>
+    <p>L'<strong>impôt sur le revenu (IR)</strong> est calculé selon un système <strong>progressif par tranches</strong>. Ton revenu imposable est découpé en plusieurs portions, chacune taxée à un taux différent. Plus tu gagnes, plus la dernière tranche est taxée — mais les premières tranches gardent toujours leur taux faible. C'est une erreur très répandue de croire qu'"il vaut mieux gagner moins pour ne pas changer de tranche". En réalité, tu ne perds jamais d'argent en gagnant plus.</p>
+
+    <h2>Barème de l'impôt sur le revenu 2025 (revenus 2024)</h2>
+    <table>
+      <thead><tr><th>Tranche de revenu (par part)</th><th>Taux d'imposition</th></tr></thead>
+      <tbody>
+        <tr><td>Jusqu'à 11 497 €</td><td>0 %</td></tr>
+        <tr><td>De 11 498 € à 29 315 €</td><td>11 %</td></tr>
+        <tr><td>De 29 316 € à 83 823 €</td><td>30 %</td></tr>
+        <tr><td>De 83 824 € à 180 294 €</td><td>41 %</td></tr>
+        <tr><td>Au-dessus de 180 294 €</td><td>45 %</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Exemple de calcul</h2>
+    <p>Pour un célibataire (1 part) avec 35 000 € de revenu net imposable (après l'abattement automatique de 10 %) :</p>
+    <ul>
+      <li>De 0 à 11 497 € : 0 € d'impôt (taux 0 %)</li>
+      <li>De 11 498 à 29 315 € (soit 17 818 €) : 17 818 × 11 % = 1 959,98 €</li>
+      <li>De 29 316 à 35 000 € (soit 5 684 €) : 5 684 × 30 % = 1 705,20 €</li>
+      <li><strong>Total : 3 665 € d'impôt</strong>, soit un taux moyen de 10,5 % sur les 35 000 €</li>
+    </ul>
+    <p>Le taux marginal (la dernière tranche atteinte) est de 30 %, mais le taux moyen effectif est seulement 10,5 %. C'est la magie du système progressif.</p>
+
+    <h2>Le quotient familial</h2>
+    <p>Le <strong>quotient familial</strong> permet d'adapter l'impôt à la situation familiale. Plus tu as de personnes à charge, plus tu as de "parts" :</p>
+    <ul>
+      <li>Célibataire, divorcé, veuf sans enfant : 1 part</li>
+      <li>Couple marié ou pacsé : 2 parts</li>
+      <li>Premier et deuxième enfant : 0,5 part chacun</li>
+      <li>À partir du 3e enfant : 1 part par enfant</li>
+      <li>Enfant en garde alternée : 0,25 part (les deux parents se partagent)</li>
+      <li>Parent isolé avec enfant : majoration de 0,5 part</li>
+    </ul>
+    <p>Le quotient est <strong>plafonné</strong> : l'avantage fiscal lié à chaque demi-part supplémentaire ne peut dépasser 1 791 € pour les enfants à charge en 2025.</p>
+
+    <h2>L'abattement automatique de 10 %</h2>
+    <p>Tu n'es pas imposé sur la totalité de ton salaire : un <strong>abattement forfaitaire de 10 %</strong> est appliqué automatiquement pour couvrir tes frais professionnels (transports, vêtements, repas). Cet abattement est plafonné à 14 426 € en 2025. Si tu as des frais réels supérieurs (transports longs, double résidence pour le travail, etc.), tu peux opter pour leur déduction au lieu de l'abattement, mais il faut tout justifier.</p>
+
+    <h2>Prélèvement à la source : ce que ça change</h2>
+    <p>Depuis 2019, l'impôt est <strong>prélevé directement sur ton salaire</strong> chaque mois par ton employeur. Ton bulletin de paie affiche un "net avant impôt" et un "net à payer après impôt". Mais ce prélèvement n'est qu'un <strong>acompte</strong> : la régularisation finale a lieu chaque été après ta déclaration. Tu peux te retrouver à devoir un complément ou à recevoir un remboursement selon ton taux réel.</p>
+
+    <h2>Décote et réductions d'impôt</h2>
+    <p>Les <strong>petits revenus</strong> bénéficient d'une décote qui réduit ou annule l'impôt en bas de la grille. En 2025, la décote s'applique si ton impôt brut est inférieur à 1 964 € (célibataire) ou 3 248 € (couple). Au-delà du calcul de base, de nombreuses réductions et crédits d'impôt peuvent baisser ta facture :</p>
+    <ul>
+      <li>Dons à des associations (66 % du montant donné)</li>
+      <li>Frais de garde d'enfant de moins de 6 ans (50 %)</li>
+      <li>Emploi à domicile (50 %)</li>
+      <li>Travaux d'économie d'énergie (MaPrimeRénov')</li>
+      <li>Investissement locatif Pinel, Denormandie</li>
+    </ul>
+    <p>Notre calcul donne l'impôt brut <strong>avant</strong> ces réductions. Pour un calcul officiel complet, utilise le simulateur sur <a href="https://www.impots.gouv.fr" target="_blank" rel="noopener">impots.gouv.fr</a>.</p>
+
+    <h2>Le calendrier fiscal en France</h2>
+    <p>Les principales échéances à connaître chaque année :</p>
+    <ul>
+      <li><strong>Avril-juin</strong> : déclaration de revenus en ligne ou papier (dates limites fin mai à début juin selon le département)</li>
+      <li><strong>Été (juillet-août)</strong> : réception de l'avis d'imposition</li>
+      <li><strong>Septembre</strong> : ajustement du taux du prélèvement à la source selon ton nouveau revenu</li>
+      <li><strong>Septembre-octobre</strong> : paiement du solde si l'impôt à payer dépasse les prélèvements de l'année</li>
+      <li><strong>Octobre-novembre</strong> : taxe d'habitation (pour les rares concernés) et taxe foncière</li>
+    </ul>
+    <p>Depuis 2019, le prélèvement à la source a "lissé" la contrainte fiscale sur toute l'année. Mais la déclaration annuelle reste obligatoire, même si l'impôt a déjà été prélevé.</p>
+
+    <h2>Qui ne paye pas d'impôt sur le revenu ?</h2>
+    <p>Environ <strong>56 % des foyers français ne payent pas d'impôt sur le revenu</strong>. C'est moins une question de "tricherie" que de mécanique fiscale :</p>
+    <ul>
+      <li>Le quotient familial réduit fortement l'impôt des familles avec enfants</li>
+      <li>L'abattement de 10 % et la décote épargnent les bas revenus</li>
+      <li>Le seuil d'entrée dans l'imposition est élevé (revenu net imposable > ~17 000 € pour un célibataire)</li>
+      <li>Les retraités modestes en sont exemptés</li>
+      <li>Les ménages aux revenus exclusivement issus du capital paient via la flat tax, pas l'IR classique</li>
+    </ul>
+    <p>Mais <strong>tous les ménages payent des impôts indirects</strong> (TVA, taxes sur les carburants, taxe foncière indirecte via les loyers...). En France, l'impôt sur le revenu ne représente que 25 % des recettes fiscales totales — c'est moins qu'on pense.</p>
+
+    <h2>Les niches fiscales : optimiser légalement</h2>
+    <p>L'État utilise les impôts pour orienter les comportements. Ce qu'on appelle les "niches fiscales" sont en fait des incitations légales :</p>
+    <ul>
+      <li><strong>Dons aux associations</strong> : 66 % du montant donné déduit de l'impôt (limité à 20 % du revenu imposable)</li>
+      <li><strong>Emploi à domicile</strong> : crédit d'impôt de 50 % des dépenses (jusqu'à 12 000 € de dépenses, soit 6 000 € de crédit)</li>
+      <li><strong>Frais de garde d'enfant</strong> de moins de 6 ans : crédit de 50 % (plafond 3 500 € de dépenses par enfant)</li>
+      <li><strong>Investissement locatif Pinel</strong> : réduction d'impôt jusqu'à 17,5 % du prix d'achat sur 12 ans</li>
+      <li><strong>FCPI, FIP</strong> : investissement dans des PME, 25 % de réduction</li>
+      <li><strong>PER (Plan d'Épargne Retraite)</strong> : versements déductibles du revenu imposable (limite : ~10 % des revenus annuels)</li>
+      <li><strong>MaPrimeRénov</strong> : aide directe + crédit d'impôt pour travaux énergétiques</li>
+    </ul>
+    <p>Le plafonnement global des niches fiscales est de <strong>10 000 €/an</strong> (avec des exceptions pour le Pinel outre-mer ou les Sofica). Au-delà, l'avantage est plafonné même si tu cumules plusieurs dispositifs.</p>
+
+    <h2>Quand consulter un fiscaliste ?</h2>
+    <p>Pour la majorité des contribuables (salariés sans revenus complexes), la déclaration est simple et le simulateur de impots.gouv.fr suffit. Mais un fiscaliste peut être utile dans plusieurs cas :</p>
+    <ul>
+      <li>Tu as des revenus à l'étranger (expatriés, frontaliers)</li>
+      <li>Tu vends un bien immobilier avec plus-value</li>
+      <li>Tu hérites d'un patrimoine important (donation, succession)</li>
+      <li>Tu es travailleur indépendant ou auto-entrepreneur avec des choix de statut</li>
+      <li>Tu envisages un investissement défiscalisant important</li>
+      <li>Tu fais un changement de situation majeur (mariage, PACS, divorce, déménagement à l'étranger)</li>
+    </ul>
+    <p>Un rendez-vous coûte généralement entre 100 € et 300 € pour une analyse simple. Pour des situations complexes, l'investissement est rentabilisé par les économies fiscales.</p>
+
+    <h2>FAQ impôts</h2>
+    <h3>Que faire si je n'arrive pas à payer ?</h3>
+    <p>Contacte ton centre des impôts <strong>avant l'échéance</strong>. Tu peux demander un délai de paiement, un échelonnement, voire dans certains cas une remise gracieuse. L'administration fiscale est généralement coopérative si tu n'attends pas le dernier moment.</p>
+
+    <h3>Une erreur sur ma déclaration, je fais comment ?</h3>
+    <p>Pas de panique : tu peux corriger ta déclaration jusqu'au 31 décembre de l'année suivante via ton espace particulier sur impots.gouv.fr. Si tu as oublié de déclarer un revenu, déclare-le rapidement pour éviter une majoration en cas de contrôle.</p>
+
+    <h3>Suis-je obligé de déclarer mes revenus ?</h3>
+    <p>Oui, même si tu ne payes pas d'impôt, la déclaration est obligatoire dès lors que tu as des revenus en France. Elle est aussi indispensable pour bénéficier d'aides (APL, prime d'activité), ouvrir un PEL, demander un prêt bancaire, etc.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
 </div>
 
 <script src="script.js"></script>

@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calcul de facture — Calviro</title>
+<title>Calcul TVA : convertir HT en TTC en 1 clic — Calviro</title>
+<meta name="description" content="Calcul TVA gratuit : convertis HT en TTC ou inversement. Tous les taux de TVA français : 20 %, 10 %, 5,5 %, 2,1 %. Outil instantané.">
+<meta name="keywords" content="calcul tva, convertir ht ttc, calcul facture, taux tva, tva 20, tva 10, tva 5.5">
+<meta property="og:title" content="Calcul TVA : HT en TTC en 1 seconde">
+<meta property="og:description" content="Conversion HT/TTC selon tous les taux de TVA français.">
+<link rel="canonical" href="https://calviro.vercel.app/facture.html">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,8 +21,8 @@
 
   <div class="tool">
     <div class="tool-header">
-      <h1>🧾 Calcul de facture</h1>
-      <p>Convertis montant HT en TTC selon le taux de TVA.</p>
+      <h1>🧾 Calcul de facture (HT / TVA / TTC)</h1>
+      <p>Convertis un montant HT en TTC selon le taux de TVA applicable.</p>
     </div>
 
     <div class="field">
@@ -26,7 +31,7 @@
     </div>
 
     <div class="field">
-      <label for="fac-tva">Taux de TVA (%)</label>
+      <label for="fac-tva">Taux de TVA applicable</label>
       <select id="fac-tva">
         <option value="20">20 % — Taux normal</option>
         <option value="10">10 % — Taux intermédiaire</option>
@@ -36,10 +41,99 @@
       </select>
     </div>
 
-    <button class="btn" onclick="calcFacture()">Calculer</button>
+    <button class="btn" onclick="calcFacture()">Calculer le TTC</button>
 
     <div class="result" id="fac-result"></div>
   </div>
+
+  <section class="seo-content">
+    <h2>HT, TVA, TTC : à quoi ça correspond ?</h2>
+    <p>Quand tu reçois une facture ou un devis en France, trois montants apparaissent presque toujours :</p>
+    <ul>
+      <li><strong>HT (Hors Taxes)</strong> : le prix de base, avant ajout de la taxe sur la valeur ajoutée.</li>
+      <li><strong>TVA (Taxe sur la Valeur Ajoutée)</strong> : un impôt indirect prélevé par l'État sur la consommation. Le commerçant la collecte pour le compte du Trésor public.</li>
+      <li><strong>TTC (Toutes Taxes Comprises)</strong> : le montant final que le client paie. <strong>TTC = HT + TVA</strong>.</li>
+    </ul>
+    <p>Pour les particuliers, c'est toujours le TTC qui compte. Pour les professionnels assujettis à la TVA, c'est le HT qui sert de base à la comptabilité, car ils récupèrent la TVA qu'ils paient sur leurs achats.</p>
+
+    <h2>Les taux de TVA en France en 2026</h2>
+    <table>
+      <thead><tr><th>Taux</th><th>Applications principales</th></tr></thead>
+      <tbody>
+        <tr><td>20 %</td><td>Taux normal : majorité des biens et services (vêtements, électronique, services).</td></tr>
+        <tr><td>10 %</td><td>Taux intermédiaire : restauration, transports, travaux d'amélioration de logement.</td></tr>
+        <tr><td>5,5 %</td><td>Taux réduit : produits alimentaires, livres, billets de spectacles, gaz et électricité, équipements pour handicapés.</td></tr>
+        <tr><td>2,1 %</td><td>Taux super réduit : médicaments remboursables par la sécu, presse, redevance audiovisuelle.</td></tr>
+        <tr><td>0 %</td><td>Exonérations : certaines activités médicales, enseignement, opérations financières.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Formules de calcul</h2>
+    <p>Le calcul de TVA est simple :</p>
+    <ul>
+      <li><strong>Calcul du TTC depuis le HT</strong> : TTC = HT × (1 + taux). Exemple : 100 € HT × 1,20 = 120 € TTC.</li>
+      <li><strong>Calcul du HT depuis le TTC</strong> : HT = TTC ÷ (1 + taux). Exemple : 120 € TTC ÷ 1,20 = 100 € HT.</li>
+      <li><strong>Calcul du montant de TVA</strong> : TVA = HT × taux. Exemple : 100 € × 0,20 = 20 € de TVA.</li>
+    </ul>
+
+    <h2>TVA dans les DOM et en Corse</h2>
+    <p>Les <strong>départements d'outre-mer</strong> appliquent des taux différents : 8,5 % (taux normal) et 2,1 % (taux réduit) à la Guadeloupe, Martinique et Réunion. La Guyane et Mayotte sont exonérées de TVA. En <strong>Corse</strong>, certains biens bénéficient d'un taux à 13 % au lieu de 20 %.</p>
+
+    <h2>Qui doit facturer la TVA ?</h2>
+    <p>Les <strong>auto-entrepreneurs</strong> en franchise en base de TVA (chiffre d'affaires inférieur à 36 800 € pour les services et 91 900 € pour la vente en 2025) ne facturent pas la TVA. Ils doivent inscrire la mention "TVA non applicable, art. 293 B du CGI" sur leurs factures. Au-delà des seuils, ils deviennent assujettis et doivent collecter la TVA.</p>
+
+    <h2>L'histoire de la TVA</h2>
+    <p>La <strong>TVA est une invention française</strong>. Elle a été imaginée en 1954 par Maurice Lauré, inspecteur des Finances, pour remplacer l'ancienne taxe sur les produits qui pénalisait les entreprises qui se sous-traitaient entre elles. Le génie de la TVA, c'est qu'elle ne taxe que la "valeur ajoutée" à chaque étape de production. La France a été le premier pays à l'appliquer, et le système a ensuite été adopté par plus de 160 pays dans le monde — c'est aujourd'hui la principale source de recettes fiscales de l'État français (plus de 100 milliards d'euros par an).</p>
+
+    <h2>Comment fonctionne la TVA pour un commerçant ?</h2>
+    <p>Un commerçant assujetti à la TVA joue le rôle de <strong>collecteur d'impôt pour le compte de l'État</strong>. Il y a deux flux :</p>
+    <ul>
+      <li><strong>TVA collectée</strong> : celle qu'il facture à ses clients sur ses ventes</li>
+      <li><strong>TVA déductible</strong> : celle qu'il a payée sur ses achats professionnels</li>
+    </ul>
+    <p>Chaque mois ou trimestre, le commerçant reverse à l'État la différence : <strong>TVA collectée − TVA déductible = TVA à reverser</strong>. Si la TVA déductible est supérieure à la TVA collectée (achats importants, démarrage d'activité), l'État rembourse le solde négatif.</p>
+
+    <h2>Cas particuliers à connaître</h2>
+    <h3>Auto-entrepreneur sous le seuil</h3>
+    <p>Si tu es auto-entrepreneur en franchise en base, tu factures HT = TTC (pas de TVA). Tu ne déduis pas non plus la TVA sur tes achats : tu paies tout TTC comme un particulier. C'est plus simple administrativement, mais ça désavantage si tes clients sont des entreprises qui auraient pu déduire la TVA.</p>
+
+    <h3>Auto-liquidation</h3>
+    <p>Dans le BTP, certaines situations (sous-traitance, achats à l'étranger) imposent l'<strong>auto-liquidation</strong> : c'est le client (et non le fournisseur) qui calcule et reverse la TVA à l'État. Ça simplifie les flux entre entreprises.</p>
+
+    <h3>Achats à l'étranger</h3>
+    <p>Au sein de l'UE, les ventes entre professionnels avec numéros de TVA intracommunautaires sont exonérées de TVA française. C'est l'acheteur qui auto-liquide la TVA dans son pays. Hors UE (États-Unis, Royaume-Uni), la TVA française est généralement non applicable mais des droits de douane peuvent s'ajouter.</p>
+
+    <h2>TVA et particuliers : ce qu'il faut savoir</h2>
+    <p>Si tu es particulier, tu paies la TVA sur quasiment tout. Quelques cas où tu peux la récupérer ou en être exonéré :</p>
+    <ul>
+      <li><strong>Travaux de rénovation</strong> dans ta résidence principale de plus de 2 ans : taux réduit à 10 % ou 5,5 % selon les travaux</li>
+      <li><strong>Achat hors taxes à l'étranger</strong> (touristes non-européens) : remboursement possible à la sortie de l'UE</li>
+      <li><strong>Médicaments remboursables</strong> : TVA à 2,1 % au lieu de 20 %</li>
+      <li><strong>Livres, presse</strong> : TVA à 5,5 % ou 2,1 %</li>
+    </ul>
+
+    <h2>Erreurs fréquentes dans le calcul</h2>
+    <p>Beaucoup de gens font cette erreur : pour passer du TTC au HT, ils croient devoir <strong>soustraire 20 %</strong>. C'est faux ! On divise par 1,20 (pour 20 % de TVA). Exemple :</p>
+    <ul>
+      <li>120 € TTC × 0,80 = 96 € ❌ FAUX</li>
+      <li>120 € TTC ÷ 1,20 = 100 € ✓ JUSTE</li>
+    </ul>
+    <p>L'écart vient du fait que les 20 % de TVA s'ajoutent au HT, pas au TTC. Si tu pars du TTC pour soustraire 20 %, tu enlèves un pourcentage de la mauvaise base.</p>
+
+    <h2>FAQ TVA</h2>
+    <h3>Quand changer de taux de TVA ?</h3>
+    <p>Tu n'as rien à faire : le taux applicable est défini par la loi en fonction du produit ou service vendu, pas du commerçant. Un même magasin peut vendre des produits à 20 %, 5,5 % et 2,1 % selon les rayons.</p>
+
+    <h3>Le pourboire est-il soumis à la TVA ?</h3>
+    <p>Non, à condition qu'il soit volontaire et non automatiquement ajouté à la facture. Si le pourboire est inclus dans la note (forfait), il est soumis à la TVA. Sinon (espèces ou paiement séparé), il est libre.</p>
+
+    <h3>Comment vérifier qu'un numéro de TVA intracommunautaire est valide ?</h3>
+    <p>L'Union européenne propose un outil gratuit : <strong>VIES</strong> (VAT Information Exchange System). Tu rentres le numéro, il te dit s'il est actif et à quelle entreprise il correspond.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
 </div>
 
 <script src="script.js"></script>

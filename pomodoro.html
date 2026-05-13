@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pomodoro — Calviro</title>
+<title>Pomodoro en ligne : timer 25/5 gratuit — Calviro</title>
+<meta name="description" content="Chronomètre Pomodoro en ligne, gratuit et sans inscription. La méthode 25 min de travail / 5 min de pause pour booster ta productivité.">
+<meta name="keywords" content="pomodoro, méthode pomodoro, timer pomodoro, chronomètre travail, productivité, technique pomodoro">
+<meta property="og:title" content="Timer Pomodoro en ligne gratuit">
+<meta property="og:description" content="La méthode des tomates pour rester concentré et productif.">
+<link rel="canonical" href="https://calviro.vercel.app/pomodoro.html">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,8 +21,8 @@
 
   <div class="tool">
     <div class="tool-header">
-      <h1>⏱️ Pomodoro</h1>
-      <p>Méthode 25 minutes de travail / 5 minutes de pause.</p>
+      <h1>⏱️ Pomodoro Timer</h1>
+      <p>Méthode des 25 minutes de travail et 5 minutes de pause.</p>
     </div>
 
     <div class="timer-mode" id="pomo-mode">Travail</div>
@@ -30,22 +35,126 @@
 
     <hr class="divider">
 
-    <h3>Réglages</h3>
+    <h3>Réglages personnalisés</h3>
     <div class="field-row">
       <div class="field">
-        <label for="pomo-work">Travail (min)</label>
+        <label for="pomo-work">Durée travail (min)</label>
         <input type="number" id="pomo-work" value="25" min="1" max="120" onchange="pomoReset()">
       </div>
       <div class="field">
-        <label for="pomo-break">Pause (min)</label>
+        <label for="pomo-break">Durée pause (min)</label>
         <input type="number" id="pomo-break" value="5" min="1" max="60" onchange="pomoReset()">
       </div>
     </div>
 
     <div class="result-detail" style="border:none;padding-top:8px;">
-      <div class="result-detail-row"><span>Pomodoros complétés</span><strong id="pomo-cycles">0</strong></div>
+      <div class="result-detail-row"><span>Pomodoros complétés aujourd'hui</span><strong id="pomo-cycles">0</strong></div>
     </div>
   </div>
+
+  <section class="seo-content">
+    <h2>La méthode Pomodoro, c'est quoi ?</h2>
+    <p>La <strong>technique Pomodoro</strong> est une méthode de gestion du temps inventée à la fin des années 1980 par <strong>Francesco Cirillo</strong>, alors étudiant italien. Le nom vient du minuteur de cuisine en forme de tomate (<em>pomodoro</em> en italien) qu'il utilisait pour découper ses sessions de travail. Le principe est simple : alterner des phases de concentration intense (25 minutes) avec de courtes pauses (5 minutes), puis prendre une pause plus longue (15-30 minutes) après quatre cycles.</p>
+
+    <h2>Comment appliquer la méthode Pomodoro ?</h2>
+    <ol>
+      <li><strong>Choisis une tâche</strong> précise à accomplir.</li>
+      <li><strong>Lance le timer</strong> pour 25 minutes.</li>
+      <li><strong>Travaille sans interruption</strong> jusqu'à la sonnerie. Pas de téléphone, pas de mail, pas de réseaux sociaux.</li>
+      <li><strong>Prends 5 minutes de pause</strong> : lève-toi, étire-toi, bois un verre d'eau.</li>
+      <li><strong>Répète</strong> le cycle. Après 4 pomodoros, accorde-toi une pause de 15 à 30 minutes.</li>
+    </ol>
+
+    <h2>Pourquoi ça marche ?</h2>
+    <p>Plusieurs mécanismes expliquent l'efficacité de la méthode :</p>
+    <ul>
+      <li><strong>Le cerveau travaille mieux par sprints</strong>. Au-delà de 25-45 minutes, la concentration baisse naturellement.</li>
+      <li><strong>L'urgence créée par le timer</strong> active une forme de pression positive qui aide à se mettre au travail.</li>
+      <li><strong>Les pauses régulières</strong> évitent l'épuisement mental et augmentent la créativité.</li>
+      <li><strong>Découper en blocs</strong> permet de mieux estimer le temps nécessaire pour des tâches futures.</li>
+      <li><strong>L'effet "Zeigarnik"</strong> : on est plus motivé à finir une tâche commencée. Les Pomodoros entretiennent cette dynamique.</li>
+    </ul>
+
+    <h2>À qui s'adresse la méthode Pomodoro ?</h2>
+    <p>Elle est particulièrement efficace pour :</p>
+    <ul>
+      <li><strong>Étudiants</strong> en révisions intensives (l'application reste populaire chez les élèves préparant le Bac)</li>
+      <li><strong>Développeurs</strong> et professionnels du numérique soumis à de nombreuses distractions</li>
+      <li><strong>Rédacteurs, écrivains</strong> qui ont du mal à se mettre devant la page blanche</li>
+      <li><strong>Freelances et entrepreneurs</strong> qui doivent gérer leur temps seuls</li>
+      <li><strong>Personnes atteintes de TDAH</strong> : la structure rigide aide à canaliser l'attention</li>
+    </ul>
+
+    <h2>Variantes et adaptations</h2>
+    <p>Le 25/5 n'est pas une règle absolue. Certains préfèrent des cycles plus longs :</p>
+    <ul>
+      <li><strong>50/10</strong> : pour des tâches complexes qui demandent plus de temps de mise en route</li>
+      <li><strong>90/20</strong> : aligné sur les cycles ultradiens du cerveau (méthode "Flowtime")</li>
+      <li><strong>52/17</strong> : ratio observé chez les employés les plus productifs selon une étude DeskTime</li>
+    </ul>
+    <p>Notre minuteur permet de personnaliser les durées : teste différents réglages pour trouver ton rythme idéal.</p>
+
+    <h2>Erreurs courantes à éviter</h2>
+    <ul>
+      <li><strong>Ne pas respecter les pauses</strong> : "encore 5 minutes pour finir" annule le bénéfice du cycle.</li>
+      <li><strong>Vérifier ses notifications pendant la pause</strong> : ça réactive le cerveau au lieu de le reposer.</li>
+      <li><strong>Choisir des tâches trop floues</strong> : un Pomodoro doit avoir un objectif clair et atteignable.</li>
+      <li><strong>Multiplier les outils</strong> : un timer simple suffit, pas besoin d'app complexe.</li>
+    </ul>
+
+    <h2>Combien de pomodoros par jour ?</h2>
+    <p>Pour un travail intellectuel sérieux, <strong>8 pomodoros par jour</strong> (soit 3h20 de concentration profonde) est déjà excellent. C'est ce qu'on appelle parfois la "règle des 4 heures" : 4 heures de deep work bien menées valent plus que 10 heures de présence diluée. Inutile d'essayer d'en faire 16 — la qualité s'écroule rapidement.</p>
+    <p>Voici quelques benchmarks selon les profils :</p>
+    <ul>
+      <li><strong>Étudiant en révisions intenses</strong> : 10-12 pomodoros par jour les semaines de gros boulot, 6-8 en rythme normal</li>
+      <li><strong>Développeur freelance</strong> : 6-10 pomodoros productifs (les autres heures = réunions, mails, admin)</li>
+      <li><strong>Rédacteur</strong> : 4-6 pomodoros d'écriture pure (la créativité fatigue plus vite que la logique pure)</li>
+      <li><strong>Étudiant en prépa</strong> : 12-14 pomodoros sur les périodes intenses</li>
+    </ul>
+
+    <h2>Pomodoro et planification de la journée</h2>
+    <p>La méthode Pomodoro est encore plus puissante quand tu la combines avec une <strong>planification en amont</strong> :</p>
+    <ol>
+      <li><strong>Le matin (ou la veille au soir)</strong>, liste tes tâches du jour.</li>
+      <li><strong>Estime le nombre de pomodoros</strong> nécessaires pour chaque tâche. Tu vas te tromper au début, mais tu apprends vite.</li>
+      <li><strong>Compte ton "budget pomodoros" disponible</strong>. 8 pomodoros = environ 4 heures réelles de travail (avec pauses).</li>
+      <li><strong>Compare l'ambition à la réalité</strong>. Si tes tâches du jour pèsent 15 pomodoros et que tu n'en as que 8 de dispo, il faut prioriser.</li>
+      <li><strong>En fin de journée, compte les pomodoros effectivement réalisés</strong>. C'est un indicateur de productivité plus fiable que les heures passées.</li>
+    </ol>
+
+    <h2>Pomodoro et procrastination</h2>
+    <p>La méthode Pomodoro est <strong>un anti-procrastination redoutable</strong>. Pourquoi ? Parce que la procrastination naît surtout d'une <strong>résistance à commencer</strong>. Le cerveau imagine la tâche entière (longue, ennuyeuse, intimidante) et préfère éviter. Le Pomodoro contourne cette résistance :</p>
+    <ul>
+      <li>"Je dois écrire mon mémoire" → résistance maximale</li>
+      <li>"Je vais juste écrire 25 minutes" → résistance minimale</li>
+    </ul>
+    <p>Une fois lancé, la "force d'inertie cognitive" prend le relais : il devient plus facile de continuer que de s'arrêter. Beaucoup d'étudiants découvrent qu'après 1 ou 2 pomodoros, ils n'ont plus envie d'arrêter — c'est l'effet le plus puissant de la méthode.</p>
+
+    <h2>Pomodoro en équipe : ça marche ?</h2>
+    <p>Certaines équipes (notamment chez les développeurs, designers, chez Pivotal Labs ou Basecamp) utilisent la méthode Pomodoro <strong>en collectif</strong> : tout le monde lance son timer en même temps. Pendant les 25 minutes, personne ne dérange personne (pas de réunion, pas de chat, pas de mail). Pendant les 5 minutes de pause, on en profite pour échanger.</p>
+    <p>Les bénéfices observés :</p>
+    <ul>
+      <li>Réduction drastique des interruptions sauvages</li>
+      <li>Synchronisation des moments où on est dispo</li>
+      <li>Effet d'émulation collective</li>
+    </ul>
+    <p>Pour que ça marche, il faut un alignement de toute l'équipe. Sinon, les "non-Pomodoristes" cassent constamment les cycles des autres.</p>
+
+    <h2>Au-delà du Pomodoro : autres méthodes de productivité</h2>
+    <p>Si la méthode Pomodoro ne te convient pas, plusieurs alternatives existent :</p>
+    <ul>
+      <li><strong>Timeboxing</strong> : tu attribues à chaque tâche un bloc de temps fixe dans ton agenda. Plus rigide mais utile pour les journées avec beaucoup de réunions.</li>
+      <li><strong>Time-blocking</strong> : tu divises ta journée en blocs thématiques (matinée = deep work, après-midi = réunions).</li>
+      <li><strong>Méthode Eisenhower</strong> : matrice Urgent / Important pour prioriser tes tâches.</li>
+      <li><strong>Eat the Frog</strong> : commence la journée par la tâche la plus difficile, quand ta volonté est au max.</li>
+      <li><strong>Méthode GTD (Getting Things Done)</strong> : système complet pour vider sa tête et capturer toutes les tâches.</li>
+    </ul>
+    <p>Aucune méthode n'est universellement meilleure : teste-les et garde celles qui collent à ton fonctionnement et à ton travail.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
 </div>
 
 <script src="script.js"></script>

@@ -3,8 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calcul du BAC — Calviro</title>
+<title>Calcul du Bac 2026 : moyenne, mention et coefficients — Calviro</title>
+<meta name="description" content="Calcule ta moyenne au Bac 2026 (général, technologique, professionnel) avec tous les coefficients officiels. Mention bac garantie en quelques secondes.">
+<meta name="keywords" content="calcul bac, simulateur bac, moyenne bac, mention bac, coefficient bac, bac 2026">
+<meta property="og:title" content="Calcul du Bac 2026 — moyenne et mention en 30 secondes">
+<meta property="og:description" content="Simulateur de Bac officiel avec coefficients à jour pour 2026. Gratuit et instantané.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://calviro.vercel.app/bac.html">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://calviro.vercel.app/bac.html">
 <link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Calculateur Bac",
+  "description": "Simulateur officiel pour calculer sa moyenne et sa mention au Baccalauréat français",
+  "url": "https://calviro.vercel.app/bac.html",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+}
+</script>
 </head>
 <body>
 
@@ -16,12 +36,12 @@
 
   <div class="tool">
     <div class="tool-header">
-      <h1>🎓 Calcul du BAC</h1>
-      <p>Estime ta moyenne pondérée en fonction de ta filière et du contrôle continu.</p>
+      <h1>🎓 Calcul du Bac 2026</h1>
+      <p>Estime ta moyenne au Baccalauréat selon ta filière et tes notes.</p>
     </div>
 
     <div class="field">
-      <label for="bac-filiere">Filière</label>
+      <label for="bac-filiere">Filière du baccalauréat</label>
       <select id="bac-filiere" onchange="bacRender()">
         <option value="general">Bac général</option>
         <option value="techno">Bac technologique</option>
@@ -30,7 +50,7 @@
     </div>
 
     <div class="field">
-      <label>Notes (sur 20)</label>
+      <label>Notes obtenues (sur 20)</label>
       <div id="bac-matieres" class="subjects-list"></div>
     </div>
 
@@ -38,6 +58,112 @@
 
     <div class="result" id="bac-result"></div>
   </div>
+
+  <section class="seo-content">
+    <h2>Comment fonctionne le Bac depuis la réforme ?</h2>
+    <p>Depuis la réforme du baccalauréat appliquée en 2021, la moyenne finale repose sur un <strong>équilibre entre contrôle continu et épreuves terminales</strong>. Le contrôle continu pèse 40 % de la note finale et comprend les bulletins de Première et Terminale dans les matières du tronc commun. Les 60 % restants viennent des épreuves finales : Français (anticipé en Première), Philosophie, Grand oral, et les deux spécialités de Terminale.</p>
+
+    <h2>Coefficients officiels du Bac général</h2>
+    <p>Voici la répartition des coefficients pour le baccalauréat général, sur un total de 100 :</p>
+    <table>
+      <thead><tr><th>Épreuve</th><th>Coefficient</th><th>Quand ?</th></tr></thead>
+      <tbody>
+        <tr><td>Français écrit</td><td>5</td><td>Fin de Première</td></tr>
+        <tr><td>Français oral</td><td>5</td><td>Fin de Première</td></tr>
+        <tr><td>Philosophie</td><td>8</td><td>Terminale</td></tr>
+        <tr><td>Grand oral</td><td>10</td><td>Terminale</td></tr>
+        <tr><td>Spécialité 1</td><td>16</td><td>Terminale</td></tr>
+        <tr><td>Spécialité 2</td><td>16</td><td>Terminale</td></tr>
+        <tr><td>Contrôle continu</td><td>40</td><td>Première + Terminale</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Quelle mention selon ta moyenne ?</h2>
+    <p>Le système des mentions est inchangé depuis la réforme. La mention dépend uniquement de ta moyenne générale :</p>
+    <table>
+      <thead><tr><th>Moyenne</th><th>Mention</th></tr></thead>
+      <tbody>
+        <tr><td>10 à 11,99</td><td>Admis (sans mention)</td></tr>
+        <tr><td>12 à 13,99</td><td>Mention Assez bien</td></tr>
+        <tr><td>14 à 15,99</td><td>Mention Bien</td></tr>
+        <tr><td>16 et plus</td><td>Mention Très bien</td></tr>
+        <tr><td>8 à 9,99</td><td>Oral de rattrapage</td></tr>
+        <tr><td>Moins de 8</td><td>Refusé</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Bac technologique et professionnel</h2>
+    <p>Le <strong>Bac technologique</strong> (STMG, STI2D, ST2S, STL, STD2A, STHR, S2TMD) suit la même logique mais avec des coefficients différents : Philosophie passe à 4, Grand oral à 14. Le <strong>Bac professionnel</strong> repose surtout sur les épreuves professionnelles (coefficient 9), le chef-d'œuvre (coefficient 2) et les enseignements généraux pondérés à 1 chacun.</p>
+
+    <h2>Comment améliorer sa moyenne avant le bac ?</h2>
+    <ul>
+      <li><strong>Vise les spécialités</strong> : avec un coefficient 16 chacune, elles pèsent 32 % de ta note finale.</li>
+      <li><strong>Soigne le Grand oral</strong> (coef 10) : c'est l'épreuve où la marge de progression est la plus grande avec un bon entraînement.</li>
+      <li><strong>Ne néglige pas le contrôle continu</strong> : 40 % de ta note finale se joue en classe sur deux ans.</li>
+      <li><strong>Stratégie de rattrapage</strong> : si tu es entre 8 et 10, tu choisis 2 matières à repasser à l'oral. Privilégie celles où tu avais des notes basses.</li>
+    </ul>
+
+    <h2>FAQ</h2>
+    <h3>Mon calcul de moyenne est-il officiel ?</h3>
+    <p>Notre simulateur utilise les coefficients officiels de l'Éducation Nationale en vigueur en 2026. Les résultats sont fiables à condition de bien renseigner toutes tes notes, y compris celles du contrôle continu.</p>
+
+    <h3>Le contrôle continu, c'est quoi exactement ?</h3>
+    <p>C'est la moyenne de tes bulletins de Première et de Terminale dans les matières suivantes : Histoire-géographie, EMC, LV1, LV2, EPS, Enseignement scientifique (pour les généraux), et la spécialité abandonnée en fin de Première.</p>
+
+    <h3>Et si une matière me manque ?</h3>
+    <p>Tu peux quand même obtenir un résultat partiel — notre calculateur indique combien de matières il manque. Plus tu renseignes de notes, plus l'estimation est précise.</p>
+
+    <h2>Stratégie pour optimiser sa moyenne</h2>
+    <p>Le Bac se gagne sur deux ans, pas dans la dernière ligne droite. Voici les bonnes pratiques selon ton profil :</p>
+
+    <h3>Si tu vises le passage (10/20)</h3>
+    <ul>
+      <li><strong>Sécurise le contrôle continu</strong> (40 % de la note). Une moyenne à 11 ou 12 en classe te donne déjà une marge confortable.</li>
+      <li><strong>Identifie tes "matières béquilles"</strong> : celles où tu es bon naturellement. Soigne-les, c'est ce qui te sauvera si une épreuve se passe mal.</li>
+      <li><strong>Ne néglige pas le Grand oral</strong> : avec un coefficient 10, c'est l'épreuve où progresser le plus rapidement (entraînement à voix haute = 2-3 points faciles).</li>
+      <li><strong>Le rattrapage existe</strong> : entre 8 et 10, tu peux te rattraper sur 2 épreuves orales. Ne le vois pas comme un échec mais comme un filet de sécurité.</li>
+    </ul>
+
+    <h3>Si tu vises la mention Bien ou Très bien</h3>
+    <ul>
+      <li><strong>Les spécialités sont décisives</strong> : 32 % de ta note finale. Vise au minimum 14 dans les deux pour espérer le TB.</li>
+      <li><strong>Le contrôle continu est ton meilleur ami</strong> : c'est plus facile d'avoir 16 en classe qu'à une épreuve unique sous stress.</li>
+      <li><strong>Travaille la méthodologie</strong> : dissertation, commentaire, plan détaillé. Un bon élève qui maîtrise les codes monte facilement de 2-3 points par rapport à sa "valeur brute".</li>
+      <li><strong>Le Grand oral te différencie</strong> : c'est là que les "bons sur le papier" décrochent quand ils n'ont pas préparé l'oral. Beaucoup d'élèves négligent cette épreuve à tort.</li>
+    </ul>
+
+    <h2>Le rattrapage en détail</h2>
+    <p>Si ta moyenne est entre 8 et 10, tu vas <strong>au rattrapage</strong> (officiellement "second groupe d'épreuves"). Voici comment ça se passe :</p>
+    <ul>
+      <li>Tu choisis <strong>2 matières à repasser à l'oral</strong>, sur lesquelles tu te sens le plus capable de remonter ta note.</li>
+      <li>Chaque oral dure 20 minutes (10 min de préparation + 10 min de passage).</li>
+      <li>Si ta note d'oral est supérieure à ta note initiale, c'est la meilleure qui compte. Sinon, l'ancienne reste.</li>
+      <li>Le rattrapage te permet de récupérer jusqu'à 2 points sur ta moyenne générale.</li>
+      <li>Plus de la moitié des candidats au rattrapage finissent par décrocher leur Bac. Ne désespère pas si tu y es.</li>
+    </ul>
+
+    <h2>Bac et Parcoursup : ce qu'il faut savoir</h2>
+    <p>Beaucoup d'élèves découvrent tardivement que <strong>les vœux Parcoursup sont validés avant les résultats du Bac</strong>. La sélection se fait sur ton dossier scolaire complet (notes de Première, Terminale, contrôle continu, fiche Avenir), pas sur ta note de Bac finale. Ce qui signifie :</p>
+    <ul>
+      <li>Tes notes de Première et Terminale <strong>comptent plus pour ton orientation</strong> que pour ta moyenne de Bac.</li>
+      <li>Une mention au Bac peut faire la différence sur les listes complémentaires (si tu attends une réponse positive après avril).</li>
+      <li>Certaines formations sélectives peuvent te désinscrire si tu n'obtiens pas le Bac (rare mais possible).</li>
+    </ul>
+
+    <h2>Astuces pour les épreuves orales</h2>
+    <p>Le Bac comporte plusieurs oraux : Français en Première, Grand oral en Terminale, oraux de rattrapage si besoin. Pour bien les réussir :</p>
+    <ul>
+      <li><strong>Entraîne-toi à voix haute</strong>, même seul dans ta chambre. Le décalage entre ce qu'on imagine dire et ce qui sort réellement est énorme.</li>
+      <li><strong>Filme-toi avec ton téléphone</strong> pour repérer tes tics (verbiaux, gestuels) et les corriger.</li>
+      <li><strong>Apprends à gérer le silence</strong> : 2 secondes de pause pour réfléchir, c'est ok. 10 secondes, c'est mort.</li>
+      <li><strong>Prépare un plan en 3 parties</strong> et tiens-toi à ce squelette même si tu improvises.</li>
+      <li><strong>Anticipe les questions du jury</strong> : pour le Grand oral, prévois des sujets de relance liés à ton sujet principal.</li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · Calviro 2026
+  </footer>
 </div>
 
 <script src="script.js"></script>
