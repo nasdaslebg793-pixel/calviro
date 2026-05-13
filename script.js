@@ -880,22 +880,57 @@ function calcCreditImmo() {
 
 let _tauxCache = null;
 let _tauxDate = null;
+let _tauxSource = '';
 
 async function chargerTaux() {
+  // Cache 1h
   if (_tauxCache && _tauxDate && (Date.now() - _tauxDate < 3600000)) {
     return _tauxCache;
   }
-  try {
-    const resp = await fetch('https://api.frankfurter.app/latest?from=EUR');
-    if (!resp.ok) throw new Error('API indisponible');
-    const data = await resp.json();
-    _tauxCache = data.rates;
-    _tauxCache.EUR = 1;
-    _tauxDate = Date.now();
-    return _tauxCache;
-  } catch (e) {
-    return null;
+
+  // Liste de sources de secours (en ordre de priorité)
+  const sources = [
+    {
+      name: 'frankfurter.dev',
+      url: 'https://api.frankfurter.dev/v1/latest?from=EUR',
+      parse: (data) => data.rates
+    },
+    {
+      name: 'frankfurter.app',
+      url: 'https://api.frankfurter.app/latest?from=EUR',
+      parse: (data) => data.rates
+    },
+    {
+      name: 'open.er-api.com',
+      url: 'https://open.er-api.com/v6/latest/EUR',
+      parse: (data) => data.rates
+    },
+    {
+      name: 'exchangerate-api',
+      url: 'https://api.exchangerate-api.com/v4/latest/EUR',
+      parse: (data) => data.rates
+    }
+  ];
+
+  for (const source of sources) {
+    try {
+      const resp = await fetch(source.url);
+      if (!resp.ok) continue;
+      const data = await resp.json();
+      const rates = source.parse(data);
+      if (rates && typeof rates === 'object') {
+        rates.EUR = 1;
+        _tauxCache = rates;
+        _tauxDate = Date.now();
+        _tauxSource = source.name;
+        return _tauxCache;
+      }
+    } catch (e) {
+      // Essayer la source suivante
+      continue;
+    }
   }
+  return null;
 }
 
 async function calcMonnaie() {
@@ -908,17 +943,21 @@ async function calcMonnaie() {
     return;
   }
 
-  $('mon-result').innerHTML = '<div class="note">Chargement des taux en cours...</div>';
+  $('mon-result').innerHTML = '<div class="note">⏳ Chargement des taux en cours...</div>';
   $('mon-result').classList.add('visible');
 
   const taux = await chargerTaux();
   if (!taux) {
-    showResult('mon-result', '<div class="note">⚠ Impossible de charger les taux actuels. Réessaie dans quelques instants.</div>');
+    showResult('mon-result', `
+      <div class="note">⚠ Impossible de joindre les serveurs de taux de change. 
+      Cela peut venir d'une connexion internet instable ou d'un bloqueur de publicités qui empêche les requêtes. 
+      Réessaie dans quelques instants ou désactive temporairement ton bloqueur.</div>
+    `);
     return;
   }
 
   if (!taux[de] || !taux[vers]) {
-    showResult('mon-result', '<div class="note">⚠ Une des devises n\'est pas disponible.</div>');
+    showResult('mon-result', '<div class="note">⚠ Une des devises n\'est pas disponible sur la source actuelle.</div>');
     return;
   }
 
@@ -937,7 +976,7 @@ async function calcMonnaie() {
       <div class="result-detail-row"><span>Taux de change</span><strong>1 ${de} = ${formatNum(tauxDirect, 4)} ${vers}</strong></div>
       <div class="result-detail-row"><span>Taux inverse</span><strong>1 ${vers} = ${formatNum(1 / tauxDirect, 4)} ${de}</strong></div>
     </div>
-    <div class="note">Taux fournis par la Banque Centrale Européenne (frankfurter.app). Mis à jour quotidiennement en semaine.</div>
+    <div class="note">Taux fournis par ${_tauxSource}. Mis à jour quotidiennement en semaine.</div>
   `);
 }
 
