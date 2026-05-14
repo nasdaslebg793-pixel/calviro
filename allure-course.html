@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculateur d'allure de course (pace) : 5K, 10K, semi, marathon — Calviro</title>
+<meta name="description" content="Calcule ton allure de course (pace) en min/km et ta vitesse. Prédiction pour 5 km, 10 km, semi-marathon et marathon. Pour runners.">
+<meta name="keywords" content="allure course, pace running, calcul pace, vitesse course, marathon, semi-marathon, prédiction temps">
+<meta property="og:title" content="Calculateur d'allure de course (pace)">
+<link rel="canonical" href="https://calviro.vercel.app/allure-course.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🏃 Allure de course</h1>
+      <p>Calcule ton pace, ta vitesse et tes temps prédits.</p>
+    </div>
+
+    <div class="field">
+      <label for="all-mode">Mode de calcul</label>
+      <select id="all-mode" onchange="allureRender()">
+        <option value="temps">J'ai un temps total → calcule mon allure</option>
+        <option value="pace">J'ai une allure → calcule mon temps</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="all-distance">Distance (km)</label>
+      <input type="number" id="all-distance" placeholder="10" step="0.001" min="0" value="10">
+    </div>
+
+    <div id="all-temps-block">
+      <div class="field">
+        <label>Temps total</label>
+        <div class="field-row" style="margin-bottom:0;">
+          <input type="number" id="all-h" placeholder="0" min="0" max="24" value="0" style="text-align:center;">
+          <input type="number" id="all-m" placeholder="45" min="0" max="59" value="45" style="text-align:center;">
+          <input type="number" id="all-s" placeholder="0" min="0" max="59" value="0" style="text-align:center;">
+        </div>
+        <div style="display:flex; gap:8px; font-size:12px; color:var(--text-muted); margin-top:4px;">
+          <div style="flex:1; text-align:center;">heures</div>
+          <div style="flex:1; text-align:center;">minutes</div>
+          <div style="flex:1; text-align:center;">secondes</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="all-pace-block" style="display:none;">
+      <div class="field">
+        <label>Allure (min:sec / km)</label>
+        <div class="field-row" style="margin-bottom:0;">
+          <input type="number" id="all-pm" placeholder="5" min="0" max="30" value="5" style="text-align:center;">
+          <input type="number" id="all-ps" placeholder="0" min="0" max="59" value="0" style="text-align:center;">
+        </div>
+        <div style="display:flex; gap:8px; font-size:12px; color:var(--text-muted); margin-top:4px;">
+          <div style="flex:1; text-align:center;">minutes</div>
+          <div style="flex:1; text-align:center;">secondes</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn" onclick="calcAllure()">Calculer</button>
+
+    <div class="result" id="all-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>L'allure de course : la base du running</h2>
+    <p>L'<strong>allure</strong> (ou "pace" en anglais) est exprimée en <strong>minutes:secondes par kilomètre</strong>. C'est la mesure de référence en course à pied. Une allure de "5:00/km" signifie que tu cours 1 km en 5 minutes exactement, soit une vitesse de 12 km/h.</p>
+
+    <h2>Équivalences allure-vitesse</h2>
+    <table>
+      <thead><tr><th>Allure (min/km)</th><th>Vitesse (km/h)</th><th>Profil typique</th></tr></thead>
+      <tbody>
+        <tr><td>3:00</td><td>20</td><td>Élite mondiale (10 km, semi)</td></tr>
+        <tr><td>3:30</td><td>17,1</td><td>Athlète très entraîné</td></tr>
+        <tr><td>4:00</td><td>15,0</td><td>Coureur compétitif</td></tr>
+        <tr><td>4:30</td><td>13,3</td><td>Coureur entraîné</td></tr>
+        <tr><td>5:00</td><td>12,0</td><td>Bon niveau amateur</td></tr>
+        <tr><td>5:30</td><td>10,9</td><td>Coureur régulier</td></tr>
+        <tr><td>6:00</td><td>10,0</td><td>Niveau intermédiaire</td></tr>
+        <tr><td>7:00</td><td>8,6</td><td>Débutant ou récupération</td></tr>
+        <tr><td>8:00</td><td>7,5</td><td>Marche-course / footing très lent</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Records et temps de référence</h2>
+
+    <h3>Records du monde</h3>
+    <ul>
+      <li><strong>5 km</strong> : 12:35 (M) / 14:00 (F)</li>
+      <li><strong>10 km</strong> : 26:11 (M) / 29:14 (F)</li>
+      <li><strong>Semi-marathon (21,097 km)</strong> : 57:31 (M) / 1h02:52 (F)</li>
+      <li><strong>Marathon (42,195 km)</strong> : 2h00:35 (M) / 2h09:56 (F)</li>
+    </ul>
+
+    <h3>Temps "iconiques" amateurs</h3>
+    <ul>
+      <li><strong>"Sub 20"</strong> au 5 km : 20:00, premier palier "sérieux"</li>
+      <li><strong>"Sub 40"</strong> au 10 km : 40:00, niveau "bon amateur"</li>
+      <li><strong>"Sub 1h30"</strong> au semi : 1h30:00, palier reconnu</li>
+      <li><strong>"Sub 3h"</strong> au marathon : 3h00:00, accomplissement majeur amateur</li>
+      <li><strong>"Sub 4h"</strong> au marathon : 4h00:00, objectif de la plupart des amateurs</li>
+    </ul>
+
+    <h2>Prédiction de temps : la méthode Riegel</h2>
+    <p>Comment estimer ton temps sur une distance à partir d'un temps sur une autre ? La formule de <strong>Pete Riegel</strong> (1977) est le standard :</p>
+    <p><strong>T₂ = T₁ × (D₂ / D₁)<sup>1,06</sup></strong></p>
+    <p>Exemple : tu cours 10 km en 50 minutes. Ton marathon prédit est :</p>
+    <p>T = 50 × (42,195 / 10)<sup>1,06</sup> = 50 × 4,53 = <strong>~3h46</strong></p>
+    <p>L'exposant 1,06 prend en compte le fait que <strong>tu ralentis légèrement sur les longues distances</strong> (impossible de tenir l'allure 10 km sur un marathon).</p>
+
+    <h2>Les zones d'entraînement</h2>
+    <p>Un entraînement structuré utilise différentes <strong>allures cibles</strong>, basées généralement sur ton allure 10 km (ou ta VMA) :</p>
+    <ul>
+      <li><strong>Endurance fondamentale (EF)</strong> : 60-70 % VMA. Tu peux parler facilement. C'est 70-80 % du volume d'un coureur sérieux.</li>
+      <li><strong>Endurance active</strong> : 70-80 % VMA. Plus rapide mais soutenable longtemps.</li>
+      <li><strong>Seuil anaérobie</strong> : 85-90 % VMA, allure semi-marathon. Difficile à tenir 1 heure.</li>
+      <li><strong>VMA (Vitesse Maximale Aérobie)</strong> : 100 % VMA. Tenu max 3-5 minutes.</li>
+      <li><strong>Sprint</strong> : > VMA. Quelques secondes max.</li>
+    </ul>
+
+    <h2>Splits négatifs : la stratégie du pro</h2>
+    <p>Sur une course, les meilleurs athlètes courent généralement la <strong>seconde moitié plus vite que la première</strong>. C'est ce qu'on appelle un "split négatif". Avantages :</p>
+    <ul>
+      <li>Tu économises tes ressources au début (glycogène, hydratation)</li>
+      <li>Tu doubles les coureurs partis trop vite</li>
+      <li>Tu finis fort, mentalement et physiquement</li>
+    </ul>
+    <p>Stratégie pratique : pars à <strong>5-10 secondes/km plus lent</strong> que ta cible, et accélère progressivement après la mi-course.</p>
+
+    <h2>Influence des conditions externes</h2>
+    <p>Ton chrono peut varier de 5 à 30 % selon les conditions :</p>
+    <ul>
+      <li><strong>Chaleur</strong> : +1 à +5 % par 10 °C au-dessus de 15 °C</li>
+      <li><strong>Vent de face</strong> : +5 à +10 % facile</li>
+      <li><strong>Dénivelé positif</strong> : +5 secondes/km par % de pente</li>
+      <li><strong>Altitude</strong> : -3-5 % en performance au-dessus de 2000 m</li>
+      <li><strong>Mauvais sommeil</strong> : -5 à -10 % de performance</li>
+      <li><strong>Tapis de course</strong> : conditions optimales, généralement -2-3 % vs extérieur</li>
+    </ul>
+
+    <h2>Améliorer ton allure</h2>
+    <p>Trois leviers principaux, à combiner :</p>
+    <ol>
+      <li><strong>Augmenter le volume d'endurance</strong> (80 % du temps). C'est ce qui développe le cœur et l'efficacité métabolique.</li>
+      <li><strong>Travail spécifique de VMA</strong> 1-2 fois/semaine (fractionné court : 30/30, 1'/1')</li>
+      <li><strong>Travail seuil et tempo</strong> 1 fois/semaine (allure semi, blocs de 10-30 min)</li>
+      <li><strong>Repos</strong> : 1-2 jours/semaine sans course, pour récupérer</li>
+      <li><strong>Renforcement musculaire</strong> : gainage, mollets, fessiers. Prévient les blessures et améliore l'économie de course</li>
+    </ol>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+<script>allureRender();</script>
+</body>
+</html>

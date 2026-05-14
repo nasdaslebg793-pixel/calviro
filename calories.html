@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calories quotidiennes : BMR et TDEE — formule Mifflin — Calviro</title>
+<meta name="description" content="Calcule tes besoins caloriques journaliers (BMR + TDEE) avec la formule Mifflin-St Jeor. Objectifs perte de poids, maintien, prise de masse.">
+<meta name="keywords" content="calories quotidiennes, calcul bmr, calcul tdee, besoin calorique, métabolisme de base, mifflin saint jeor">
+<meta property="og:title" content="Calcul des calories quotidiennes (BMR/TDEE)">
+<link rel="canonical" href="https://calviro.vercel.app/calories.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🔥 Calories quotidiennes</h1>
+      <p>Tes besoins caloriques journaliers selon ton profil.</p>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="cal-sexe">Sexe</label>
+        <select id="cal-sexe">
+          <option value="homme">Homme</option>
+          <option value="femme">Femme</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="cal-age">Âge</label>
+        <input type="number" id="cal-age" placeholder="30" min="10" max="100">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="cal-poids">Poids (kg)</label>
+        <input type="number" id="cal-poids" placeholder="70" step="0.1" min="20">
+      </div>
+      <div class="field">
+        <label for="cal-taille">Taille (cm)</label>
+        <input type="number" id="cal-taille" placeholder="175" min="100">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="cal-activite">Niveau d'activité</label>
+      <select id="cal-activite">
+        <option value="1.2">Sédentaire (bureau, peu de sport)</option>
+        <option value="1.375" selected>Léger (sport 1-3 fois/sem)</option>
+        <option value="1.55">Modéré (sport 3-5 fois/sem)</option>
+        <option value="1.725">Intense (sport 6-7 fois/sem)</option>
+        <option value="1.9">Très intense (athlète, travail physique)</option>
+      </select>
+    </div>
+
+    <button class="btn" onclick="calcCalories()">Calculer mes besoins</button>
+
+    <div class="result" id="cal-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>BMR vs TDEE : pourquoi ces 2 chiffres ?</h2>
+    <p>Deux notions clés en nutrition :</p>
+    <ul>
+      <li><strong>BMR (Basal Metabolic Rate)</strong> = métabolisme de base. C'est le nombre de calories que ton corps dépense <strong>au repos complet</strong> sur 24 h (respiration, circulation, digestion, cellules au travail). Tu brûles ces calories même allongé toute la journée.</li>
+      <li><strong>TDEE (Total Daily Energy Expenditure)</strong> = dépense énergétique totale. C'est ton BMR multiplié par un coefficient d'activité qui tient compte de tes mouvements, sport, travail, etc.</li>
+    </ul>
+    <p>Pour <strong>maintenir ton poids</strong>, tu dois consommer environ ton TDEE en calories chaque jour. Au-dessus, tu grossis. En-dessous, tu maigris.</p>
+
+    <h2>La formule Mifflin-St Jeor</h2>
+    <p>Inventée en 1990 par les nutritionnistes américains Mifflin et St Jeor, c'est aujourd'hui la <strong>formule de référence</strong> pour calculer le BMR (plus précise que l'ancienne formule Harris-Benedict de 1919).</p>
+    <ul>
+      <li><strong>Homme</strong> : BMR = 10 × poids + 6,25 × taille − 5 × âge + 5</li>
+      <li><strong>Femme</strong> : BMR = 10 × poids + 6,25 × taille − 5 × âge − 161</li>
+    </ul>
+    <p>(poids en kg, taille en cm, âge en années)</p>
+
+    <h2>Les coefficients d'activité</h2>
+    <table>
+      <thead><tr><th>Niveau</th><th>Coefficient</th><th>Profil typique</th></tr></thead>
+      <tbody>
+        <tr><td>Sédentaire</td><td>1,2</td><td>Bureau, pas de sport, marche peu</td></tr>
+        <tr><td>Léger</td><td>1,375</td><td>1-3 séances sport/semaine</td></tr>
+        <tr><td>Modéré</td><td>1,55</td><td>3-5 séances/semaine</td></tr>
+        <tr><td>Intense</td><td>1,725</td><td>6-7 séances/semaine</td></tr>
+        <tr><td>Très intense</td><td>1,9</td><td>Athlète pro, BTP, sport 2x/jour</td></tr>
+      </tbody>
+    </table>
+    <p>⚠ Beaucoup de gens <strong>surestiment leur activité</strong>. Si tu fais du sport 3 fois/semaine mais que tu passes le reste du temps au bureau, tu es plutôt en "léger" qu'en "modéré".</p>
+
+    <h2>Combien manger selon ton objectif ?</h2>
+
+    <h3>🎯 Maintien du poids</h3>
+    <p>Tu consommes exactement ton TDEE. Idéal pour stabiliser un poids atteint après un régime ou en phase de stabilisation.</p>
+
+    <h3>📉 Perte de poids (sèche)</h3>
+    <ul>
+      <li><strong>Déficit modéré (TDEE − 500 kcal)</strong> : perte d'environ 0,5 kg/semaine. Recommandé, durable.</li>
+      <li><strong>Déficit important (TDEE − 750 kcal)</strong> : perte de 0,75 kg/semaine. Plus difficile à tenir, peut affecter performances et humeur.</li>
+      <li><strong>À éviter</strong> : descendre sous 1 200 kcal pour les femmes ou 1 500 pour les hommes sauf suivi médical. Risques : perte de masse musculaire, baisse du métabolisme, carences.</li>
+    </ul>
+    <p>Règle simple : 1 kg de graisse ≈ 7 700 kcal. Pour perdre 1 kg de gras "pur", il faut un déficit cumulé de 7 700 kcal sur la durée.</p>
+
+    <h3>📈 Prise de masse / muscle</h3>
+    <ul>
+      <li><strong>Prise propre (TDEE + 300 kcal)</strong> : ~+0,3 kg/semaine, avec très peu de gras pris</li>
+      <li><strong>Prise rapide (TDEE + 500 kcal)</strong> : ~+0,5 kg/semaine, mais avec plus de gras</li>
+    </ul>
+    <p>Important : la prise de masse <strong>nécessite</strong> de la musculation, sinon tu prends surtout du gras.</p>
+
+    <h2>Répartition macronutriments</h2>
+    <p>Au-delà du total calorique, la <strong>répartition entre protéines, glucides, lipides</strong> joue beaucoup. Recommandations selon l'objectif :</p>
+
+    <h3>Maintien / activité modérée</h3>
+    <ul>
+      <li>Protéines : 0,8 à 1 g par kg de poids corporel</li>
+      <li>Lipides : 25-30 % des calories totales</li>
+      <li>Glucides : le reste</li>
+    </ul>
+
+    <h3>Sèche / perte de poids</h3>
+    <ul>
+      <li>Protéines : 1,8 à 2,2 g/kg (préserver la masse musculaire)</li>
+      <li>Lipides : 20-25 % minimum</li>
+      <li>Glucides : ajustés selon l'activité</li>
+    </ul>
+
+    <h3>Prise de masse / muscu</h3>
+    <ul>
+      <li>Protéines : 1,6 à 2 g/kg</li>
+      <li>Lipides : 20-30 %</li>
+      <li>Glucides : 4-6 g/kg (carburant essentiel)</li>
+    </ul>
+
+    <h2>Conseils pratiques</h2>
+    <ul>
+      <li><strong>Mesure-toi régulièrement</strong> (1 fois/semaine, le matin à jeun). Le poids fluctue normalement de 1-2 kg dans la journée.</li>
+      <li><strong>Sois patient</strong> : 1-2 kg/mois est un rythme sain et durable</li>
+      <li><strong>Mange varié</strong> : 5 fruits/légumes par jour, des protéines à chaque repas, des bonnes graisses (huile d'olive, avocat, noix)</li>
+      <li><strong>Hydrate-toi</strong> : 30 ml par kg de poids corporel par jour (notre <a href="eau.html">calculateur d'eau</a>)</li>
+      <li><strong>Dors</strong> : 7-9 heures/nuit. Le manque de sommeil perturbe les hormones de la faim</li>
+      <li><strong>Mesure avant de juger</strong> : utilise une application de tracking (MyFitnessPal, Yazio, FatSecret) pendant 2-3 semaines pour mieux comprendre ce que tu manges réellement</li>
+    </ul>
+
+    <h2>Limites du calcul</h2>
+    <p>La formule Mifflin-St Jeor a une précision de <strong>±10 %</strong> en moyenne. Elle ne tient pas compte de :</p>
+    <ul>
+      <li>La composition corporelle (un sportif avec beaucoup de muscle brûle plus qu'une personne sédentaire à poids égal)</li>
+      <li>Le métabolisme individuel (varie de ±15 % entre personnes apparemment similaires)</li>
+      <li>Les pathologies métaboliques (thyroïde, diabète, etc.)</li>
+      <li>Les médicaments (contraceptifs, antidépresseurs, corticoïdes)</li>
+      <li>L'âge avancé (perte de muscle = baisse du métabolisme)</li>
+    </ul>
+    <p>Pour un suivi personnalisé, consulte un <strong>diététicien-nutritionniste</strong> ou un <strong>médecin du sport</strong>.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

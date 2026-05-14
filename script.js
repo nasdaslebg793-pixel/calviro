@@ -1811,3 +1811,556 @@ function cmReset() {
   $('cm-jeu').style.display = 'none';
   $('cm-resultats').style.display = 'none';
 }
+
+// ---------- 31. PLUS-VALUE IMMOBILIÈRE ----------
+
+function calcPlusValue() {
+  const prixAchat = parseFloat($('pv-achat').value);
+  const fraisAchat = parseFloat($('pv-frais-achat').value) || 0;
+  const travaux = parseFloat($('pv-travaux').value) || 0;
+  const prixVente = parseFloat($('pv-vente').value);
+  const fraisVente = parseFloat($('pv-frais-vente').value) || 0;
+  const annees = parseInt($('pv-annees').value, 10);
+  const residence = $('pv-residence').value;
+
+  if (isNaN(prixAchat) || isNaN(prixVente) || isNaN(annees)) {
+    showResult('pv-result', '<div class="note">⚠ Remplis tous les champs obligatoires.</div>');
+    return;
+  }
+
+  // Prix de revient = achat + frais (forfait 7,5% si non détaillés) + travaux (forfait 15% si détention >5 ans)
+  const prixRevient = prixAchat + fraisAchat + travaux;
+  const prixNetVendeur = prixVente - fraisVente;
+  const plusValueBrute = prixNetVendeur - prixRevient;
+
+  if (residence === 'principale') {
+    showResult('pv-result', `
+      <div class="result-label">Résidence principale = exonération totale</div>
+      <div class="result-value">${formatEur(Math.max(0, plusValueBrute))}</div>
+      <div class="result-detail">
+        <div class="result-detail-row"><span>Plus-value brute</span><strong>${formatEur(plusValueBrute)}</strong></div>
+        <div class="result-detail-row"><span>Impôt sur la plus-value</span><strong style="color:#10b981;">0 € (exonéré)</strong></div>
+        <div class="result-detail-row"><span>Tu encaisses</span><strong>${formatEur(prixNetVendeur)}</strong></div>
+      </div>
+      <div class="note">✓ La vente de la résidence principale est totalement exonérée d'impôt sur la plus-value (article 150 U du CGI).</div>
+    `);
+    return;
+  }
+
+  if (plusValueBrute <= 0) {
+    showResult('pv-result', `
+      <div class="result-label">Moins-value (perte)</div>
+      <div class="result-value" style="color:#dc2626;">${formatEur(plusValueBrute)}</div>
+      <div class="note">Aucune imposition. Une moins-value sur l'immobilier ne se reporte pas sur d'autres revenus.</div>
+    `);
+    return;
+  }
+
+  // Abattements pour durée de détention
+  function abattementIR(annees) {
+    if (annees < 6) return 0;
+    if (annees < 22) return Math.min(1, (annees - 5) * 0.06);
+    return 1;
+  }
+  function abattementPS(annees) {
+    if (annees < 6) return 0;
+    if (annees < 22) return (annees - 5) * 0.0165;
+    if (annees < 30) return (22 - 5) * 0.0165 + 0.016 + (annees - 22) * 0.09;
+    return 1;
+  }
+
+  const abatIR = abattementIR(annees);
+  const abatPS = abattementPS(annees);
+  const pvImposableIR = plusValueBrute * (1 - abatIR);
+  const pvImposablePS = plusValueBrute * (1 - abatPS);
+  const ir = pvImposableIR * 0.19;
+  const ps = pvImposablePS * 0.172;
+  
+  // Surtaxe pour grosses plus-values
+  let surtaxe = 0;
+  if (pvImposableIR > 50000) {
+    if (pvImposableIR < 60000) surtaxe = (pvImposableIR - 50000) * 0.02;
+    else if (pvImposableIR < 100000) surtaxe = pvImposableIR * 0.02;
+    else if (pvImposableIR < 110000) surtaxe = pvImposableIR * 0.03 - 1100;
+    else if (pvImposableIR < 150000) surtaxe = pvImposableIR * 0.03;
+    else if (pvImposableIR < 160000) surtaxe = pvImposableIR * 0.04 - 1500;
+    else if (pvImposableIR < 250000) surtaxe = pvImposableIR * 0.04;
+    else if (pvImposableIR < 260000) surtaxe = pvImposableIR * 0.05 - 2500;
+    else surtaxe = pvImposableIR * 0.06 - 5100;
+    surtaxe = Math.max(0, surtaxe);
+  }
+
+  const totalImpot = ir + ps + surtaxe;
+  const netVendeur = prixNetVendeur - totalImpot;
+
+  showResult('pv-result', `
+    <div class="result-label">Plus-value imposable et net après impôts</div>
+    <div class="result-value">${formatEur(plusValueBrute - totalImpot)} <span class="unit">net après impôts</span></div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Plus-value brute</span><strong>${formatEur(plusValueBrute)}</strong></div>
+      <div class="result-detail-row"><span>Abattement IR (durée ${annees} ans)</span><strong>${formatNum(abatIR * 100, 1)} %</strong></div>
+      <div class="result-detail-row"><span>Abattement prélèv. sociaux</span><strong>${formatNum(abatPS * 100, 1)} %</strong></div>
+      <div class="result-detail-row"><span>Impôt sur le revenu (19%)</span><strong>${formatEur(ir)}</strong></div>
+      <div class="result-detail-row"><span>Prélèvements sociaux (17,2%)</span><strong>${formatEur(ps)}</strong></div>
+      ${surtaxe > 0 ? `<div class="result-detail-row"><span>Surtaxe (>50k€)</span><strong>${formatEur(surtaxe)}</strong></div>` : ''}
+      <div class="result-detail-row"><span><strong>Total impôts à payer</strong></span><strong>${formatEur(totalImpot)}</strong></div>
+      <div class="result-detail-row"><span><strong>Net reçu par le vendeur</strong></span><strong>${formatEur(netVendeur)}</strong></div>
+    </div>
+    <div class="note">${annees >= 22 ? '✓ Exonération IR atteinte (22 ans).' : ''} ${annees >= 30 ? '✓ Exonération totale (30 ans).' : 'Exonération totale à 30 ans.'}</div>
+  `);
+}
+
+// ---------- 32. INDEMNITÉ DE LICENCIEMENT ----------
+
+function calcIndemniteLicenciement() {
+  const salaire = parseFloat($('lic-salaire').value);
+  const anciennete = parseFloat($('lic-anciennete').value);
+  const motif = $('lic-motif').value;
+
+  if (isNaN(salaire) || isNaN(anciennete) || salaire <= 0) {
+    showResult('lic-result', '<div class="note">⚠ Remplis le salaire et l\'ancienneté.</div>');
+    return;
+  }
+
+  if (anciennete < 0.66) {
+    showResult('lic-result', `
+      <div class="result-label">Aucune indemnité légale</div>
+      <div class="result-value">0 €</div>
+      <div class="note">⚠ L'indemnité légale de licenciement nécessite au moins <strong>8 mois d'ancienneté</strong> (depuis 2017). Tu n'en bénéficies pas. Toutefois, ta convention collective peut prévoir mieux.</div>
+    `);
+    return;
+  }
+
+  // Indemnité légale: 1/4 mois par année pour les 10 premières, 1/3 mois au-delà
+  let indemniteLegale;
+  if (anciennete <= 10) {
+    indemniteLegale = salaire * (1/4) * anciennete;
+  } else {
+    indemniteLegale = salaire * (1/4) * 10 + salaire * (1/3) * (anciennete - 10);
+  }
+
+  let texte = '';
+  if (motif === 'economique') {
+    texte = '<strong>Licenciement économique</strong> : ton indemnité légale ci-dessous. Ta convention collective peut prévoir des montants plus favorables. Tu as aussi droit au CSP (Contrat de Sécurisation Professionnelle) avec 75% de ton ancien salaire pendant 12 mois.';
+  } else if (motif === 'cause_reelle') {
+    texte = '<strong>Cause réelle et sérieuse</strong> : indemnité légale calculée. Si le licenciement est jugé sans cause réelle aux prud\'hommes, indemnités supplémentaires possibles (barème Macron : 0,5 à 20 mois selon ancienneté).';
+  } else {
+    texte = '<strong>Faute grave/lourde</strong> : aucune indemnité due par l\'employeur. Tu peux contester aux prud\'hommes si tu estimes la qualification injustifiée.';
+    indemniteLegale = 0;
+  }
+
+  showResult('lic-result', `
+    <div class="result-label">Indemnité légale minimum</div>
+    <div class="result-value">${formatEur(indemniteLegale)}</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Salaire mensuel de référence</span><strong>${formatEur(salaire)}</strong></div>
+      <div class="result-detail-row"><span>Ancienneté</span><strong>${formatNum(anciennete, 1)} ans</strong></div>
+      <div class="result-detail-row"><span>Calcul</span><strong>${anciennete <= 10 ? '1/4 mois × ancienneté' : '1/4 × 10 ans + 1/3 × surplus'}</strong></div>
+    </div>
+    <div class="note">${texte}</div>
+    <div class="note" style="margin-top:8px;">⚠ Vérifie ta <strong>convention collective</strong> : elle peut prévoir une indemnité plus favorable. L'indemnité conventionnelle s'applique si elle est supérieure à l'indemnité légale.</div>
+  `);
+}
+
+// ---------- 33. SALAIRE CHARGÉ EMPLOYEUR ----------
+
+function calcSalaireCharge() {
+  const brut = parseFloat($('sch-brut').value);
+  const statut = $('sch-statut').value;
+
+  if (isNaN(brut) || brut <= 0) {
+    showResult('sch-result', '<div class="note">⚠ Indique le salaire brut.</div>');
+    return;
+  }
+
+  let chargesPatTaux, chargesSalTaux;
+  if (statut === 'cadre') {
+    chargesPatTaux = 0.45; // ~45%
+    chargesSalTaux = 0.25;
+  } else if (statut === 'non-cadre') {
+    chargesPatTaux = 0.42;
+    chargesSalTaux = 0.22;
+  } else { // fonction publique
+    chargesPatTaux = 0.74; // beaucoup plus élevées (pension civile)
+    chargesSalTaux = 0.15;
+  }
+
+  const chargesPat = brut * chargesPatTaux;
+  const chargesSal = brut * chargesSalTaux;
+  const coutEmployeur = brut + chargesPat;
+  const salaireNet = brut - chargesSal;
+
+  const annuelBrut = brut * 12;
+  const annuelCoutEmployeur = coutEmployeur * 12;
+  const annuelNet = salaireNet * 12;
+
+  showResult('sch-result', `
+    <div class="result-label">Coût total employeur (super-brut)</div>
+    <div class="result-value">${formatEur(coutEmployeur)} <span class="unit">/ mois</span></div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Salaire brut affiché</span><strong>${formatEur(brut)}</strong></div>
+      <div class="result-detail-row"><span>Charges patronales (${Math.round(chargesPatTaux*100)}%)</span><strong>+${formatEur(chargesPat)}</strong></div>
+      <div class="result-detail-row"><span><strong>Coût employeur mensuel</strong></span><strong>${formatEur(coutEmployeur)}</strong></div>
+      <div class="result-detail-row"><span>Salaire net (salarié reçoit)</span><strong>${formatEur(salaireNet)}</strong></div>
+      <div class="result-detail-row"><span>Charges salariales (${Math.round(chargesSalTaux*100)}%)</span><strong>−${formatEur(chargesSal)}</strong></div>
+      <div class="result-detail-row"><span>Coût annuel total employeur</span><strong>${formatEur(annuelCoutEmployeur)}</strong></div>
+      <div class="result-detail-row"><span>Annuel net pour le salarié</span><strong>${formatEur(annuelNet)}</strong></div>
+      <div class="result-detail-row"><span>Ratio coût employeur / net salarié</span><strong>${formatNum(coutEmployeur / salaireNet, 2)}x</strong></div>
+    </div>
+    <div class="note">Sur ${formatEur(coutEmployeur)} dépensés par l'entreprise, le salarié touche ${formatEur(salaireNet)} net. La différence (${formatEur(coutEmployeur - salaireNet)}) finance la sécu, retraite, chômage, formation.</div>
+  `);
+}
+
+// ---------- 34. TVA INVERSE (TTC → HT) ----------
+
+function calcTVAInverse() {
+  const ttc = parseFloat($('tvi-ttc').value);
+  const taux = parseFloat($('tvi-taux').value);
+
+  if (isNaN(ttc) || isNaN(taux) || ttc < 0) {
+    showResult('tvi-result', '<div class="note">⚠ Remplis le montant TTC et le taux.</div>');
+    return;
+  }
+
+  const tauxRatio = 1 + taux / 100;
+  const ht = ttc / tauxRatio;
+  const tva = ttc - ht;
+
+  showResult('tvi-result', `
+    <div class="result-label">Montant Hors Taxes</div>
+    <div class="result-value">${formatEur(ht)} HT</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Montant TTC saisi</span><strong>${formatEur(ttc)}</strong></div>
+      <div class="result-detail-row"><span>Taux TVA</span><strong>${formatNum(taux, 1)} %</strong></div>
+      <div class="result-detail-row"><span>Montant de TVA</span><strong>${formatEur(tva)}</strong></div>
+      <div class="result-detail-row"><span>Vérification : HT × (1+${formatNum(taux,1)}%)</span><strong>${formatEur(ht * tauxRatio)}</strong></div>
+    </div>
+    <div class="note">Formule : HT = TTC ÷ (1 + taux/100). À l'inverse, pour calculer un TTC depuis un HT, utilise notre <a href="facture.html" style="color:var(--text);">calculateur de facture</a>.</div>
+  `);
+}
+
+// ---------- 35. CALORIES QUOTIDIENNES (BMR/TDEE) ----------
+
+function calcCalories() {
+  const sexe = $('cal-sexe').value;
+  const poids = parseFloat($('cal-poids').value);
+  const taille = parseFloat($('cal-taille').value);
+  const age = parseInt($('cal-age').value, 10);
+  const activite = parseFloat($('cal-activite').value);
+
+  if (isNaN(poids) || isNaN(taille) || isNaN(age) || poids <= 0 || taille <= 0 || age <= 0) {
+    showResult('cal-result', '<div class="note">⚠ Remplis tous les champs.</div>');
+    return;
+  }
+
+  // Formule Mifflin-St Jeor (plus précise que Harris-Benedict)
+  let bmr;
+  if (sexe === 'homme') {
+    bmr = 10 * poids + 6.25 * taille - 5 * age + 5;
+  } else {
+    bmr = 10 * poids + 6.25 * taille - 5 * age - 161;
+  }
+
+  const tdee = bmr * activite;
+
+  const perte = tdee - 500;
+  const perteRapide = tdee - 750;
+  const prise = tdee + 300;
+  const priseRapide = tdee + 500;
+
+  showResult('cal-result', `
+    <div class="result-label">Ton besoin calorique quotidien (TDEE)</div>
+    <div class="result-value">${formatNum(tdee, 0)} <span class="unit">kcal/jour</span></div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Métabolisme de base (BMR)</span><strong>${formatNum(bmr, 0)} kcal</strong></div>
+      <div class="result-detail-row"><span>Multiplicateur d'activité</span><strong>×${activite}</strong></div>
+      <div class="result-detail-row"><span>Besoin si maintien du poids</span><strong>${formatNum(tdee, 0)} kcal</strong></div>
+      <div class="result-detail-row"><span>Perte modérée (~0,5 kg/sem)</span><strong>${formatNum(perte, 0)} kcal</strong></div>
+      <div class="result-detail-row"><span>Perte rapide (~0,75 kg/sem)</span><strong>${formatNum(perteRapide, 0)} kcal</strong></div>
+      <div class="result-detail-row"><span>Prise de masse (~+0,3 kg/sem)</span><strong>${formatNum(prise, 0)} kcal</strong></div>
+      <div class="result-detail-row"><span>Prise rapide (avec musculation)</span><strong>${formatNum(priseRapide, 0)} kcal</strong></div>
+    </div>
+    <div class="note">Calcul Mifflin-St Jeor (référence en nutrition). Pour un suivi précis, consulte un diététicien-nutritionniste.</div>
+  `);
+}
+
+// ---------- 36. ALLURE DE COURSE ----------
+
+function calcAllure() {
+  const mode = $('all-mode').value;
+  const distance = parseFloat($('all-distance').value);
+
+  if (isNaN(distance) || distance <= 0) {
+    showResult('all-result', '<div class="note">⚠ Indique la distance.</div>');
+    return;
+  }
+
+  let tempsTotalSec, paceSec, vitesse;
+
+  if (mode === 'temps') {
+    const h = parseInt($('all-h').value, 10) || 0;
+    const m = parseInt($('all-m').value, 10) || 0;
+    const s = parseInt($('all-s').value, 10) || 0;
+    tempsTotalSec = h * 3600 + m * 60 + s;
+    if (tempsTotalSec === 0) {
+      showResult('all-result', '<div class="note">⚠ Indique un temps.</div>');
+      return;
+    }
+    paceSec = tempsTotalSec / distance;
+    vitesse = (distance * 3600) / tempsTotalSec;
+  } else {
+    // Mode: tu donnes l'allure, on calcule le temps total
+    const pm = parseInt($('all-pm').value, 10) || 0;
+    const ps = parseInt($('all-ps').value, 10) || 0;
+    paceSec = pm * 60 + ps;
+    if (paceSec === 0) {
+      showResult('all-result', '<div class="note">⚠ Indique une allure.</div>');
+      return;
+    }
+    tempsTotalSec = paceSec * distance;
+    vitesse = 3600 / paceSec;
+  }
+
+  function fmtTemps(s) {
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const sec = Math.round(s % 60);
+    if (h > 0) return `${h}h${String(m).padStart(2, '0')}min${String(sec).padStart(2, '0')}s`;
+    return `${m}min${String(sec).padStart(2, '0')}s`;
+  }
+  function fmtPace(s) {
+    const m = Math.floor(s / 60);
+    const sec = Math.round(s % 60);
+    return `${m}:${String(sec).padStart(2, '0')}`;
+  }
+
+  // Prédictions pour distances classiques avec ce pace
+  const predictions = [
+    { d: 5, n: '5 km' },
+    { d: 10, n: '10 km' },
+    { d: 21.0975, n: 'Semi-marathon' },
+    { d: 42.195, n: 'Marathon' }
+  ];
+  let predictHtml = '';
+  predictions.forEach(p => {
+    if (Math.abs(p.d - distance) > 0.1) {
+      predictHtml += `<div class="result-detail-row"><span>${p.n}</span><strong>${fmtTemps(paceSec * p.d)}</strong></div>`;
+    }
+  });
+
+  showResult('all-result', `
+    <div class="result-label">Allure / Pace</div>
+    <div class="result-value">${fmtPace(paceSec)} <span class="unit">/ km</span></div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Distance</span><strong>${formatNum(distance, 2)} km</strong></div>
+      <div class="result-detail-row"><span>Temps total</span><strong>${fmtTemps(tempsTotalSec)}</strong></div>
+      <div class="result-detail-row"><span>Vitesse moyenne</span><strong>${formatNum(vitesse, 1)} km/h</strong></div>
+      <div class="result-detail-row"><span style="font-weight:600; padding-top:8px;">Estimation à allure constante :</span><strong></strong></div>
+      ${predictHtml}
+    </div>
+    <div class="note">Les prédictions assument une allure constante. En pratique, ton temps réel sur des distances longues sera un peu plus lent (méthode de Riegel : T₂ = T₁ × (D₂/D₁)^1.06).</div>
+  `);
+}
+
+function allureRender() {
+  const mode = $('all-mode').value;
+  $('all-temps-block').style.display = mode === 'temps' ? 'block' : 'none';
+  $('all-pace-block').style.display = mode === 'pace' ? 'block' : 'none';
+}
+
+// ---------- 37. DATE D'OVULATION ----------
+
+function calcOvulation() {
+  const dateStr = $('ovu-date').value;
+  const cycle = parseInt($('ovu-cycle').value, 10) || 28;
+
+  if (!dateStr) {
+    showResult('ovu-result', '<div class="note">⚠ Indique la date des dernières règles.</div>');
+    return;
+  }
+
+  const ddr = new Date(dateStr);
+  // Ovulation = J (cycle - 14) après le 1er jour des règles
+  const ovulation = new Date(ddr.getTime() + (cycle - 14) * 24 * 60 * 60 * 1000);
+  // Période fertile = 5 jours avant ovulation à 1 jour après
+  const fertilDebut = new Date(ovulation.getTime() - 5 * 24 * 60 * 60 * 1000);
+  const fertilFin = new Date(ovulation.getTime() + 1 * 24 * 60 * 60 * 1000);
+  // Prochaines règles = DDR + cycle
+  const prochainesRegles = new Date(ddr.getTime() + cycle * 24 * 60 * 60 * 1000);
+
+  const fmt = d => d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+  const today = new Date();
+  const joursAvantOvu = Math.ceil((ovulation - today) / (1000 * 60 * 60 * 24));
+  const joursAvantRegles = Math.ceil((prochainesRegles - today) / (1000 * 60 * 60 * 24));
+
+  let statut;
+  if (today >= fertilDebut && today <= fertilFin) {
+    statut = '🌸 Tu es actuellement dans ta période fertile.';
+  } else if (today < fertilDebut) {
+    statut = `📅 Période fertile dans ${Math.ceil((fertilDebut - today) / (1000*60*60*24))} jour(s).`;
+  } else {
+    statut = '📅 Période fertile passée pour ce cycle.';
+  }
+
+  showResult('ovu-result', `
+    <div class="result-label">Date d'ovulation estimée</div>
+    <div class="result-value" style="font-size:22px;">${fmt(ovulation)}</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Période fertile</span><strong>du ${fmt(fertilDebut)} au ${fmt(fertilFin)}</strong></div>
+      <div class="result-detail-row"><span>Prochaines règles estimées</span><strong>${fmt(prochainesRegles)}</strong></div>
+      <div class="result-detail-row"><span>Jours avant ovulation</span><strong>${joursAvantOvu >= 0 ? joursAvantOvu + ' jours' : 'Déjà passée'}</strong></div>
+      <div class="result-detail-row"><span>Jours avant prochaines règles</span><strong>${joursAvantRegles >= 0 ? joursAvantRegles + ' jours' : 'En retard'}</strong></div>
+    </div>
+    <div class="note">${statut}</div>
+    <div class="note" style="margin-top:8px;">⚠ Estimation basée sur un cycle régulier. La date réelle d'ovulation peut varier de ±3 jours. Pour un suivi fiable, utilise des tests d'ovulation ou la courbe de température.</div>
+  `);
+}
+
+// ---------- 38. POURBOIRE / PARTAGE ADDITION ----------
+
+function calcPourboire() {
+  const addition = parseFloat($('pb-addition').value);
+  const pourboirePct = parseFloat($('pb-pct').value) || 0;
+  const nbPersonnes = parseInt($('pb-personnes').value, 10) || 1;
+
+  if (isNaN(addition) || addition <= 0) {
+    showResult('pb-result', '<div class="note">⚠ Indique le montant de l\'addition.</div>');
+    return;
+  }
+
+  const pourboire = addition * (pourboirePct / 100);
+  const total = addition + pourboire;
+  const parPersonne = total / nbPersonnes;
+  const pourboireParPersonne = pourboire / nbPersonnes;
+
+  showResult('pb-result', `
+    <div class="result-label">Par personne (${nbPersonnes})</div>
+    <div class="result-value">${formatEur(parPersonne)}</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Addition initiale</span><strong>${formatEur(addition)}</strong></div>
+      <div class="result-detail-row"><span>Pourboire (${formatNum(pourboirePct, 0)}%)</span><strong>${formatEur(pourboire)}</strong></div>
+      <div class="result-detail-row"><span><strong>Total à payer</strong></span><strong>${formatEur(total)}</strong></div>
+      <div class="result-detail-row"><span>Par personne (sans pourboire)</span><strong>${formatEur(addition / nbPersonnes)}</strong></div>
+      <div class="result-detail-row"><span>Pourboire par personne</span><strong>${formatEur(pourboireParPersonne)}</strong></div>
+    </div>
+    ${pourboirePct === 0 ? '<div class="note">💡 En France, le pourboire n\'est pas obligatoire (service inclus dans la note). Aux USA : 15-20 % attendu.</div>' : ''}
+  `);
+}
+
+// ---------- 39. QUANTITÉ DE PEINTURE ----------
+
+function calcPeinture() {
+  const surface = parseFloat($('pei-surface').value);
+  const couches = parseInt($('pei-couches').value, 10) || 2;
+  const rendement = parseFloat($('pei-rendement').value) || 10;
+
+  if (isNaN(surface) || surface <= 0) {
+    showResult('pei-result', '<div class="note">⚠ Indique la surface à peindre.</div>');
+    return;
+  }
+
+  const litresNecessaires = (surface * couches) / rendement;
+  const margeSecurite = litresNecessaires * 1.1; // +10% sécurité
+
+  // Calcul nombre de pots optimal
+  const formats = [
+    { taille: 10, nom: '10 L' },
+    { taille: 5, nom: '5 L' },
+    { taille: 2.5, nom: '2,5 L' },
+    { taille: 1, nom: '1 L' },
+    { taille: 0.5, nom: '0,5 L' }
+  ];
+
+  // Solution gloutonne avec marge de sécurité
+  let restant = margeSecurite;
+  const achat = [];
+  for (const f of formats) {
+    if (restant >= f.taille) {
+      const nb = Math.floor(restant / f.taille);
+      if (nb > 0) {
+        achat.push({ nb, nom: f.nom, taille: f.taille });
+        restant -= nb * f.taille;
+      }
+    }
+  }
+  if (restant > 0) {
+    // Ajouter un petit format pour couvrir
+    achat.push({ nb: 1, nom: '0,5 L', taille: 0.5 });
+  }
+
+  const achatHtml = achat.map(a => `${a.nb} pot${a.nb > 1 ? 's' : ''} de ${a.nom}`).join(', ');
+
+  showResult('pei-result', `
+    <div class="result-label">Peinture nécessaire</div>
+    <div class="result-value">${formatNum(litresNecessaires, 2)} L</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Surface à peindre</span><strong>${formatNum(surface, 1)} m²</strong></div>
+      <div class="result-detail-row"><span>Nombre de couches</span><strong>${couches}</strong></div>
+      <div class="result-detail-row"><span>Rendement de la peinture</span><strong>${formatNum(rendement, 1)} m²/L</strong></div>
+      <div class="result-detail-row"><span>Surface totale à couvrir</span><strong>${formatNum(surface * couches, 1)} m²</strong></div>
+      <div class="result-detail-row"><span>Quantité avec +10% sécurité</span><strong>${formatNum(margeSecurite, 2)} L</strong></div>
+      <div class="result-detail-row"><span>À acheter</span><strong>${achatHtml}</strong></div>
+    </div>
+    <div class="note">Le rendement varie selon la peinture (acrylique, glycéro), le support et la couleur (les couleurs foncées sur fond clair demandent +couches).</div>
+  `);
+}
+
+// ---------- 40. QR CODE GENERATOR ----------
+
+function genererQR() {
+  const texte = $('qr-texte').value;
+  if (!texte) {
+    showResult('qr-result', '<div class="note">⚠ Entre un texte, une URL, un email...</div>');
+    return;
+  }
+
+  if (typeof QRCode === 'undefined') {
+    showResult('qr-result', '<div class="note">⚠ Bibliothèque QR Code non chargée. Recharge la page.</div>');
+    return;
+  }
+
+  // Crée le QR code dans un div temp
+  const tempDiv = document.createElement('div');
+  new QRCode(tempDiv, {
+    text: texte,
+    width: 300,
+    height: 300,
+    colorDark: '#18181b',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.M
+  });
+
+  // Attendre la génération (lib utilise canvas ou img)
+  setTimeout(() => {
+    const img = tempDiv.querySelector('img') || tempDiv.querySelector('canvas');
+    let dataUrl;
+    if (img) {
+      if (img.tagName === 'CANVAS') {
+        dataUrl = img.toDataURL('image/png');
+      } else {
+        dataUrl = img.src;
+      }
+    }
+
+    let typeContenu = 'Texte';
+    if (texte.match(/^https?:\/\//i)) typeContenu = 'URL';
+    else if (texte.match(/^mailto:/i) || texte.includes('@')) typeContenu = 'Email';
+    else if (texte.match(/^tel:/i)) typeContenu = 'Téléphone';
+    else if (texte.match(/^wifi:/i)) typeContenu = 'Wi-Fi';
+
+    showResult('qr-result', `
+      <div style="text-align:center; padding:20px 0;">
+        <img src="${dataUrl}" alt="QR Code généré" style="max-width:300px; width:100%; border-radius:12px;">
+      </div>
+      <div class="result-detail">
+        <div class="result-detail-row"><span>Type de contenu</span><strong>${typeContenu}</strong></div>
+        <div class="result-detail-row"><span>Longueur</span><strong>${texte.length} caractères</strong></div>
+      </div>
+      <div class="btn-group">
+        <a href="${dataUrl}" download="qrcode.png" class="btn">📥 Télécharger PNG</a>
+      </div>
+      <div class="note">Le QR code est généré localement, ton texte n'est jamais envoyé sur un serveur.</div>
+    `);
+  }, 100);
+}

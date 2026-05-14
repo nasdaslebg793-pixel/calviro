@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indemnité de licenciement : calcul légal 2026 — Calviro</title>
+<meta name="description" content="Calcule ton indemnité de licenciement légale selon ton salaire et ton ancienneté. Économique, cause réelle, faute grave. Barème Macron.">
+<meta name="keywords" content="indemnité licenciement, calcul indemnité licenciement, indemnité légale, indemnité conventionnelle, barème Macron">
+<meta property="og:title" content="Calcul indemnité de licenciement 2026">
+<link rel="canonical" href="https://calviro.vercel.app/indemnite-licenciement.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>📄 Indemnité de licenciement</h1>
+      <p>Calcul de l'indemnité légale minimum selon ton ancienneté.</p>
+    </div>
+
+    <div class="field">
+      <label for="lic-salaire">Salaire mensuel brut de référence (€)</label>
+      <input type="number" id="lic-salaire" placeholder="2 500" min="0">
+    </div>
+
+    <div class="field">
+      <label for="lic-anciennete">Ancienneté (années, décimales OK : ex 4.5)</label>
+      <input type="number" id="lic-anciennete" placeholder="5" step="0.1" min="0">
+    </div>
+
+    <div class="field">
+      <label for="lic-motif">Motif du licenciement</label>
+      <select id="lic-motif">
+        <option value="cause_reelle">Cause réelle et sérieuse</option>
+        <option value="economique">Économique</option>
+        <option value="faute_grave">Faute grave ou lourde</option>
+      </select>
+    </div>
+
+    <button class="btn" onclick="calcIndemniteLicenciement()">Calculer mon indemnité</button>
+
+    <div class="result" id="lic-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>L'indemnité légale : qui y a droit ?</h2>
+    <p>Tout salarié <strong>en CDI</strong> licencié <strong>pour motif autre que faute grave ou lourde</strong> a droit à une <strong>indemnité légale de licenciement</strong>, à condition d'avoir au moins <strong>8 mois d'ancienneté continue</strong> dans l'entreprise (depuis l'ordonnance de septembre 2017).</p>
+
+    <h2>Le calcul officiel</h2>
+    <p>L'indemnité légale est calculée selon une formule progressive :</p>
+    <ul>
+      <li><strong>De 0 à 10 ans d'ancienneté</strong> : 1/4 de mois de salaire par année (soit 25 % du salaire mensuel)</li>
+      <li><strong>Au-delà de 10 ans</strong> : 1/3 de mois supplémentaire par année (soit 33 % du salaire mensuel)</li>
+    </ul>
+    <p>Exemples :</p>
+    <table>
+      <thead><tr><th>Ancienneté</th><th>Indemnité légale (en mois de salaire)</th></tr></thead>
+      <tbody>
+        <tr><td>1 an</td><td>0,25 mois</td></tr>
+        <tr><td>5 ans</td><td>1,25 mois</td></tr>
+        <tr><td>10 ans</td><td>2,5 mois</td></tr>
+        <tr><td>15 ans</td><td>4,17 mois</td></tr>
+        <tr><td>20 ans</td><td>5,83 mois</td></tr>
+        <tr><td>30 ans</td><td>9,17 mois</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Salaire de référence : comment le déterminer ?</h2>
+    <p>Le salaire de référence est le <strong>plus avantageux</strong> entre :</p>
+    <ul>
+      <li><strong>Moyenne des 12 derniers mois</strong> (salaire brut)</li>
+      <li><strong>Moyenne des 3 derniers mois</strong> (avec primes annuelles incluses au prorata)</li>
+    </ul>
+    <p>Tu peux donc choisir la moyenne la plus haute. Important si tu as eu une augmentation récente ou une prime exceptionnelle.</p>
+
+    <h2>Indemnité légale vs conventionnelle</h2>
+    <p>Ta <strong>convention collective</strong> peut prévoir une indemnité plus généreuse. Tu touches alors <strong>la plus élevée des deux</strong> (article L.1234-9 du Code du travail). Vérifie ta convention sur <a href="https://www.legifrance.gouv.fr" target="_blank" rel="noopener">légifrance.gouv.fr</a> ou demande à ton service RH.</p>
+    <p>Quelques exemples de conventions favorables :</p>
+    <ul>
+      <li><strong>Syntec (numérique, conseil)</strong> : indemnité supérieure au légal pour cadres après 2 ans</li>
+      <li><strong>Métallurgie</strong> : barème spécifique selon la catégorie</li>
+      <li><strong>Banque</strong> : indemnité significativement plus élevée</li>
+    </ul>
+
+    <h2>Les différents motifs de licenciement</h2>
+
+    <h3>Licenciement pour cause réelle et sérieuse</h3>
+    <p>Le plus courant. Motif personnel (insuffisance professionnelle, faute simple) ou disciplinaire. Donne droit à l'indemnité légale. Si tu contestes aux prud'hommes et que le licenciement est jugé "sans cause", tu peux toucher des <strong>indemnités supplémentaires</strong> selon le barème Macron (0,5 à 20 mois de salaire selon ancienneté).</p>
+
+    <h3>Licenciement économique</h3>
+    <p>Motif économique : difficultés économiques, mutations technologiques, réorganisation. Indemnité légale + bénéfices spécifiques :</p>
+    <ul>
+      <li><strong>CSP</strong> (Contrat de Sécurisation Professionnelle) : 75 % de ton ancien salaire pendant 12 mois, formation incluse</li>
+      <li><strong>Reclassement obligatoire</strong> avant le licenciement</li>
+      <li><strong>Priorité de réembauche</strong> pendant 12 mois après le licenciement</li>
+    </ul>
+
+    <h3>Faute grave ou lourde</h3>
+    <p>Faute d'une gravité telle qu'elle rend impossible le maintien du salarié dans l'entreprise. <strong>Aucune indemnité de licenciement n'est due</strong>. Tu perds aussi l'indemnité compensatrice de préavis (sauf pour faute simple).</p>
+    <p>Exemples reconnus comme faute grave : vol, violence, harcèlement, abandon de poste, ivresse au travail. Tu peux toujours <strong>contester aux prud'hommes</strong> si tu estimes la qualification injustifiée.</p>
+
+    <h2>Rupture conventionnelle : un autre cadre</h2>
+    <p>La <strong>rupture conventionnelle</strong> n'est pas un licenciement. Elle est négociée entre toi et l'employeur. L'indemnité minimum est l'indemnité légale, mais elle est <strong>souvent supérieure</strong> car négociable. Avantage : tu touches l'ARE chômage à 100 % (contrairement à une démission).</p>
+
+    <h2>Fiscalité de l'indemnité</h2>
+    <p>L'indemnité de licenciement est <strong>partiellement exonérée d'impôt</strong> sur le revenu. La partie exonérée correspond au plus élevé de :</p>
+    <ul>
+      <li>Le montant de l'indemnité légale ou conventionnelle</li>
+      <li>50 % du montant total de l'indemnité (dans la limite de 274 944 € en 2024)</li>
+      <li>Le double du salaire brut de l'année précédente (même plafond)</li>
+    </ul>
+    <p>La partie au-delà est imposée comme un revenu classique. Tu peux étaler l'imposition sur 4 ans avec le système du "quotient".</p>
+
+    <h2>Autres indemnités associées</h2>
+    <p>En plus de l'indemnité de licenciement, tu touches généralement :</p>
+    <ul>
+      <li><strong>Indemnité compensatrice de préavis</strong> si l'employeur te dispense de l'effectuer</li>
+      <li><strong>Indemnité compensatrice de congés payés</strong> pour les jours non pris</li>
+      <li><strong>Solde de tout compte</strong> : salaire dû pour le mois en cours</li>
+      <li><strong>Éventuelles primes</strong> : 13e mois au prorata, prime d'ancienneté</li>
+    </ul>
+
+    <h2>Contester un licenciement</h2>
+    <p>Si tu estimes ton licenciement injustifié, tu as <strong>12 mois</strong> pour saisir le Conseil des Prud'hommes (CPH). Procédure gratuite si tu te défends seul, ou avec l'aide d'un syndicat. Un avocat est recommandé pour les dossiers complexes.</p>
+    <p>Le barème Macron (en vigueur depuis 2017) plafonne les indemnités prud'homales :</p>
+    <ul>
+      <li>Ancienneté < 1 an : 1 mois max</li>
+      <li>5 ans : 1,5 à 6 mois</li>
+      <li>10 ans : 3 à 10 mois</li>
+      <li>20 ans : 3 à 15,5 mois</li>
+      <li>30 ans : 3 à 20 mois (plafond)</li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

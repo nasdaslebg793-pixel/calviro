@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Générateur de QR Code gratuit en ligne — Calviro</title>
+<meta name="description" content="Crée ton QR Code instantanément : URL, texte, email, téléphone, Wi-Fi. Téléchargement PNG gratuit. Génération locale 100% privée.">
+<meta name="keywords" content="générateur qr code, créer qr code, qr code gratuit, qr code en ligne, qr code wifi, qr code url">
+<meta property="og:title" content="Générateur de QR Code gratuit">
+<link rel="canonical" href="https://calviro.vercel.app/qr-code.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>📱 Générateur de QR Code</h1>
+      <p>URL, texte, email, Wi-Fi : tout convertir en QR Code.</p>
+    </div>
+
+    <div class="field">
+      <label for="qr-texte">Texte, URL, email...</label>
+      <textarea id="qr-texte" rows="3" placeholder="https://calviro.vercel.app ou n'importe quel texte"></textarea>
+    </div>
+
+    <button class="btn" onclick="genererQR()">Générer le QR Code</button>
+
+    <div class="result" id="qr-result"></div>
+
+    <div class="note" style="margin-top: 20px;">
+      <strong>Exemples à essayer :</strong><br>
+      • URL : <code>https://calviro.vercel.app</code><br>
+      • Email : <code>mailto:contact@exemple.com</code><br>
+      • Téléphone : <code>tel:+33612345678</code><br>
+      • Wi-Fi : <code>WIFI:T:WPA;S:MonReseau;P:MotDePasse;;</code>
+    </div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Qu'est-ce qu'un QR Code ?</h2>
+    <p>Un <strong>QR Code</strong> (Quick Response Code) est un code-barres 2D qui peut contenir bien plus d'informations qu'un code-barres classique. Inventé en 1994 par l'entreprise japonaise Denso Wave pour l'industrie automobile, il s'est démocratisé partout depuis 2010 avec les smartphones.</p>
+    <p>L'usage a explosé pendant la pandémie de Covid-19 (menus de restaurant sans contact, pass sanitaire), et il est aujourd'hui devenu un outil banal de la vie quotidienne.</p>
+
+    <h2>À quoi sert un QR Code ?</h2>
+    <ul>
+      <li><strong>Site web / URL</strong> : la personne scanne et ouvre directement la page</li>
+      <li><strong>Carte de visite</strong> : nom, email, téléphone tout en un</li>
+      <li><strong>Wi-Fi public</strong> : se connecter sans taper le mot de passe</li>
+      <li><strong>Menus de restaurant</strong> : afficher la carte sans support papier</li>
+      <li><strong>Tickets, billets</strong> : transport, événements</li>
+      <li><strong>Paiements</strong> (PayPal, Lydia, Lyf Pay)</li>
+      <li><strong>Géolocalisation</strong> : ouvrir un lieu sur Google Maps</li>
+      <li><strong>SMS pré-rempli</strong> ou appel rapide</li>
+      <li><strong>Inscription newsletter</strong></li>
+      <li><strong>Promo / marketing</strong> : campagnes avec tracking</li>
+    </ul>
+
+    <h2>Comment fonctionne notre générateur ?</h2>
+    <p>Tape ou colle ton contenu dans le champ, clique sur "Générer". Le QR Code apparaît immédiatement et tu peux le télécharger en PNG. Tout se passe <strong>localement dans ton navigateur</strong> — ton texte n'est jamais envoyé sur un serveur. Idéal pour des contenus sensibles.</p>
+
+    <h2>Formats de contenus supportés</h2>
+
+    <h3>URL / Lien web</h3>
+    <pre style="background:var(--bg-subtle); padding:8px; border-radius:6px; font-size:13px;">https://calviro.vercel.app</pre>
+    <p>Le scan ouvre directement le site dans le navigateur du téléphone.</p>
+
+    <h3>Email pré-rempli</h3>
+    <pre style="background:var(--bg-subtle); padding:8px; border-radius:6px; font-size:13px;">mailto:contact@exemple.com?subject=Bonjour&amp;body=Message</pre>
+    <p>Ouvre l'app mail avec destinataire, sujet et corps pré-remplis.</p>
+
+    <h3>Téléphone</h3>
+    <pre style="background:var(--bg-subtle); padding:8px; border-radius:6px; font-size:13px;">tel:+33612345678</pre>
+    <p>Ouvre l'app téléphone avec le numéro prêt à appeler.</p>
+
+    <h3>SMS pré-rempli</h3>
+    <pre style="background:var(--bg-subtle); padding:8px; border-radius:6px; font-size:13px;">sms:+33612345678?body=Bonjour</pre>
+
+    <h3>Wi-Fi (très utile)</h3>
+    <pre style="background:var(--bg-subtle); padding:8px; border-radius:6px; font-size:13px;">WIFI:T:WPA;S:NomDuReseau;P:MotDePasse;;</pre>
+    <p>Format magique : un scan et tes invités se connectent automatiquement à ton Wi-Fi. Très pratique pour cafés, hôtels, soirées chez soi.</p>
+
+    <h3>Géolocalisation</h3>
+    <pre style="background:var(--bg-subtle); padding:8px; border-radius:6px; font-size:13px;">geo:48.8566,2.3522</pre>
+
+    <h3>vCard (contact)</h3>
+    <pre style="background:var(--bg-subtle); padding:8px; border-radius:6px; font-size:13px;">BEGIN:VCARD
+VERSION:3.0
+N:Dupont;Jean
+TEL:+33612345678
+EMAIL:jean@exemple.com
+END:VCARD</pre>
+
+    <h2>Comment scanner un QR Code ?</h2>
+    <p>Aujourd'hui, plus besoin d'application dédiée. Les <strong>appareils photo natifs</strong> des smartphones modernes (iPhone depuis iOS 11, Android depuis Android 9) détectent automatiquement les QR Codes. Il suffit de :</p>
+    <ol>
+      <li>Ouvrir l'appareil photo</li>
+      <li>Pointer vers le QR Code</li>
+      <li>Une notification apparaît avec le contenu</li>
+      <li>Cliquer dessus pour ouvrir/exécuter</li>
+    </ol>
+
+    <h2>Sécurité : attention aux faux QR Codes</h2>
+    <p>Le <strong>"quishing"</strong> (QR phishing) est en hausse. Des malfaiteurs collent des faux QR Codes sur des stations de chargement, parkings, affichages publics. Ces codes mènent à des sites frauduleux pour voler tes infos. Précautions :</p>
+    <ul>
+      <li><strong>Vérifie l'URL</strong> avant de cliquer sur le lien proposé après scan</li>
+      <li><strong>Méfie-toi des QR Codes physiques</strong> sur du mobilier public (peuvent être recouverts d'un faux)</li>
+      <li><strong>Ne saisis pas tes infos bancaires</strong> sur un site atteint via QR Code suspect</li>
+      <li><strong>Pas de QR Code dans un email</strong> non sollicité</li>
+    </ul>
+
+    <h2>Versions et capacité</h2>
+    <p>Les QR Codes ont plusieurs versions selon la quantité d'information à stocker :</p>
+    <table>
+      <thead><tr><th>Version</th><th>Capacité (texte)</th><th>Usage typique</th></tr></thead>
+      <tbody>
+        <tr><td>Version 1</td><td>~25 caractères</td><td>URL courte</td></tr>
+        <tr><td>Version 10</td><td>~700 caractères</td><td>vCard complète</td></tr>
+        <tr><td>Version 25</td><td>~2 500 caractères</td><td>Longues données</td></tr>
+        <tr><td>Version 40 (max)</td><td>~4 296 caractères</td><td>Maximum théorique</td></tr>
+      </tbody>
+    </table>
+    <p>Plus tu mets d'infos, plus le QR Code devient dense et difficile à scanner. Pour les URLs, utilise un <strong>raccourci</strong> (bitly, tinyurl) si l'URL d'origine est très longue.</p>
+
+    <h2>Niveaux de correction d'erreur</h2>
+    <p>Les QR Codes intègrent un système de correction d'erreur pour rester lisibles même si une partie est abîmée ou tachée :</p>
+    <ul>
+      <li><strong>L (Low)</strong> : 7 % de récupération</li>
+      <li><strong>M (Medium)</strong> : 15 % — notre choix par défaut</li>
+      <li><strong>Q (Quartile)</strong> : 25 %</li>
+      <li><strong>H (High)</strong> : 30 % — utilisé quand on veut intégrer un logo au centre</li>
+    </ul>
+
+    <h2>Astuces design</h2>
+    <ul>
+      <li><strong>Contraste élevé</strong> : noir sur blanc est optimal. Évite les couleurs trop pâles.</li>
+      <li><strong>Marge blanche autour</strong> : indispensable pour que le scanner détecte les bords (au moins 4 modules de blanc)</li>
+      <li><strong>Taille minimum</strong> : 2 × 2 cm pour un scan facile à 30 cm, 5 × 5 cm pour un panneau distant</li>
+      <li><strong>Sur fond sombre</strong> : tu peux inverser (clair sur foncé) mais certains scanners ont du mal</li>
+      <li><strong>Logo central</strong> : possible avec niveau H, mais teste après ajout</li>
+    </ul>
+
+    <h2>QR Code dynamique vs statique</h2>
+    <ul>
+      <li><strong>QR Code statique</strong> (le nôtre) : le contenu est figé dans le code. Si tu changes ton URL, il faut générer un nouveau QR Code.</li>
+      <li><strong>QR Code dynamique</strong> (payant, type Bitly, QRCode Monkey) : le QR Code pointe vers une URL intermédiaire qui peut être modifiée. Utile pour le marketing (changer la cible sans réimprimer).</li>
+    </ul>
+    <p>Pour 95 % des usages personnels, le statique suffit largement. Notre outil produit du statique.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

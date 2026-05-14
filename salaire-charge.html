@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salaire chargé employeur : coût total d'un salarié 2026 — Calviro</title>
+<meta name="description" content="Calcule le coût total d'un salarié pour l'employeur : salaire brut + charges patronales. Cadre, non-cadre, fonction publique.">
+<meta name="keywords" content="salaire chargé, coût employeur, charges patronales, salaire super brut, coût salarié, calcul charges sociales">
+<meta property="og:title" content="Coût employeur d'un salarié — salaire chargé">
+<link rel="canonical" href="https://calviro.vercel.app/salaire-charge.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>💼 Salaire chargé employeur</h1>
+      <p>Le coût total d'un salarié pour l'entreprise.</p>
+    </div>
+
+    <div class="field">
+      <label for="sch-brut">Salaire brut mensuel (€)</label>
+      <input type="number" id="sch-brut" placeholder="2 500" min="0">
+    </div>
+
+    <div class="field">
+      <label for="sch-statut">Statut</label>
+      <select id="sch-statut">
+        <option value="non-cadre">Non-cadre (privé)</option>
+        <option value="cadre">Cadre (privé)</option>
+        <option value="fonction">Fonction publique</option>
+      </select>
+    </div>
+
+    <button class="btn" onclick="calcSalaireCharge()">Calculer le coût employeur</button>
+
+    <div class="result" id="sch-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Le salaire "super-brut" : la vraie facture</h2>
+    <p>Quand un salarié reçoit 1 800 € net sur son compte, son employeur a en réalité dépensé environ <strong>3 500 € par mois</strong> pour ce poste. C'est la magie du système de protection sociale français : à chaque salaire correspondent des cotisations patronales, salariales, et l'impôt à la source. Ce que l'employeur déboursé réellement s'appelle le <strong>salaire chargé</strong> (ou "super-brut", ou "coût employeur").</p>
+
+    <h2>Les 3 niveaux de salaire</h2>
+    <ul>
+      <li><strong>Coût employeur (super-brut)</strong> : la somme totale dépensée par l'entreprise = salaire brut + charges patronales</li>
+      <li><strong>Salaire brut</strong> : le montant inscrit sur le contrat de travail = ce qui apparaît en haut du bulletin de paie</li>
+      <li><strong>Salaire net</strong> : ce que le salarié reçoit réellement sur son compte = brut − charges salariales − impôt à la source</li>
+    </ul>
+
+    <h2>Décomposition typique pour 2 500 € brut/mois</h2>
+    <table>
+      <thead><tr><th>Statut</th><th>Coût employeur</th><th>Brut</th><th>Net</th></tr></thead>
+      <tbody>
+        <tr><td>Non-cadre privé</td><td>~3 550 €</td><td>2 500 €</td><td>~1 950 €</td></tr>
+        <tr><td>Cadre privé</td><td>~3 625 €</td><td>2 500 €</td><td>~1 875 €</td></tr>
+        <tr><td>Fonction publique</td><td>~4 350 €</td><td>2 500 €</td><td>~2 125 €</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Charges patronales : à quoi ça sert ?</h2>
+    <p>Les <strong>charges patronales</strong> (environ 42 % du brut en moyenne) financent les principaux postes de la Sécurité sociale française :</p>
+    <ul>
+      <li><strong>Cotisations maladie, maternité, invalidité, décès</strong> : ~13 % du brut</li>
+      <li><strong>Cotisations vieillesse (retraite de base)</strong> : ~8,5 % du brut</li>
+      <li><strong>Retraite complémentaire Agirc-Arrco</strong> : ~5 % (non-cadre) à 12 % (cadre)</li>
+      <li><strong>Allocations familiales</strong> : 3,45 % à 5,25 %</li>
+      <li><strong>Cotisations chômage</strong> : 4,05 % (employeur seul depuis 2018)</li>
+      <li><strong>Accidents du travail / maladies pro (AT/MP)</strong> : 1 à 3 % selon secteur</li>
+      <li><strong>Formation professionnelle</strong> : 1 % du brut</li>
+      <li><strong>FNAL, CPS, taxes diverses</strong> : ~3 à 5 %</li>
+    </ul>
+
+    <h2>Charges salariales : la part du salarié</h2>
+    <p>Les <strong>charges salariales</strong> (environ 22 % du brut pour un non-cadre, 25 % pour un cadre) sont prélevées directement sur le bulletin de paie :</p>
+    <ul>
+      <li><strong>Sécurité sociale</strong> : maladie, vieillesse, etc.</li>
+      <li><strong>Retraite complémentaire</strong></li>
+      <li><strong>CSG et CRDS</strong> : 9,2 % et 0,5 %</li>
+      <li><strong>APEC</strong> pour les cadres : 0,06 %</li>
+    </ul>
+
+    <h2>Le cas particulier de la fonction publique</h2>
+    <p>Les agents publics ont une structure de charges différente :</p>
+    <ul>
+      <li><strong>Pension civile</strong> : forte cotisation patronale (~75 %), c'est ce qui finance les pensions de retraite des fonctionnaires</li>
+      <li><strong>Pas de cotisation chômage</strong> (l'État est son propre assureur)</li>
+      <li><strong>Régime de retraite spécifique</strong></li>
+    </ul>
+    <p>Résultat : le coût employeur d'un fonctionnaire est en proportion plus élevé que dans le privé, mais avec un net plus avantageux pour le salarié.</p>
+
+    <h2>Pourquoi c'est utile de connaître ce chiffre ?</h2>
+
+    <h3>Pour les recruteurs / patrons</h3>
+    <p>Quand tu budgétises un poste, tu dois penser en <strong>coût employeur</strong>, pas en salaire brut. Une enveloppe de 60 000 € de coût annuel permet d'offrir environ <strong>42 000 € de brut</strong> à un non-cadre, ou <strong>40 000 € à un cadre</strong>. C'est le calcul critique pour la viabilité du poste.</p>
+
+    <h3>Pour les salariés / candidats</h3>
+    <p>Comprendre que tu "coûtes" 30 à 40 % plus cher que ton brut affiché aide à mieux négocier. Si l'entreprise refuse une augmentation, demande des avantages en nature (tickets resto, intéressement, indemnités km) qui sont moins chargés.</p>
+
+    <h3>Pour les freelances qui hésitent à se salarier</h3>
+    <p>Comparer ton chiffre d'affaires actuel au coût employeur équivalent t'aide à savoir si le passage en salarié vaut le coup. En général, pour avoir le même net qu'un freelance qui facture 1 000 €/jour, l'entreprise doit débourser environ <strong>14 000 €/mois</strong>.</p>
+
+    <h2>Aides et réductions pour l'employeur</h2>
+    <p>Plusieurs dispositifs réduisent les charges patronales :</p>
+    <ul>
+      <li><strong>Réduction Fillon (générale)</strong> : forte exonération entre 1 SMIC et 1,6 SMIC, dégressive jusqu'à 2,5 SMIC</li>
+      <li><strong>Crédit d'Impôt pour la Compétitivité et l'Emploi (CICE)</strong> : supprimé en 2019, remplacé par baisse pérenne des cotisations</li>
+      <li><strong>Apprentissage</strong> : exonérations importantes pour les contrats d'apprentissage</li>
+      <li><strong>Zones de revitalisation rurale ou urbaine</strong> : exonérations spécifiques</li>
+      <li><strong>Pôle emploi</strong> : aides à l'embauche pour publics spécifiques (jeunes, seniors, chômeurs longue durée)</li>
+    </ul>
+    <p>Une PME peut payer moins de charges qu'on ne le pense pour son premier salarié au SMIC, grâce au cumul de ces dispositifs.</p>
+
+    <h2>Limites du calcul</h2>
+    <p>Notre estimation utilise des <strong>taux moyens</strong>. Les taux exacts varient selon :</p>
+    <ul>
+      <li>La convention collective (mutuelle, prévoyance obligatoire)</li>
+      <li>Le secteur d'activité (taux AT/MP différent)</li>
+      <li>La taille de l'entreprise (seuils de cotisations)</li>
+      <li>Les avantages en nature</li>
+      <li>Les exonérations applicables (Fillon, ZRR, etc.)</li>
+    </ul>
+    <p>Pour un calcul exact, demande à un expert-comptable ou à un service de paie professionnel.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

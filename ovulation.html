@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Date d'ovulation : calcul du cycle et de la fenêtre fertile — Calviro</title>
+<meta name="description" content="Calcule ta date d'ovulation et ta période fertile selon ton cycle menstruel. Pour augmenter tes chances de concevoir ou suivre ton cycle.">
+<meta name="keywords" content="date ovulation, calcul ovulation, période fertile, cycle menstruel, calculer ovulation, calendrier fertilité">
+<meta property="og:title" content="Date d'ovulation et période fertile">
+<link rel="canonical" href="https://calviro.vercel.app/ovulation.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🌸 Date d'ovulation</h1>
+      <p>Période fertile et prochaines règles selon ton cycle.</p>
+    </div>
+
+    <div class="field">
+      <label for="ovu-date">Date du 1er jour des dernières règles</label>
+      <input type="date" id="ovu-date">
+    </div>
+
+    <div class="field">
+      <label for="ovu-cycle">Durée moyenne de ton cycle (jours)</label>
+      <input type="number" id="ovu-cycle" placeholder="28" min="21" max="40" value="28">
+    </div>
+
+    <button class="btn" onclick="calcOvulation()">Calculer mon ovulation</button>
+
+    <div class="result" id="ovu-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Le cycle menstruel : les 4 phases</h2>
+    <p>Le cycle menstruel féminin dure en moyenne <strong>28 jours</strong>, mais varie normalement entre 21 et 35 jours. Il est divisé en 4 phases :</p>
+
+    <h3>1. Phase menstruelle (jours 1-5)</h3>
+    <p>Les <strong>règles</strong>. La muqueuse utérine se détache, c'est ce qui provoque le saignement. Durée moyenne : 3 à 7 jours.</p>
+
+    <h3>2. Phase folliculaire (jours 1-13)</h3>
+    <p>Plusieurs follicules ovariens commencent à mûrir, mais un seul (le dominant) atteindra la maturité. L'utérus reconstitue sa muqueuse.</p>
+
+    <h3>3. Ovulation (jour 14 environ)</h3>
+    <p>Le follicule dominant libère un ovule. C'est l'<strong>ovulation</strong>. L'ovule est viable pendant 12-24 heures. C'est <strong>le moment de la conception possible</strong>.</p>
+
+    <h3>4. Phase lutéale (jours 15-28)</h3>
+    <p>Le corps jaune (ce qu'il reste du follicule) produit de la progestérone qui prépare l'utérus à une éventuelle implantation. Si la fécondation n'a pas lieu, le cycle recommence avec de nouvelles règles.</p>
+
+    <h2>Quand a lieu l'ovulation ?</h2>
+    <p>L'ovulation a lieu <strong>14 jours avant les prochaines règles</strong>, pas 14 jours après les dernières. C'est une différence cruciale pour les cycles non-réguliers de 28 jours :</p>
+    <ul>
+      <li>Cycle de 28 jours → ovulation au jour 14</li>
+      <li>Cycle de 30 jours → ovulation au jour 16</li>
+      <li>Cycle de 26 jours → ovulation au jour 12</li>
+      <li>Cycle de 35 jours → ovulation au jour 21</li>
+    </ul>
+    <p>La <strong>phase lutéale</strong> (entre l'ovulation et les règles) est relativement stable (14 jours environ). C'est la <strong>phase folliculaire</strong> qui varie d'une femme à l'autre.</p>
+
+    <h2>La fenêtre fertile : 6 jours</h2>
+    <p>Tu n'es pas fertile uniquement le jour de l'ovulation. La <strong>fenêtre fertile</strong> dure environ 6 jours :</p>
+    <ul>
+      <li><strong>5 jours avant l'ovulation</strong> : les spermatozoïdes peuvent survivre jusqu'à 5 jours dans le mucus cervical favorable</li>
+      <li><strong>Le jour de l'ovulation</strong> : pic de fertilité</li>
+      <li><strong>1 jour après</strong> : l'ovule reste viable encore 12-24 h</li>
+    </ul>
+    <p>Pour <strong>maximiser les chances de conception</strong>, les rapports tous les 2 jours pendant la fenêtre fertile sont la stratégie recommandée.</p>
+
+    <h2>Signes physiques de l'ovulation</h2>
+    <p>Plusieurs signaux peuvent t'aider à repérer l'ovulation au-delà du calcul théorique :</p>
+    <ul>
+      <li><strong>Glaire cervicale</strong> : devient claire, élastique, filante (comme du blanc d'œuf) 2-3 jours avant l'ovulation</li>
+      <li><strong>Température basale</strong> : augmente de 0,3 à 0,5 °C juste après l'ovulation. Mesure tous les matins avant de te lever.</li>
+      <li><strong>Douleur ovulatoire ("Mittelschmerz")</strong> : douleur courte d'un côté du bas-ventre chez certaines femmes</li>
+      <li><strong>Sensibilité des seins</strong> légèrement augmentée</li>
+      <li><strong>Libido</strong> qui peut augmenter naturellement</li>
+      <li><strong>Léger saignement de mi-cycle</strong> chez certaines femmes (spotting ovulatoire)</li>
+    </ul>
+
+    <h2>Les tests d'ovulation</h2>
+    <p>Plus fiables que le calcul théorique, les <strong>tests d'ovulation urinaires</strong> détectent la montée de l'hormone LH 24-36 heures avant l'ovulation. Disponibles en pharmacie pour 15-30 € la boîte. Très utile en cas de cycles irréguliers.</p>
+    <p>Les <strong>moniteurs d'ovulation électroniques</strong> (genre Clearblue) sont plus chers (100-200 €) mais plus précis : ils détectent à la fois LH et œstrogènes pour donner plusieurs jours fertiles.</p>
+
+    <h2>Augmenter ses chances de concevoir</h2>
+    <ul>
+      <li><strong>Avoir des rapports tous les 2-3 jours</strong> tout au long du cycle, pas seulement en période fertile</li>
+      <li><strong>Maintenir un poids santé</strong> : un IMC entre 18,5 et 25 favorise l'ovulation régulière (voir notre <a href="imc.html">calculateur IMC</a>)</li>
+      <li><strong>Arrêter alcool et tabac</strong> au minimum 3 mois avant les tentatives</li>
+      <li><strong>Limiter le stress</strong> : un stress chronique peut perturber l'ovulation</li>
+      <li><strong>Acide folique</strong> : 400 µg/jour, dès l'arrêt de la contraception, jusqu'au 3e mois de grossesse</li>
+      <li><strong>Consulter</strong> si pas de grossesse après 12 mois d'essais réguliers (6 mois si > 35 ans)</li>
+    </ul>
+
+    <h2>L'ovulation ne marche pas chez tout le monde</h2>
+    <p>Certaines situations peuvent perturber ou supprimer l'ovulation :</p>
+    <ul>
+      <li><strong>SOPK (Syndrome des Ovaires Polykystiques)</strong> : ovulation irrégulière ou absente</li>
+      <li><strong>Aménorrhée fonctionnelle</strong> : poids trop bas, exercice excessif, stress majeur</li>
+      <li><strong>Endométriose</strong> : peut affecter l'ovulation et l'implantation</li>
+      <li><strong>Insuffisance ovarienne précoce</strong></li>
+      <li><strong>Hyperprolactinémie</strong></li>
+      <li><strong>Troubles thyroïdiens</strong></li>
+    </ul>
+    <p>En cas de cycle irrégulier persistant ou de difficulté à concevoir, consulte un gynécologue. Des examens simples (échographie, dosages hormonaux) permettent de faire un diagnostic.</p>
+
+    <h2>Méthode contraceptive ou suivi de fertilité ?</h2>
+    <p>Le calcul d'ovulation est utile pour <strong>essayer de concevoir</strong>, pas pour éviter une grossesse. Comme méthode contraceptive, le calcul du cycle a un <strong>taux d'échec de 24 %</strong> en pratique courante. Pour une contraception fiable, utilise des méthodes éprouvées (pilule, stérilet, préservatif, implant, etc.).</p>
+
+    <h2>Et après l'ovulation ?</h2>
+    <p>Si la conception a eu lieu, tu peux faire un test de grossesse <strong>environ 14 jours après l'ovulation</strong> (juste avant ou après la date prévue des règles). Pour estimer ta date d'accouchement, utilise notre <a href="accouchement.html">calculateur de DPA</a>.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

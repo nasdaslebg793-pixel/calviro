@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quantité de peinture nécessaire : calcul en litres — Calviro</title>
+<meta name="description" content="Calcule la quantité de peinture nécessaire pour ton chantier : surface, nombre de couches, rendement. Liste de pots à acheter.">
+<meta name="keywords" content="quantité peinture, calcul peinture, combien de peinture, rendement peinture, peinture mur, surface peinture">
+<meta property="og:title" content="Calcul quantité de peinture nécessaire">
+<link rel="canonical" href="https://calviro.vercel.app/peinture.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🎨 Quantité de peinture</h1>
+      <p>Combien de litres acheter pour ton chantier.</p>
+    </div>
+
+    <div class="field">
+      <label for="pei-surface">Surface à peindre (m²)</label>
+      <input type="number" id="pei-surface" placeholder="40" step="0.1" min="0">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="pei-couches">Nombre de couches</label>
+        <select id="pei-couches">
+          <option value="1">1 couche</option>
+          <option value="2" selected>2 couches (standard)</option>
+          <option value="3">3 couches (couleur intense, foncée)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="pei-rendement">Rendement (m²/L)</label>
+        <select id="pei-rendement">
+          <option value="8">8 m²/L (peinture épaisse)</option>
+          <option value="10" selected>10 m²/L (standard)</option>
+          <option value="12">12 m²/L (haute qualité)</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn" onclick="calcPeinture()">Calculer ma peinture</button>
+
+    <div class="result" id="pei-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Comment estimer une surface à peindre ?</h2>
+    <p>Avant de pouvoir calculer la quantité de peinture, il faut mesurer correctement la surface. Voici les formules pour les configurations courantes :</p>
+
+    <h3>Murs simples d'une pièce</h3>
+    <p><strong>Surface des murs = périmètre × hauteur</strong></p>
+    <p>Exemple pour une pièce de 4 m × 5 m avec une hauteur de 2,5 m :</p>
+    <ul>
+      <li>Périmètre = (4 + 5) × 2 = 18 m</li>
+      <li>Surface murs = 18 × 2,5 = <strong>45 m²</strong></li>
+    </ul>
+
+    <h3>Soustraire les ouvertures</h3>
+    <p>Pour être précis, retire la surface des portes et fenêtres :</p>
+    <ul>
+      <li>Une porte standard ≈ 2 m²</li>
+      <li>Une fenêtre standard ≈ 1,5 à 2 m²</li>
+      <li>Une baie vitrée ≈ 3 à 6 m²</li>
+    </ul>
+    <p>Pour une chambre standard avec 1 porte + 1 fenêtre : <strong>− 3,5 m²</strong> environ.</p>
+
+    <h3>Plafond</h3>
+    <p>Surface du plafond = longueur × largeur. Pour notre pièce de 4 × 5 m : <strong>20 m²</strong>.</p>
+
+    <h2>Le rendement de la peinture</h2>
+    <p>Le <strong>rendement</strong> indique combien de m² tu peux peindre avec 1 litre de peinture, pour une couche. Il varie selon plusieurs facteurs :</p>
+    <ul>
+      <li><strong>Type de peinture</strong> : acrylique (10-12 m²/L), glycéro (12-14 m²/L), peinture épaisse façade (6-8 m²/L)</li>
+      <li><strong>Type de support</strong> : un mur lisse "boit" moins qu'un mur rugueux ou poreux</li>
+      <li><strong>Méthode d'application</strong> : pistolet (rendement légèrement moins bon que rouleau), rouleau, pinceau</li>
+      <li><strong>Qualité de la peinture</strong> : les peintures premium couvrent mieux (plus d'opacité, moins de couches)</li>
+    </ul>
+    <p>Le rendement est inscrit sur le pot de peinture. <strong>10 m²/L</strong> est un standard de référence raisonnable.</p>
+
+    <h2>Combien de couches ?</h2>
+    <p>Le nombre de couches dépend de plusieurs facteurs :</p>
+    <ul>
+      <li><strong>1 couche</strong> : très rare, seulement si tu repasses la même couleur sur un mur déjà très bien préparé</li>
+      <li><strong>2 couches</strong> : le standard pour la plupart des chantiers de rafraîchissement</li>
+      <li><strong>3 couches ou plus</strong> : changement radical de couleur (passer du noir au blanc par exemple), couleurs très vives, peinture sur plâtre nu (sous-couche obligatoire en plus)</li>
+    </ul>
+    <p>Astuce : si tu changes radicalement de couleur, applique d'abord une <strong>sous-couche d'accrochage blanche</strong>. Tu auras besoin de moins de couches de finition après.</p>
+
+    <h2>Sous-couche : à ne pas oublier</h2>
+    <p>Pour des résultats professionnels, une <strong>sous-couche</strong> (ou primaire d'accrochage) est souvent recommandée :</p>
+    <ul>
+      <li>Sur du <strong>plâtre nu</strong> : indispensable (sinon la peinture est "bue")</li>
+      <li>Sur du <strong>bois</strong> : indispensable (sous-couche spécifique bois)</li>
+      <li>Sur un <strong>fond très foncé</strong> qu'on veut éclaircir</li>
+      <li>Sur des <strong>surfaces brillantes</strong> (carrelage, mélaminé) : sous-couche spéciale</li>
+    </ul>
+    <p>Pas besoin sur une peinture mate récente du même type que la nouvelle.</p>
+
+    <h2>Quels formats acheter ?</h2>
+    <p>Les pots de peinture courants en magasin de bricolage :</p>
+    <ul>
+      <li><strong>0,5 L et 1 L</strong> : retouches, petits objets</li>
+      <li><strong>2,5 L</strong> : une pièce moyenne (chambre), 1 couche</li>
+      <li><strong>5 L</strong> : 2 couches sur une chambre, ou 1 couche sur un grand salon</li>
+      <li><strong>10 L</strong> : grand chantier, plusieurs pièces</li>
+      <li><strong>15-20 L</strong> : façades, gros chantiers (généralement en seau plutôt qu'en pot)</li>
+    </ul>
+    <p>Astuce : il vaut mieux acheter <strong>un peu plus</strong> que pas assez. Tu auras toujours besoin d'un fond pour les retouches plus tard. Et si tu rachètes plus tard, le bain de peinture peut être légèrement différent (= démarcation visible).</p>
+
+    <h2>Préparer correctement avant de peindre</h2>
+    <p>La préparation prend autant de temps que la peinture elle-même, mais détermine 80 % du résultat final :</p>
+    <ol>
+      <li><strong>Nettoyer</strong> : époussetage, dégraissage si nécessaire (cuisine, plomberie)</li>
+      <li><strong>Boucher les trous</strong> et fissures (enduit de rebouchage)</li>
+      <li><strong>Poncer</strong> légèrement pour lisser et créer une accroche</li>
+      <li><strong>Protéger</strong> : sol, prises, plinthes, encadrements (bâche et scotch de masquage)</li>
+      <li><strong>Sous-couche</strong> si nécessaire</li>
+      <li><strong>Peindre</strong> : 2 couches avec respect du temps de séchage entre les deux (généralement 4-6 h)</li>
+    </ol>
+
+    <h2>Estimation budget peinture</h2>
+    <p>Prix moyens en France en 2026 :</p>
+    <ul>
+      <li><strong>Peinture entrée de gamme</strong> : 10-20 €/L</li>
+      <li><strong>Peinture moyenne gamme</strong> : 20-40 €/L</li>
+      <li><strong>Peinture haut de gamme</strong> (Farrow & Ball, Tollens) : 50-100 €/L</li>
+      <li><strong>Peinture spéciale</strong> (anti-humidité, magnétique, ardoise) : 30-80 €/L</li>
+    </ul>
+    <p>Une pièce moyenne (3 murs et plafond) coûte typiquement <strong>60-150 €</strong> en peinture seule. Prévois en plus rouleaux, manches, bâches, scotch, enduit (compter 30-50 €).</p>
+
+    <h2>Erreurs courantes</h2>
+    <ul>
+      <li>Sous-estimer la surface (oublier les soubassements, les couloirs)</li>
+      <li>Acheter le strict nécessaire sans marge → manque pour les retouches</li>
+      <li>Mélanger pots de bains différents → démarcations visibles</li>
+      <li>Ne pas faire la sous-couche → peinture "boit" et résultat médiocre</li>
+      <li>Peindre à des températures inadaptées (< 5 °C ou > 35 °C → mauvaise adhérence)</li>
+      <li>Peindre sur surface humide → cloques</li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plus-value immobilière : calcul des impôts à la revente — Calviro</title>
+<meta name="description" content="Calcul de la plus-value immobilière et des impôts à la revente : IR 19%, prélèvements sociaux 17.2%, abattements pour durée de détention, surtaxe.">
+<meta name="keywords" content="plus-value immobilière, calcul plus-value, impôt revente immobilier, abattement durée détention, taxe plus-value">
+<meta property="og:title" content="Plus-value immobilière — calcul des impôts">
+<link rel="canonical" href="https://calviro.vercel.app/plus-value-immobiliere.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>📊 Plus-value immobilière</h1>
+      <p>Impôts à la revente : IR, prélèvements sociaux, surtaxe.</p>
+    </div>
+
+    <div class="field">
+      <label for="pv-residence">Type de bien</label>
+      <select id="pv-residence">
+        <option value="locatif">Résidence secondaire / locatif</option>
+        <option value="principale">Résidence principale (exonérée)</option>
+      </select>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="pv-achat">Prix d'achat (€)</label>
+        <input type="number" id="pv-achat" placeholder="200 000" min="0">
+      </div>
+      <div class="field">
+        <label for="pv-frais-achat">Frais notaire achat (€)</label>
+        <input type="number" id="pv-frais-achat" placeholder="15 000" min="0" value="0">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="pv-travaux">Travaux justifiés (€)</label>
+      <input type="number" id="pv-travaux" placeholder="0" min="0" value="0">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="pv-vente">Prix de vente (€)</label>
+        <input type="number" id="pv-vente" placeholder="280 000" min="0">
+      </div>
+      <div class="field">
+        <label for="pv-frais-vente">Frais de vente (€)</label>
+        <input type="number" id="pv-frais-vente" placeholder="5 000" min="0" value="0">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="pv-annees">Durée de détention (années)</label>
+      <input type="number" id="pv-annees" placeholder="10" min="0" max="50">
+    </div>
+
+    <button class="btn" onclick="calcPlusValue()">Calculer la plus-value</button>
+
+    <div class="result" id="pv-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Qu'est-ce que la plus-value immobilière ?</h2>
+    <p>La <strong>plus-value immobilière</strong>, c'est la différence entre le prix de vente d'un bien et son prix d'achat. Si tu vends plus cher que tu n'as acheté, la différence est <strong>taxée</strong> — sauf cas particulier (résidence principale, exonération de durée, etc.).</p>
+
+    <h2>Le cas magique : la résidence principale</h2>
+    <p>La <strong>vente de la résidence principale est totalement exonérée</strong> d'impôt sur la plus-value (article 150 U du CGI). C'est l'une des plus belles "niches fiscales" françaises. Conditions : le bien doit être ta résidence effective au moment de la vente, ou tu dois l'avoir quittée depuis moins d'un an au moment de la mise en vente.</p>
+
+    <h2>Pour tous les autres biens : la taxation</h2>
+    <p>Pour une <strong>résidence secondaire</strong>, un <strong>investissement locatif</strong>, ou un <strong>terrain</strong>, la plus-value est imposée à :</p>
+    <ul>
+      <li><strong>19 % d'impôt sur le revenu</strong></li>
+      <li><strong>17,2 % de prélèvements sociaux</strong> (CSG + CRDS + cotisations)</li>
+      <li><strong>Surtaxe progressive</strong> de 2 à 6 % pour les plus-values supérieures à 50 000 €</li>
+    </ul>
+    <p>Total : <strong>36,2 %</strong> minimum sur la plus-value imposable. C'est lourd, mais des abattements pour durée de détention réduisent fortement la note.</p>
+
+    <h2>Les abattements pour durée de détention</h2>
+    <p>Plus tu gardes ton bien longtemps, moins tu paies. Voici les barèmes :</p>
+
+    <h3>Abattement sur l'impôt sur le revenu (IR)</h3>
+    <table>
+      <thead><tr><th>Années de détention</th><th>Abattement</th></tr></thead>
+      <tbody>
+        <tr><td>0 à 5 ans</td><td>0 %</td></tr>
+        <tr><td>6 à 21 ans</td><td>6 % par an</td></tr>
+        <tr><td>22e année</td><td>4 % la dernière année</td></tr>
+        <tr><td>22 ans et plus</td><td>100 % (exonération totale IR)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Abattement sur les prélèvements sociaux</h3>
+    <table>
+      <thead><tr><th>Années de détention</th><th>Abattement</th></tr></thead>
+      <tbody>
+        <tr><td>0 à 5 ans</td><td>0 %</td></tr>
+        <tr><td>6 à 21 ans</td><td>1,65 % par an</td></tr>
+        <tr><td>22e année</td><td>1,60 %</td></tr>
+        <tr><td>23 à 30 ans</td><td>9 % par an</td></tr>
+        <tr><td>30 ans et plus</td><td>100 % (exonération totale PS)</td></tr>
+      </tbody>
+    </table>
+    <p>Conclusion : <strong>exonération totale au bout de 22 ans pour l'IR</strong>, et <strong>30 ans pour les prélèvements sociaux</strong>.</p>
+
+    <h2>Calcul de la plus-value : étape par étape</h2>
+    <ol>
+      <li><strong>Prix de revient</strong> = prix d'achat + frais d'acquisition (forfait 7,5 % ou réel) + travaux justifiés (factures, ou forfait 15 % si détention >5 ans)</li>
+      <li><strong>Prix net vendeur</strong> = prix de vente − frais de vente (diagnostics, agence)</li>
+      <li><strong>Plus-value brute</strong> = prix net vendeur − prix de revient</li>
+      <li><strong>Plus-value imposable IR</strong> = plus-value brute × (1 − abattement IR)</li>
+      <li><strong>Plus-value imposable PS</strong> = plus-value brute × (1 − abattement PS)</li>
+      <li><strong>Impôts dus</strong> = (pv IR × 19 %) + (pv PS × 17,2 %) + surtaxe éventuelle</li>
+    </ol>
+
+    <h2>La surtaxe pour grosses plus-values</h2>
+    <p>Si ta plus-value imposable (après abattement IR) dépasse 50 000 €, une <strong>surtaxe progressive</strong> de 2 à 6 % s'ajoute. Elle vise principalement les grosses transactions et investisseurs aisés.</p>
+    <table>
+      <thead><tr><th>Plus-value imposable</th><th>Taux surtaxe</th></tr></thead>
+      <tbody>
+        <tr><td>50 000 à 100 000 €</td><td>2 %</td></tr>
+        <tr><td>100 000 à 150 000 €</td><td>3 %</td></tr>
+        <tr><td>150 000 à 200 000 €</td><td>4 %</td></tr>
+        <tr><td>200 000 à 250 000 €</td><td>5 %</td></tr>
+        <tr><td>> 250 000 €</td><td>6 %</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Autres cas d'exonération</h2>
+    <p>Au-delà de la résidence principale, tu peux être exonéré dans certaines situations :</p>
+    <ul>
+      <li><strong>Première cession d'un logement autre que résidence principale</strong>, si tu réinvestis tout ou partie dans l'achat d'une résidence principale dans les 24 mois</li>
+      <li><strong>Détention supérieure à 22 ans</strong> (IR) ou 30 ans (prélèvements sociaux)</li>
+      <li><strong>Prix de vente inférieur à 15 000 €</strong></li>
+      <li><strong>Retraités ou invalides</strong> aux revenus modestes</li>
+      <li><strong>Expropriation</strong></li>
+      <li><strong>Logement social ou en faveur du logement social</strong></li>
+    </ul>
+
+    <h2>Astuces pour réduire la plus-value</h2>
+    <ul>
+      <li><strong>Conserver les factures de travaux</strong> : déductibles au réel (sinon forfait 15 %)</li>
+      <li><strong>Détaillerer les frais d'acquisition</strong> : si supérieurs à 7,5 %, mieux vaut le réel</li>
+      <li><strong>Vendre après 22 ans</strong> si possible : plus d'IR</li>
+      <li><strong>Vendre la résidence principale en dernier</strong> dans ton parcours patrimonial</li>
+      <li><strong>Donation puis vente</strong> : remet le compteur à zéro pour les abattements (les enfants paient l'IFI/donation mais pas la plus-value sur la durée de détention parent)</li>
+    </ul>
+
+    <h2>Démarches</h2>
+    <p>La plus-value est <strong>déclarée et payée par le notaire</strong> au moment de la vente. Le notaire fait le calcul et prélève l'impôt sur le prix de vente avant de te verser le solde. Tu ne dois pas faire de déclaration séparée sur ta déclaration de revenus l'année suivante (sauf pour la surtaxe dans certains cas). C'est simple administrativement.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
