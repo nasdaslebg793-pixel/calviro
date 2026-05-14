@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calcul mental : entraînement chronométré gratuit — Calviro</title>
+<meta name="description" content="Jeu de calcul mental chronométré pour entraîner ton cerveau. Niveaux facile, moyen, difficile. Score, précision, vitesse. Gratuit et sans inscription.">
+<meta name="keywords" content="calcul mental, entraînement calcul mental, jeu calcul, math en ligne, exercices calcul mental, math chronométré">
+<meta property="og:title" content="Calcul mental — entraînement chronométré gratuit">
+<link rel="canonical" href="https://calviro.vercel.app/calcul-mental.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+<style>
+  .cm-operation { font-size: 48px; font-weight: 600; text-align: center; margin: 32px 0; letter-spacing: 1px; }
+  .cm-feedback { text-align: center; min-height: 24px; margin: 8px 0; font-weight: 500; }
+  .cm-stats { display: flex; justify-content: space-around; padding: 16px; background: var(--bg-subtle); border-radius: 12px; margin-top: 24px; }
+  .cm-stat { text-align: center; }
+  .cm-stat-value { font-size: 20px; font-weight: 600; }
+  .cm-stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🧠 Calcul mental</h1>
+      <p>Entraîne ton cerveau avec des calculs chronométrés.</p>
+    </div>
+
+    <div id="cm-config">
+      <div class="field">
+        <label for="cm-niveau">Niveau de difficulté</label>
+        <select id="cm-niveau">
+          <option value="facile">Facile (+/− jusqu'à 20)</option>
+          <option value="moyen" selected>Moyen (+/−/× tables x12)</option>
+          <option value="difficile">Difficile (toutes opérations, gros nombres)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="cm-duree">Durée de la partie (secondes)</label>
+        <select id="cm-duree">
+          <option value="30">30 secondes (sprint)</option>
+          <option value="60" selected>60 secondes (1 minute)</option>
+          <option value="120">120 secondes (2 minutes)</option>
+          <option value="300">300 secondes (5 minutes)</option>
+        </select>
+      </div>
+
+      <button class="btn" onclick="cmDemarrer()">🚀 Démarrer le défi</button>
+    </div>
+
+    <div id="cm-jeu" style="display:none;">
+      <div class="cm-operation" id="cm-operation">—</div>
+      
+      <div class="field">
+        <label for="cm-input">Ta réponse</label>
+        <input type="number" id="cm-input" placeholder="?" autofocus onkeydown="if(event.key==='Enter') cmValider()">
+      </div>
+
+      <button class="btn" onclick="cmValider()">Valider (Entrée)</button>
+
+      <div class="cm-feedback" id="cm-feedback"></div>
+
+      <div class="cm-stats">
+        <div class="cm-stat">
+          <div class="cm-stat-value" id="cm-timer">60s</div>
+          <div class="cm-stat-label">Temps restant</div>
+        </div>
+        <div class="cm-stat">
+          <div class="cm-stat-value" id="cm-score">0</div>
+          <div class="cm-stat-label">Score</div>
+        </div>
+        <div class="cm-stat">
+          <div class="cm-stat-value" id="cm-bonnes" style="color:#10b981;">0</div>
+          <div class="cm-stat-label">✓ Bonnes</div>
+        </div>
+        <div class="cm-stat">
+          <div class="cm-stat-value" id="cm-mauvaises" style="color:#dc2626;">0</div>
+          <div class="cm-stat-label">✗ Erreurs</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="cm-resultats" style="display:none;"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Pourquoi entraîner son calcul mental ?</h2>
+    <p>Le calcul mental, c'est comme la musculation pour ton cerveau. Quelques minutes d'entraînement régulier suffisent pour gagner en <strong>vitesse de réflexion</strong>, en <strong>concentration</strong>, et en <strong>confiance face aux chiffres</strong>. Et au quotidien, ça change vraiment la donne : tu calcules instinctivement les pourcentages, tu repères les arnaques en magasin, tu fais tes comptes plus vite, tu impressionnes en réunion.</p>
+
+    <h2>Les bénéfices prouvés</h2>
+    <ul>
+      <li><strong>Mémoire à court terme renforcée</strong> : tu retiens plus facilement chiffres, mots, instructions</li>
+      <li><strong>Concentration plus profonde</strong> : la pratique du calcul oblige à éviter les distractions</li>
+      <li><strong>Confiance en soi</strong> : tu réponds plus vite et sans gêne dans des situations sociales</li>
+      <li><strong>Préservation cognitive avec l'âge</strong> : études montrent que le calcul mental régulier ralentit le déclin cognitif</li>
+      <li><strong>Performance scolaire</strong> : utile pour les enfants en élémentaire et collège</li>
+      <li><strong>Préparation aux concours</strong> : nombreux examens et concours testent la rapidité de calcul</li>
+    </ul>
+
+    <h2>Comment fonctionne notre jeu ?</h2>
+    <p>Choisis un niveau et une durée. Notre algorithme génère des opérations aléatoires adaptées à ton niveau. Tu tapes la réponse, tu valides (Entrée), passe au calcul suivant. Plus tu vas vite et plus tu réponds juste, plus tu marques de points. À la fin, tu vois ta précision et ta vitesse.</p>
+
+    <h3>Niveaux disponibles</h3>
+    <ul>
+      <li><strong>Facile</strong> : additions et soustractions jusqu'à 20 — pour les enfants ou pour s'échauffer</li>
+      <li><strong>Moyen</strong> : +, −, × jusqu'aux tables de 12 — niveau collège / quotidien</li>
+      <li><strong>Difficile</strong> : 4 opérations, nombres jusqu'à 100, divisions — niveau prépa / défi</li>
+    </ul>
+
+    <h2>Techniques pour aller plus vite</h2>
+
+    <h3>1. La méthode des compléments</h3>
+    <p>Pour additionner 47 + 38, fais 47 + 40 = 87, puis − 2 = 85. Beaucoup plus rapide que poser l'addition mentalement chiffre par chiffre.</p>
+
+    <h3>2. La distributivité pour les multiplications</h3>
+    <p>16 × 25 = 16 × 100 ÷ 4 = 1600 ÷ 4 = 400. La trentaine de raccourcis comme celui-ci accélère drastiquement.</p>
+
+    <h3>3. Les carrés à connaître par cœur</h3>
+    <p>Apprends les carrés de 11 à 25 par cœur. 13² = 169, 17² = 289, etc. Ça te sert pour de nombreux calculs en chaîne.</p>
+
+    <h3>4. La règle de 5</h3>
+    <p>Pour multiplier par 5, multiplie par 10 et divise par 2. 38 × 5 = 380 / 2 = 190. Évident une fois qu'on le sait.</p>
+
+    <h3>5. Le calcul de pourcentages</h3>
+    <p>Pour 15 % de 240 : 10 % = 24, 5 % = 12, total = 36. Décomposer simplifie tout.</p>
+
+    <h2>Combien d'entraînement par jour ?</h2>
+    <p>Les recherches en neurosciences cognitives suggèrent qu'<strong>5 à 10 minutes par jour</strong> suffisent pour des progrès rapides. La régularité bat la quantité. Mieux vaut 5 min tous les jours que 1 h le dimanche.</p>
+    <p>Tu peux faire le jeu pendant ton café du matin, dans les transports, en pause au boulot. C'est court, addictif, et tu sens vraiment la progression au bout de 2-3 semaines.</p>
+
+    <h2>Pour les enfants : la méthode Singapour</h2>
+    <p>De plus en plus d'écoles françaises adoptent la <strong>méthode Singapour</strong>, qui met l'accent sur la maîtrise du calcul mental dès la primaire. Notre jeu en niveau facile est un parfait complément aux exercices scolaires. Les enfants adorent le côté chrono et peuvent suivre leur propre progression.</p>
+
+    <h2>Records et classements</h2>
+    <p>Notre jeu ne stocke pas tes scores (pas de tracking). Si tu veux suivre ta progression, note tes scores dans un fichier ou capture d'écran. Voici quelques ordres de grandeur :</p>
+    <ul>
+      <li><strong>Débutant</strong> : 5-10 bonnes réponses en 60 secondes (niveau moyen)</li>
+      <li><strong>Intermédiaire</strong> : 15-25 bonnes réponses</li>
+      <li><strong>Bon</strong> : 25-35</li>
+      <li><strong>Excellent</strong> : 35-50</li>
+      <li><strong>Pro du calcul mental</strong> : 50+ (= moins d'une seconde par calcul)</li>
+    </ul>
+    <p>Les champions de calcul mental atteignent 80-100 opérations à la minute. Pour info : le record mondial Mind Sports Olympiad propose des séries où il faut calculer 100 sommes complexes en 5 minutes.</p>
+
+    <h2>Pour aller plus loin</h2>
+    <p>Si tu accroches, lis "Devenir champion de calcul mental" de Yann Coron ou "Les secrets du calcul mental" d'Arthur Benjamin. Plein de méthodes étonnamment simples qui paraissent magiques.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

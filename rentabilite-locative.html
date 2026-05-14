@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rentabilité locative : calcul brute et nette 2026 — Calviro</title>
+<meta name="description" content="Calcul de la rentabilité locative d'un investissement immobilier : rentabilité brute, nette, cash flow. Tout pour évaluer un projet locatif.">
+<meta name="keywords" content="rentabilité locative, calcul rendement locatif, investissement locatif, cash flow immobilier, rentabilité nette immo">
+<meta property="og:title" content="Calcul de rentabilité locative">
+<link rel="canonical" href="https://calviro.vercel.app/rentabilite-locative.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>📈 Rentabilité locative</h1>
+      <p>Évalue le rendement d'un projet d'investissement locatif.</p>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="loc-prix">Prix d'achat (€)</label>
+        <input type="number" id="loc-prix" placeholder="200 000" min="0">
+      </div>
+      <div class="field">
+        <label for="loc-frais">Frais d'acquisition (€)</label>
+        <input type="number" id="loc-frais" placeholder="15 000" min="0" value="0">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="loc-loyer">Loyer mensuel hors charges (€)</label>
+      <input type="number" id="loc-loyer" placeholder="900" min="0">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="loc-charges">Charges annuelles (€)</label>
+        <input type="number" id="loc-charges" placeholder="1 200" min="0" value="0">
+      </div>
+      <div class="field">
+        <label for="loc-taxe">Taxe foncière annuelle (€)</label>
+        <input type="number" id="loc-taxe" placeholder="800" min="0" value="0">
+      </div>
+    </div>
+
+    <button class="btn" onclick="calcRentabilite()">Calculer le rendement</button>
+
+    <div class="result" id="loc-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Rentabilité brute, nette, nette-nette : pas la même chose</h2>
+    <p>Quand on parle de "rentabilité" d'un investissement locatif, il faut bien préciser laquelle. Trois niveaux d'analyse, chacun plus précis et plus prudent que le précédent.</p>
+
+    <h3>Rentabilité brute</h3>
+    <p><strong>Formule</strong> : (Loyer annuel × 12) ÷ Prix d'achat × 100</p>
+    <p>C'est le calcul "marketing" qu'on voit dans les annonces. Il ignore <strong>toutes les charges</strong>, ce qui le rend très optimiste. Utile pour comparer rapidement deux biens, mais ne reflète pas la réalité financière.</p>
+
+    <h3>Rentabilité nette de charges</h3>
+    <p><strong>Formule</strong> : (Loyer annuel − charges − taxe foncière) ÷ (Prix + frais d'acquisition) × 100</p>
+    <p>Plus réaliste. Prend en compte les charges non récupérables et la taxe foncière. C'est ce que calcule notre outil.</p>
+
+    <h3>Rentabilité nette-nette (après impôts)</h3>
+    <p>Encore plus précise : elle déduit en plus la fiscalité (IR + prélèvements sociaux à 17,2 %). Selon ton TMI (tranche marginale d'imposition), elle peut être 30 à 50 % inférieure à la rentabilité nette de charges.</p>
+
+    <h2>Quelle rentabilité viser ?</h2>
+    <table>
+      <thead><tr><th>Rentabilité nette</th><th>Évaluation</th><th>Zone géographique typique</th></tr></thead>
+      <tbody>
+        <tr><td>&lt; 3 %</td><td>🔴 Faible</td><td>Paris, Lyon, Bordeaux (centre)</td></tr>
+        <tr><td>3 - 5 %</td><td>🟡 Correcte</td><td>Banlieues, villes moyennes</td></tr>
+        <tr><td>5 - 7 %</td><td>🟢 Bonne</td><td>Villes moyennes dynamiques</td></tr>
+        <tr><td>&gt; 7 %</td><td>🟢 Excellente</td><td>Petites villes, colocations, marchés secondaires</td></tr>
+      </tbody>
+    </table>
+    <p>Attention : une rentabilité élevée s'accompagne souvent d'un <strong>risque plus élevé</strong> (vacance locative, dégradation, mauvais payeurs, quartier moins porteur).</p>
+
+    <h2>Charges à prendre en compte</h2>
+    <p>Pour un calcul réaliste, n'oublie pas :</p>
+    <ul>
+      <li><strong>Charges de copropriété non récupérables</strong> (ascenseur, gardien, ravalement) : 500 à 1 500 €/an typique</li>
+      <li><strong>Taxe foncière</strong> : 800 à 2 000 €/an en province, jusqu'à 4 000 €/an à Paris</li>
+      <li><strong>Assurance Propriétaire Non Occupant (PNO)</strong> : 100 à 200 €/an</li>
+      <li><strong>Vacance locative</strong> : compte 1 mois sans loyer tous les 2-3 ans en moyenne</li>
+      <li><strong>Travaux récurrents</strong> : peinture, plomberie, électroménager → environ 1 % du prix d'achat par an sur le long terme</li>
+      <li><strong>Frais de gestion</strong> si tu passes par une agence : 6 à 10 % du loyer</li>
+      <li><strong>Frais comptables</strong> si statut LMNP au régime réel : 500 à 800 €/an</li>
+      <li><strong>Cotisations URSSAF pour LMP</strong> : pour les loueurs en meublé professionnel</li>
+    </ul>
+
+    <h2>Cash flow : encore plus important que la rentabilité</h2>
+    <p>La rentabilité, c'est un pourcentage. Le <strong>cash flow</strong>, c'est ce qui rentre vraiment dans ta poche chaque mois après tout payé. C'est plus parlant et plus actionnable.</p>
+    <p><strong>Cash flow mensuel = Loyer − mensualité crédit − charges mensuelles − taxe foncière/12 − provisions travaux</strong></p>
+    <p>Un cash flow positif (même de 50 €) est très différent d'un cash flow négatif. Avec un négatif, tu mets de l'argent chaque mois pour combler le déficit (en espérant la plus-value à long terme).</p>
+
+    <h2>Les régimes fiscaux principaux</h2>
+    <ul>
+      <li><strong>Location vide, micro-foncier</strong> : abattement 30 %, simple, jusqu'à 15 000 € de loyers/an</li>
+      <li><strong>Location vide, régime réel</strong> : déduction de toutes les charges réelles + travaux. Plus avantageux si tes charges sont importantes.</li>
+      <li><strong>LMNP micro-BIC</strong> : abattement 50 % (meublé), jusqu'à 77 700 €/an</li>
+      <li><strong>LMNP régime réel</strong> : déduction des charges + amortissement du bien. Souvent permet une fiscalité quasi nulle pendant 10-15 ans.</li>
+    </ul>
+
+    <h2>Erreurs classiques des débutants</h2>
+    <ul>
+      <li>Oublier les frais d'acquisition dans le calcul (8 % de plus à amortir)</li>
+      <li>Ignorer la vacance locative</li>
+      <li>Surestimer le loyer atteignable (regarder les annonces existantes du secteur)</li>
+      <li>Sous-estimer les charges et travaux</li>
+      <li>Ne pas anticiper la fiscalité (peut diviser la rentabilité par 2)</li>
+      <li>Acheter "loin" pour rentabilité élevée mais ingérable (déplacements, mauvais artisans)</li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

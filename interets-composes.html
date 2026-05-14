@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intérêts composés : simulateur d'épargne long terme — Calviro</title>
+<meta name="description" content="Calculateur d'intérêts composés : simule la croissance de ton épargne sur le long terme avec versements mensuels. PEL, PEA, assurance vie, PER.">
+<meta name="keywords" content="intérêts composés, calcul épargne, simulateur épargne, intérêts long terme, calcul capitalisation">
+<meta property="og:title" content="Calcul d'intérêts composés — épargne long terme">
+<link rel="canonical" href="https://calviro.vercel.app/interets-composes.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>💰 Intérêts composés</h1>
+      <p>Simule la croissance de ton épargne sur le long terme.</p>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="int-initial">Capital initial (€)</label>
+        <input type="number" id="int-initial" placeholder="1 000" min="0" value="1000">
+      </div>
+      <div class="field">
+        <label for="int-versement">Versement mensuel (€)</label>
+        <input type="number" id="int-versement" placeholder="100" min="0" value="100">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="int-taux">Taux annuel (%)</label>
+        <input type="number" id="int-taux" placeholder="5" step="0.1" value="5">
+      </div>
+      <div class="field">
+        <label for="int-duree">Durée (années)</label>
+        <input type="number" id="int-duree" placeholder="20" min="1" max="60" value="20">
+      </div>
+    </div>
+
+    <button class="btn" onclick="calcInterets()">Calculer mon épargne</button>
+
+    <div class="result" id="int-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>L'effet "boule de neige" des intérêts composés</h2>
+    <p>Les <strong>intérêts composés</strong>, c'est l'effet magique qui fait que tu gagnes des intérêts <em>sur les intérêts</em> déjà acquis. Plus le temps passe, plus l'accélération est forte. Albert Einstein aurait dit que c'est "la 8e merveille du monde". Que ce soit vrai ou pas, l'idée est solide : la patience est ton meilleur allié financier.</p>
+
+    <h2>Un exemple qui parle</h2>
+    <p>Tu places 100 € par mois pendant 30 ans, à 5 % annuel. Calculons :</p>
+    <ul>
+      <li>Total versé : 100 × 12 × 30 = <strong>36 000 €</strong></li>
+      <li>Capital final : <strong>~83 000 €</strong></li>
+      <li>Intérêts gagnés : <strong>~47 000 €</strong></li>
+    </ul>
+    <p>Tu as <strong>plus gagné en intérêts que tu n'as versé toi-même</strong>. C'est ça la magie. À condition d'avoir laissé le temps faire son travail.</p>
+
+    <h2>Le facteur temps est crucial</h2>
+    <p>Comparons deux profils qui versent 100 €/mois à 5 % :</p>
+    <table>
+      <thead><tr><th>Profil</th><th>Total versé</th><th>Capital final</th><th>Intérêts</th></tr></thead>
+      <tbody>
+        <tr><td>Commence à 30 ans, arrête à 60 ans (30 ans)</td><td>36 000 €</td><td>~83 000 €</td><td>~47 000 €</td></tr>
+        <tr><td>Commence à 40 ans, arrête à 60 ans (20 ans)</td><td>24 000 €</td><td>~41 000 €</td><td>~17 000 €</td></tr>
+        <tr><td>Commence à 50 ans, arrête à 60 ans (10 ans)</td><td>12 000 €</td><td>~15 500 €</td><td>~3 500 €</td></tr>
+      </tbody>
+    </table>
+    <p>Commencer 10 ans plus tôt double presque les intérêts à la fin. C'est la leçon n°1 : <strong>commence tôt, même petit</strong>.</p>
+
+    <h2>Les supports d'épargne courants en France</h2>
+    <table>
+      <thead><tr><th>Support</th><th>Taux 2026</th><th>Fiscalité</th></tr></thead>
+      <tbody>
+        <tr><td>Livret A</td><td>~2,4 % net</td><td>Totalement défiscalisé</td></tr>
+        <tr><td>LDDS (Livret Dév. Durable)</td><td>~2,4 % net</td><td>Défiscalisé</td></tr>
+        <tr><td>LEP (Livret Épargne Pop.)</td><td>~3,5 % net</td><td>Défiscalisé (revenus limités)</td></tr>
+        <tr><td>PEL nouveau</td><td>~1,75 %</td><td>Flat tax 30 % après 12 ans</td></tr>
+        <tr><td>Assurance vie (fonds €)</td><td>~2,5 - 3 %</td><td>Avantageuse après 8 ans</td></tr>
+        <tr><td>Assurance vie (UC actions)</td><td>~6 - 8 % (LT)</td><td>Avantageuse après 8 ans</td></tr>
+        <tr><td>PEA actions</td><td>~7 - 9 % (LT)</td><td>Exonéré IR après 5 ans</td></tr>
+        <tr><td>PER (Plan Épargne Retraite)</td><td>Variable</td><td>Déductibles à l'entrée</td></tr>
+        <tr><td>SCPI</td><td>~4 - 6 %</td><td>Revenus fonciers</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Inflation : ne pas oublier</h2>
+    <p>Un placement à 4 % avec une inflation à 2 % ne te rapporte "vraiment" que 2 %. C'est le <strong>rendement réel</strong>, après inflation. Sur le long terme, l'inflation érode la valeur de la monnaie. Pour battre l'inflation, il faut viser des supports plus risqués (actions, immobilier, PEA).</p>
+
+    <h2>La règle des 72</h2>
+    <p>Astuce mathématique simple : <strong>diviser 72 par le taux donne le nombre d'années pour doubler son capital</strong>.</p>
+    <ul>
+      <li>À 2 % par an → 36 ans pour doubler</li>
+      <li>À 4 % → 18 ans</li>
+      <li>À 6 % → 12 ans</li>
+      <li>À 8 % → 9 ans</li>
+      <li>À 12 % → 6 ans</li>
+    </ul>
+    <p>Ça illustre pourquoi viser un meilleur rendement, même de 2 points, change radicalement le temps nécessaire.</p>
+
+    <h2>Conseils pratiques</h2>
+    <ul>
+      <li><strong>Commence tôt</strong>, même avec 50 €/mois — le temps est plus puissant que le montant</li>
+      <li><strong>Automatise les versements</strong> (virement mensuel programmé). Tu ne dépenses pas ce que tu ne vois pas</li>
+      <li><strong>Diversifie</strong> : Livret A pour la sécurité court terme, PEA / assurance vie pour le long terme</li>
+      <li><strong>Augmente avec ton salaire</strong> : chaque hausse de salaire = augmente proportionnellement tes versements</li>
+      <li><strong>Ne touche pas le capital</strong> avant l'échéance prévue, sauf urgence vraie</li>
+      <li><strong>Investis pour le long terme</strong> : les actions sont volatiles à 1 an, mais battent toujours l'inflation sur 20+ ans</li>
+      <li><strong>Méfie-toi des "rendements miracle"</strong> : 10 % et plus garantis = arnaque dans 99 % des cas</li>
+    </ul>
+
+    <h2>Limites du calcul</h2>
+    <p>Notre simulateur suppose un <strong>taux constant</strong>, ce qui est rare en pratique. Le rendement réel varie d'une année à l'autre (actions surtout). Il ne prend pas en compte la <strong>fiscalité</strong> (prélèvements sociaux 17,2 %, IR éventuel), ni les éventuels frais d'entrée et de gestion qui peuvent réduire significativement la performance réelle.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

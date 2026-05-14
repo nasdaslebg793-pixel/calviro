@@ -1134,3 +1134,680 @@ function genererCV() {
     document.body.removeChild(container);
   });
 }
+
+// ---------- 21. CAPACITÉ D'EMPRUNT ----------
+
+function calcCapacite() {
+  const revenus = parseFloat($('cap-revenus').value);
+  const charges = parseFloat($('cap-charges').value) || 0;
+  const taux = parseFloat($('cap-taux').value);
+  const duree = parseInt($('cap-duree').value, 10);
+  const assurance = parseFloat($('cap-assurance').value) || 0.35;
+
+  if (isNaN(revenus) || isNaN(taux) || isNaN(duree) || revenus <= 0) {
+    showResult('cap-result', '<div class="note">⚠ Remplis revenus, taux et durée.</div>');
+    return;
+  }
+
+  // Règle HCSF: 35% d'endettement max
+  const mensualiteMax = revenus * 0.35 - charges;
+  if (mensualiteMax <= 0) {
+    showResult('cap-result', '<div class="note">⚠ Tes charges actuelles atteignent déjà 35% de tes revenus. Aucune capacité d\'emprunt supplémentaire.</div>');
+    return;
+  }
+
+  // Décomposer mensualité = remboursement + assurance
+  // assurance mensuelle = (assurance/100) × capital / 12
+  // mensualité_remb = capital × tauxM / (1 - (1+tauxM)^-n)
+  // mensualité_max = mensualité_remb + assurance × capital / 1200
+  // => capital × [tauxM / (1 - (1+tauxM)^-n) + assurance/1200] = mensualité_max
+  const tauxM = taux / 100 / 12;
+  const n = duree * 12;
+  let facteur;
+  if (tauxM === 0) {
+    facteur = 1 / n + assurance / 1200;
+  } else {
+    facteur = tauxM / (1 - Math.pow(1 + tauxM, -n)) + assurance / 1200;
+  }
+  const capital = mensualiteMax / facteur;
+
+  const mensualiteAssurance = (assurance / 100) * capital / 12;
+  const mensualiteRemb = mensualiteMax - mensualiteAssurance;
+  const coutTotal = mensualiteRemb * n - capital + mensualiteAssurance * n;
+
+  showResult('cap-result', `
+    <div class="result-label">Capacité d'emprunt maximale</div>
+    <div class="result-value">${formatEur(capital)}</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Mensualité totale (avec assurance)</span><strong>${formatEur(mensualiteMax)} / mois</strong></div>
+      <div class="result-detail-row"><span>Dont mensualité crédit</span><strong>${formatEur(mensualiteRemb)}</strong></div>
+      <div class="result-detail-row"><span>Dont assurance mensuelle</span><strong>${formatEur(mensualiteAssurance)}</strong></div>
+      <div class="result-detail-row"><span>Coût total du crédit</span><strong>${formatEur(coutTotal)}</strong></div>
+      <div class="result-detail-row"><span>Taux d'endettement appliqué</span><strong>35 %</strong></div>
+    </div>
+    <div class="note">Calcul basé sur la règle HCSF (35% max d'endettement). Les banques peuvent déroger pour 20% de leurs dossiers (primo-accédants notamment).</div>
+  `);
+}
+
+// ---------- 22. FRAIS DE NOTAIRE ----------
+
+function calcNotaire() {
+  const prix = parseFloat($('not-prix').value);
+  const type = $('not-type').value;
+
+  if (isNaN(prix) || prix <= 0) {
+    showResult('not-result', '<div class="note">⚠ Indique le prix d\'achat.</div>');
+    return;
+  }
+
+  // Calcul détaillé
+  // Émoluments du notaire (tarif réglementé, dégressif)
+  function emolumentsNotaire(p) {
+    // Tranches 2024 (proportionnelles, art. A. 444-91 CCom)
+    const tranches = [
+      { jusqu: 6500, taux: 0.0395 },
+      { jusqu: 17000, taux: 0.01627 },
+      { jusqu: 60000, taux: 0.01085 },
+      { jusqu: Infinity, taux: 0.00814 }
+    ];
+    let restant = p;
+    let total = 0;
+    let dernierSeuil = 0;
+    for (const t of tranches) {
+      const portion = Math.min(restant, t.jusqu - dernierSeuil);
+      if (portion <= 0) break;
+      total += portion * t.taux;
+      restant -= portion;
+      dernierSeuil = t.jusqu;
+      if (restant <= 0) break;
+    }
+    return total;
+  }
+
+  let droitsEnregistrement, debours, contribSecurite, totalFrais;
+  const emoluments = emolumentsNotaire(prix);
+  debours = 1200; // estimation moyenne
+  contribSecurite = prix * 0.001; // contribution sécurité immobilière (~0.1%)
+
+  if (type === 'ancien') {
+    // Droits de mutation: 5.80% (DMTO 4.50% + taxe communale 1.20% + frais d'assiette)
+    droitsEnregistrement = prix * 0.0581;
+  } else {
+    // Neuf: TVA 20% déjà incluse dans le prix, droits réduits à 0.715%
+    droitsEnregistrement = prix * 0.00715;
+  }
+
+  totalFrais = emoluments + droitsEnregistrement + debours + contribSecurite;
+  const pourcentage = (totalFrais / prix) * 100;
+  const coutTotal = prix + totalFrais;
+
+  showResult('not-result', `
+    <div class="result-label">Frais de notaire estimés</div>
+    <div class="result-value">${formatEur(totalFrais)}</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Soit en % du prix d'achat</span><strong>${formatNum(pourcentage, 2)} %</strong></div>
+      <div class="result-detail-row"><span>Droits d'enregistrement (État + département)</span><strong>${formatEur(droitsEnregistrement)}</strong></div>
+      <div class="result-detail-row"><span>Émoluments du notaire</span><strong>${formatEur(emoluments)}</strong></div>
+      <div class="result-detail-row"><span>Débours et formalités</span><strong>${formatEur(debours)}</strong></div>
+      <div class="result-detail-row"><span>Contribution sécurité immobilière</span><strong>${formatEur(contribSecurite)}</strong></div>
+      <div class="result-detail-row"><span>Coût total d'acquisition (prix + frais)</span><strong>${formatEur(coutTotal)}</strong></div>
+    </div>
+    <div class="note">Calcul indicatif basé sur les barèmes en vigueur. Les frais réels peuvent varier de ±10% selon la commune (taux DMTO départemental) et les frais annexes.</div>
+  `);
+}
+
+// ---------- 23. TABLEAU D'AMORTISSEMENT DÉTAILLÉ ----------
+
+function calcAmortissement() {
+  const capital = parseFloat($('amt-capital').value);
+  const taux = parseFloat($('amt-taux').value);
+  const duree = parseInt($('amt-duree').value, 10);
+  const granularite = $('amt-granularite').value;
+
+  if (isNaN(capital) || isNaN(taux) || isNaN(duree) || capital <= 0) {
+    showResult('amt-result', '<div class="note">⚠ Remplis tous les champs.</div>');
+    return;
+  }
+
+  const tauxM = taux / 100 / 12;
+  const n = duree * 12;
+  let mensualite;
+  if (tauxM === 0) {
+    mensualite = capital / n;
+  } else {
+    mensualite = capital * tauxM / (1 - Math.pow(1 + tauxM, -n));
+  }
+
+  // Génération du tableau
+  let capitalRestant = capital;
+  const lignes = [];
+  let interetsTotal = 0;
+
+  if (granularite === 'mois') {
+    for (let m = 1; m <= n; m++) {
+      const interet = capitalRestant * tauxM;
+      const capRemb = mensualite - interet;
+      capitalRestant -= capRemb;
+      interetsTotal += interet;
+      lignes.push({
+        periode: m,
+        mensualite: mensualite,
+        interet: interet,
+        capital: capRemb,
+        crd: Math.max(0, capitalRestant)
+      });
+    }
+  } else {
+    for (let annee = 1; annee <= duree; annee++) {
+      let interetA = 0, capitalA = 0;
+      for (let m = 0; m < 12; m++) {
+        const interet = capitalRestant * tauxM;
+        const capRemb = mensualite - interet;
+        interetA += interet;
+        capitalA += capRemb;
+        capitalRestant -= capRemb;
+      }
+      interetsTotal += interetA;
+      lignes.push({
+        periode: annee,
+        mensualite: mensualite * 12,
+        interet: interetA,
+        capital: capitalA,
+        crd: Math.max(0, capitalRestant)
+      });
+    }
+  }
+
+  // Construire le tableau HTML
+  const periodeLabel = granularite === 'mois' ? 'Mois' : 'Année';
+  const colMensualite = granularite === 'mois' ? 'Mensualité' : 'Total annuel';
+  let tableHtml = `<table style="font-size: 13px; margin-top: 12px;">
+    <thead><tr><th>${periodeLabel}</th><th>${colMensualite}</th><th>Intérêts</th><th>Capital</th><th>Capital restant</th></tr></thead>
+    <tbody>`;
+  // Limiter affichage pour mensuel à 60 lignes (5 ans)
+  const limit = granularite === 'mois' ? Math.min(60, lignes.length) : lignes.length;
+  for (let i = 0; i < limit; i++) {
+    const l = lignes[i];
+    tableHtml += `<tr><td>${l.periode}</td><td>${formatEur(l.mensualite)}</td><td>${formatEur(l.interet)}</td><td>${formatEur(l.capital)}</td><td>${formatEur(l.crd)}</td></tr>`;
+  }
+  tableHtml += '</tbody></table>';
+  if (granularite === 'mois' && lignes.length > 60) {
+    tableHtml += `<div class="note">Affichage limité aux 60 premiers mois (5 ans). Passe en vue annuelle pour voir tout.</div>`;
+  }
+
+  showResult('amt-result', `
+    <div class="result-label">Mensualité fixe</div>
+    <div class="result-value">${formatEur(mensualite)} / mois</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Capital emprunté</span><strong>${formatEur(capital)}</strong></div>
+      <div class="result-detail-row"><span>Coût total des intérêts</span><strong>${formatEur(interetsTotal)}</strong></div>
+      <div class="result-detail-row"><span>Coût total remboursé</span><strong>${formatEur(capital + interetsTotal)}</strong></div>
+    </div>
+    ${tableHtml}
+  `);
+}
+
+// ---------- 24. RENTABILITÉ LOCATIVE ----------
+
+function calcRentabilite() {
+  const prix = parseFloat($('loc-prix').value);
+  const loyer = parseFloat($('loc-loyer').value);
+  const charges = parseFloat($('loc-charges').value) || 0;
+  const taxeFonciere = parseFloat($('loc-taxe').value) || 0;
+  const fraisAcquisition = parseFloat($('loc-frais').value) || 0;
+
+  if (isNaN(prix) || isNaN(loyer) || prix <= 0 || loyer <= 0) {
+    showResult('loc-result', '<div class="note">⚠ Remplis au moins le prix d\'achat et le loyer.</div>');
+    return;
+  }
+
+  const investissementTotal = prix + fraisAcquisition;
+  const loyerAnnuel = loyer * 12;
+
+  // Rentabilité brute
+  const rentaBrute = (loyerAnnuel / investissementTotal) * 100;
+
+  // Rentabilité nette de charges (charges + taxe foncière)
+  const chargesAnnuelles = charges + taxeFonciere;
+  const loyerNet = loyerAnnuel - chargesAnnuelles;
+  const rentaNette = (loyerNet / investissementTotal) * 100;
+
+  // Cash flow mensuel (sans crédit pour simplifier)
+  const cashFlowMensuel = loyer - (chargesAnnuelles / 12);
+
+  let avis = '';
+  if (rentaNette < 3) avis = '🔴 Faible — typique des grandes métropoles (Paris). Compte sur la plus-value à long terme plutôt que sur les loyers.';
+  else if (rentaNette < 5) avis = '🟡 Correcte — équilibre entre risque et rendement, courant en banlieue ou villes moyennes.';
+  else if (rentaNette < 7) avis = '🟢 Bonne rentabilité — typique des villes moyennes ou colocations.';
+  else avis = '🟢 Très bonne rentabilité — vérifie qu\'il n\'y a pas de risque caché (quartier dévalorisé, travaux à prévoir, vacance locative élevée).';
+
+  showResult('loc-result', `
+    <div class="result-label">Rentabilité nette annuelle</div>
+    <div class="result-value">${formatNum(rentaNette, 2)} %</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Rentabilité brute</span><strong>${formatNum(rentaBrute, 2)} %</strong></div>
+      <div class="result-detail-row"><span>Loyer annuel</span><strong>${formatEur(loyerAnnuel)}</strong></div>
+      <div class="result-detail-row"><span>Charges + taxe foncière</span><strong>${formatEur(chargesAnnuelles)}</strong></div>
+      <div class="result-detail-row"><span>Loyer net annuel</span><strong>${formatEur(loyerNet)}</strong></div>
+      <div class="result-detail-row"><span>Cash flow mensuel (avant crédit)</span><strong>${formatEur(cashFlowMensuel)}</strong></div>
+      <div class="result-detail-row"><span>Investissement total</span><strong>${formatEur(investissementTotal)}</strong></div>
+    </div>
+    <div class="note">${avis}</div>
+    <div class="note" style="margin-top:8px;">⚠ Calcul simplifié. Une vraie analyse inclut aussi : mensualité crédit, fiscalité (revenus fonciers ou LMNP), assurance PNO, vacance locative, frais de gestion, travaux.</div>
+  `);
+}
+
+// ---------- 25. INTÉRÊTS COMPOSÉS ----------
+
+function calcInterets() {
+  const initial = parseFloat($('int-initial').value) || 0;
+  const versement = parseFloat($('int-versement').value) || 0;
+  const taux = parseFloat($('int-taux').value);
+  const duree = parseInt($('int-duree').value, 10);
+
+  if (isNaN(taux) || isNaN(duree) || duree <= 0 || (initial === 0 && versement === 0)) {
+    showResult('int-result', '<div class="note">⚠ Remplis taux, durée, et au moins un versement.</div>');
+    return;
+  }
+
+  // Capitalisation mensuelle
+  const r = taux / 100 / 12;
+  const n = duree * 12;
+  // C_final = C0(1+r)^n + V × ((1+r)^n - 1) / r
+  let capitalFinal;
+  if (r === 0) {
+    capitalFinal = initial + versement * n;
+  } else {
+    capitalFinal = initial * Math.pow(1 + r, n) + versement * (Math.pow(1 + r, n) - 1) / r;
+  }
+  const totalVerse = initial + versement * n;
+  const interets = capitalFinal - totalVerse;
+
+  // Génération du tableau année par année
+  let cap = initial;
+  let tableHtml = `<table style="font-size: 13px; margin-top: 12px;">
+    <thead><tr><th>Année</th><th>Versements cumulés</th><th>Capital total</th><th>Intérêts cumulés</th></tr></thead>
+    <tbody>`;
+  for (let a = 1; a <= duree; a++) {
+    for (let m = 0; m < 12; m++) {
+      cap = cap * (1 + r) + versement;
+    }
+    const verses = initial + versement * 12 * a;
+    tableHtml += `<tr><td>${a}</td><td>${formatEur(verses)}</td><td>${formatEur(cap)}</td><td>${formatEur(cap - verses)}</td></tr>`;
+    if (a > 30) break; // Limiter à 30 ans pour éviter table énorme
+  }
+  tableHtml += '</tbody></table>';
+
+  showResult('int-result', `
+    <div class="result-label">Capital final estimé</div>
+    <div class="result-value">${formatEur(capitalFinal)}</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Total versé</span><strong>${formatEur(totalVerse)}</strong></div>
+      <div class="result-detail-row"><span>Intérêts générés</span><strong>${formatEur(interets)}</strong></div>
+      <div class="result-detail-row"><span>Rapport intérêts / versé</span><strong>${formatNum((interets / totalVerse) * 100, 1)} %</strong></div>
+    </div>
+    ${tableHtml}
+    <div class="note">⚠ Hypothèse : taux constant et capitalisation mensuelle. La fiscalité (prélèvements sociaux, IR) n'est pas prise en compte.</div>
+  `);
+}
+
+// ---------- 26. TJM FREELANCE ----------
+
+function calcTJM() {
+  const salaireNet = parseFloat($('tjm-salaire').value);
+  const statut = $('tjm-statut').value;
+  const joursTravailles = parseInt($('tjm-jours').value, 10) || 218;
+
+  if (isNaN(salaireNet) || salaireNet <= 0) {
+    showResult('tjm-result', '<div class="note">⚠ Indique le salaire net souhaité.</div>');
+    return;
+  }
+
+  // Charges sociales selon statut
+  let chargesPourcentage, fraisFixes;
+  if (statut === 'auto') {
+    chargesPourcentage = 0.22; // Auto-entrepreneur services BNC
+    fraisFixes = 0;
+  } else if (statut === 'eurl') {
+    chargesPourcentage = 0.45; // Travailleur non salarié (TNS)
+    fraisFixes = 0;
+  } else { // sasu
+    chargesPourcentage = 0.65; // Cotisations + IR ~65% pour atteindre net
+    fraisFixes = 100;
+  }
+
+  // CA HT mensuel nécessaire
+  const caMensuelMin = (salaireNet + fraisFixes) / (1 - chargesPourcentage);
+  const caAnnuelMin = caMensuelMin * 12;
+
+  // Jours facturables = jours travaillés - congés - intercontrats
+  const joursFacturables = joursTravailles - 25 - 10; // 25 jours congés, 10 jours formation/intercontrat
+  const tjmMin = caAnnuelMin / Math.max(joursFacturables, 100);
+
+  // Recommandations TJM selon métier
+  const tjmConfortable = tjmMin * 1.2;
+  const tjmPremium = tjmMin * 1.5;
+
+  showResult('tjm-result', `
+    <div class="result-label">TJM minimum à facturer</div>
+    <div class="result-value">${formatEur(tjmMin)} <span class="unit">HT/jour</span></div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Pour atteindre ${formatEur(salaireNet)} net/mois</span><strong></strong></div>
+      <div class="result-detail-row"><span>CA annuel HT minimum</span><strong>${formatEur(caAnnuelMin)}</strong></div>
+      <div class="result-detail-row"><span>Jours facturables retenus</span><strong>${joursFacturables} jours</strong></div>
+      <div class="result-detail-row"><span>Charges sociales estimées</span><strong>${Math.round(chargesPourcentage * 100)} %</strong></div>
+      <div class="result-detail-row"><span>TJM confortable (+ marge)</span><strong>${formatEur(tjmConfortable)}</strong></div>
+      <div class="result-detail-row"><span>TJM premium (expérience+ )</span><strong>${formatEur(tjmPremium)}</strong></div>
+    </div>
+    <div class="note">⚠ Estimation indicative. Le TJM réel dépend de ton métier, ton expérience, ta région, et ton positionnement. À ajuster avec ton expert-comptable.</div>
+  `);
+}
+
+// ---------- 27. CALCULATEUR D'ÂGE ----------
+
+function calcAge() {
+  const dateStr = $('age-date').value;
+  if (!dateStr) {
+    showResult('age-result', '<div class="note">⚠ Indique ta date de naissance.</div>');
+    return;
+  }
+
+  const naissance = new Date(dateStr);
+  const today = new Date();
+
+  if (naissance > today) {
+    showResult('age-result', '<div class="note">⚠ Tu ne peux pas être né dans le futur.</div>');
+    return;
+  }
+
+  // Calcul détaillé
+  let ans = today.getFullYear() - naissance.getFullYear();
+  let mois = today.getMonth() - naissance.getMonth();
+  let jours = today.getDate() - naissance.getDate();
+
+  if (jours < 0) {
+    mois--;
+    const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+    jours += lastMonth.getDate();
+  }
+  if (mois < 0) {
+    ans--;
+    mois += 12;
+  }
+
+  const diffMs = today - naissance;
+  const totalJours = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const totalHeures = Math.floor(diffMs / (1000 * 60 * 60));
+  const totalMinutes = Math.floor(diffMs / (1000 * 60));
+  const totalSecondes = Math.floor(diffMs / 1000);
+  const totalSemaines = Math.floor(totalJours / 7);
+  const totalMois = ans * 12 + mois;
+
+  // Prochain anniversaire
+  let prochainAnniv = new Date(today.getFullYear(), naissance.getMonth(), naissance.getDate());
+  if (prochainAnniv < today) {
+    prochainAnniv = new Date(today.getFullYear() + 1, naissance.getMonth(), naissance.getDate());
+  }
+  const joursAvantAnniv = Math.ceil((prochainAnniv - today) / (1000 * 60 * 60 * 24));
+
+  // Jour de naissance (jour de la semaine)
+  const joursSem = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+  const jourNaissance = joursSem[naissance.getDay()];
+
+  showResult('age-result', `
+    <div class="result-label">Tu as exactement</div>
+    <div class="result-value">${ans} ans, ${mois} mois et ${jours} jours</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Total mois</span><strong>${formatNum(totalMois, 0)}</strong></div>
+      <div class="result-detail-row"><span>Total semaines</span><strong>${formatNum(totalSemaines, 0)}</strong></div>
+      <div class="result-detail-row"><span>Total jours</span><strong>${formatNum(totalJours, 0)}</strong></div>
+      <div class="result-detail-row"><span>Total heures</span><strong>${formatNum(totalHeures, 0)}</strong></div>
+      <div class="result-detail-row"><span>Total minutes</span><strong>${formatNum(totalMinutes, 0)}</strong></div>
+      <div class="result-detail-row"><span>Total secondes</span><strong>${formatNum(totalSecondes, 0)}</strong></div>
+      <div class="result-detail-row"><span>Tu es né(e) un</span><strong>${jourNaissance}</strong></div>
+      <div class="result-detail-row"><span>Prochain anniversaire</span><strong>dans ${joursAvantAnniv} jour${joursAvantAnniv > 1 ? 's' : ''}</strong></div>
+    </div>
+  `);
+}
+
+// ---------- 28. JOURS ENTRE 2 DATES ----------
+
+function calcDates() {
+  const debut = new Date($('dates-debut').value);
+  const fin = new Date($('dates-fin').value);
+
+  if (isNaN(debut.getTime()) || isNaN(fin.getTime())) {
+    showResult('dates-result', '<div class="note">⚠ Remplis les deux dates.</div>');
+    return;
+  }
+
+  const ms = Math.abs(fin - debut);
+  const jours = Math.round(ms / (1000 * 60 * 60 * 24));
+  const semaines = Math.floor(jours / 7);
+  const annees = Math.floor(jours / 365.25);
+  const mois = Math.floor(jours / 30.44);
+
+  // Jours ouvrés (lundi à vendredi)
+  let joursOuvres = 0;
+  const start = new Date(Math.min(debut, fin));
+  const end = new Date(Math.max(debut, fin));
+  const cur = new Date(start);
+  while (cur < end) {
+    const d = cur.getDay();
+    if (d !== 0 && d !== 6) joursOuvres++;
+    cur.setDate(cur.getDate() + 1);
+  }
+
+  const heures = jours * 24;
+  const minutes = jours * 24 * 60;
+
+  showResult('dates-result', `
+    <div class="result-label">Durée entre les 2 dates</div>
+    <div class="result-value">${formatNum(jours, 0)} jours</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Soit en années</span><strong>${formatNum(annees, 1)} ans</strong></div>
+      <div class="result-detail-row"><span>Soit en mois</span><strong>${formatNum(mois, 0)} mois</strong></div>
+      <div class="result-detail-row"><span>Soit en semaines</span><strong>${formatNum(semaines, 0)} semaines</strong></div>
+      <div class="result-detail-row"><span>Jours ouvrés (lun-ven)</span><strong>${formatNum(joursOuvres, 0)}</strong></div>
+      <div class="result-detail-row"><span>Jours weekend</span><strong>${formatNum(jours - joursOuvres, 0)}</strong></div>
+      <div class="result-detail-row"><span>Total heures</span><strong>${formatNum(heures, 0)}</strong></div>
+      <div class="result-detail-row"><span>Total minutes</span><strong>${formatNum(minutes, 0)}</strong></div>
+    </div>
+    <div class="note">Calcul des jours ouvrés simplifié (lun-ven). Ne prend pas en compte les jours fériés français.</div>
+  `);
+}
+
+// ---------- 29. DATE D'ACCOUCHEMENT ----------
+
+function calcAccouchement() {
+  const dateStr = $('acc-date').value;
+  const mode = $('acc-mode').value;
+  if (!dateStr) {
+    showResult('acc-result', '<div class="note">⚠ Indique une date.</div>');
+    return;
+  }
+
+  let dateBase = new Date(dateStr);
+  let dateConception, dateDDR, dateAccouchement;
+
+  if (mode === 'ddr') {
+    // Date des dernières règles → accouchement = DDR + 280j (40 semaines)
+    dateDDR = dateBase;
+    dateAccouchement = new Date(dateBase.getTime() + 280 * 24 * 60 * 60 * 1000);
+    dateConception = new Date(dateBase.getTime() + 14 * 24 * 60 * 60 * 1000);
+  } else {
+    // Date de conception → accouchement = conception + 266j
+    dateConception = dateBase;
+    dateAccouchement = new Date(dateBase.getTime() + 266 * 24 * 60 * 60 * 1000);
+    dateDDR = new Date(dateBase.getTime() - 14 * 24 * 60 * 60 * 1000);
+  }
+
+  const today = new Date();
+  const joursDepuisDDR = Math.floor((today - dateDDR) / (1000 * 60 * 60 * 24));
+  const semainesAmen = Math.floor(joursDepuisDDR / 7);
+  const joursAmen = joursDepuisDDR % 7;
+
+  const joursRestants = Math.floor((dateAccouchement - today) / (1000 * 60 * 60 * 24));
+  const semainesRestantes = Math.floor(joursRestants / 7);
+
+  let trimestre;
+  if (semainesAmen < 15) trimestre = '1er trimestre';
+  else if (semainesAmen < 28) trimestre = '2e trimestre';
+  else trimestre = '3e trimestre';
+
+  const fmtDate = d => d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+  let progression = '';
+  if (joursRestants > 0) {
+    progression = `<div class="result-detail-row"><span>Trimestre actuel</span><strong>${trimestre}</strong></div>
+                   <div class="result-detail-row"><span>Semaines d'aménorrhée</span><strong>${semainesAmen} SA + ${joursAmen}j</strong></div>
+                   <div class="result-detail-row"><span>Jours restants estimés</span><strong>${joursRestants} jours (${semainesRestantes} sem.)</strong></div>`;
+  } else if (joursRestants > -14) {
+    progression = `<div class="result-detail-row"><span>Statut</span><strong>Terme atteint ou dépassé</strong></div>`;
+  } else {
+    progression = `<div class="result-detail-row"><span>Statut</span><strong>Date d'accouchement passée — félicitations 👶</strong></div>`;
+  }
+
+  showResult('acc-result', `
+    <div class="result-label">Date d'accouchement estimée</div>
+    <div class="result-value" style="font-size: 22px;">${fmtDate(dateAccouchement)}</div>
+    <div class="result-detail">
+      ${progression}
+      <div class="result-detail-row"><span>Date de conception estimée</span><strong>${fmtDate(dateConception)}</strong></div>
+      <div class="result-detail-row"><span>Date des dernières règles</span><strong>${fmtDate(dateDDR)}</strong></div>
+    </div>
+    <div class="note">⚠ Estimation indicative basée sur un cycle de 28 jours et un terme de 40 SA. Seul un suivi médical (échographie de datation) donne la date précise.</div>
+  `);
+}
+
+// ---------- 30. CALCUL MENTAL (mini-jeu) ----------
+
+let _cmEtat = null;
+
+function cmDemarrer() {
+  const niveau = $('cm-niveau').value;
+  const duree = parseInt($('cm-duree').value, 10) || 60;
+
+  _cmEtat = {
+    niveau,
+    duree,
+    debut: Date.now(),
+    score: 0,
+    bonnesReponses: 0,
+    mauvaisesReponses: 0,
+    operation: null,
+    reponse: null
+  };
+
+  $('cm-config').style.display = 'none';
+  $('cm-jeu').style.display = 'block';
+  $('cm-resultats').style.display = 'none';
+
+  cmGenererOperation();
+  cmTickTimer();
+}
+
+function cmGenererOperation() {
+  if (!_cmEtat) return;
+  const niveau = _cmEtat.niveau;
+  let a, b, op, resultat;
+
+  const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+  const ops = niveau === 'facile' ? ['+', '-'] : (niveau === 'moyen' ? ['+', '-', '×'] : ['+', '-', '×', '÷']);
+  op = ops[rand(0, ops.length - 1)];
+
+  if (niveau === 'facile') {
+    a = rand(1, 20); b = rand(1, 20);
+  } else if (niveau === 'moyen') {
+    a = rand(1, 50); b = rand(1, 12);
+  } else {
+    a = rand(2, 99); b = rand(2, 15);
+  }
+
+  if (op === '+') resultat = a + b;
+  else if (op === '-') { if (b > a) [a, b] = [b, a]; resultat = a - b; }
+  else if (op === '×') resultat = a * b;
+  else { // ÷
+    resultat = a;
+    a = a * b;
+    // a est maintenant le dividende, résultat est le quotient entier
+  }
+
+  _cmEtat.operation = `${a} ${op} ${b}`;
+  _cmEtat.reponse = resultat;
+
+  $('cm-operation').textContent = _cmEtat.operation;
+  $('cm-input').value = '';
+  $('cm-input').focus();
+}
+
+function cmValider() {
+  if (!_cmEtat) return;
+  const val = parseFloat($('cm-input').value);
+  if (isNaN(val)) return;
+
+  if (val === _cmEtat.reponse) {
+    _cmEtat.bonnesReponses++;
+    _cmEtat.score += 10;
+    $('cm-feedback').innerHTML = '<span style="color:#10b981;">✓ Bonne réponse !</span>';
+  } else {
+    _cmEtat.mauvaisesReponses++;
+    _cmEtat.score = Math.max(0, _cmEtat.score - 3);
+    $('cm-feedback').innerHTML = `<span style="color:#dc2626;">✗ La bonne réponse était ${_cmEtat.reponse}</span>`;
+  }
+
+  setTimeout(() => { $('cm-feedback').innerHTML = ''; }, 800);
+
+  $('cm-score').textContent = _cmEtat.score;
+  $('cm-bonnes').textContent = _cmEtat.bonnesReponses;
+  $('cm-mauvaises').textContent = _cmEtat.mauvaisesReponses;
+
+  cmGenererOperation();
+}
+
+function cmTickTimer() {
+  if (!_cmEtat) return;
+  const restant = _cmEtat.duree - Math.floor((Date.now() - _cmEtat.debut) / 1000);
+  if (restant <= 0) {
+    cmFinir();
+    return;
+  }
+  $('cm-timer').textContent = restant + 's';
+  setTimeout(cmTickTimer, 200);
+}
+
+function cmFinir() {
+  if (!_cmEtat) return;
+  const total = _cmEtat.bonnesReponses + _cmEtat.mauvaisesReponses;
+  const precision = total > 0 ? Math.round(_cmEtat.bonnesReponses / total * 100) : 0;
+
+  let mention = '';
+  if (_cmEtat.bonnesReponses >= 30) mention = '🏆 Excellent ! T\'es un crack du calcul mental';
+  else if (_cmEtat.bonnesReponses >= 20) mention = '🥇 Très bon score !';
+  else if (_cmEtat.bonnesReponses >= 10) mention = '👍 Bien joué, continue à t\'entraîner';
+  else mention = '💪 Pas mal pour commencer, le calcul mental se travaille';
+
+  $('cm-jeu').style.display = 'none';
+  $('cm-resultats').innerHTML = `
+    <div class="result visible">
+      <div class="result-label">Partie terminée</div>
+      <div class="result-value">${_cmEtat.bonnesReponses} bonnes réponses</div>
+      <div class="result-detail">
+        <div class="result-detail-row"><span>Score total</span><strong>${_cmEtat.score} pts</strong></div>
+        <div class="result-detail-row"><span>Mauvaises réponses</span><strong>${_cmEtat.mauvaisesReponses}</strong></div>
+        <div class="result-detail-row"><span>Précision</span><strong>${precision} %</strong></div>
+        <div class="result-detail-row"><span>Vitesse</span><strong>${total > 0 ? Math.round(_cmEtat.duree / total * 10) / 10 : 0} sec/calcul</strong></div>
+        <div class="result-detail-row"><span>Évaluation</span><strong>${mention}</strong></div>
+      </div>
+      <button class="btn" onclick="cmReset()">🔄 Rejouer</button>
+    </div>
+  `;
+  $('cm-resultats').style.display = 'block';
+  _cmEtat = null;
+}
+
+function cmReset() {
+  $('cm-config').style.display = 'block';
+  $('cm-jeu').style.display = 'none';
+  $('cm-resultats').style.display = 'none';
+}

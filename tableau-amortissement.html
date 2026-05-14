@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tableau d'amortissement de prêt : calcul détaillé — Calviro</title>
+<meta name="description" content="Tableau d'amortissement gratuit pour ton crédit : détail mois par mois ou année par année de la part capital, intérêts et capital restant dû.">
+<meta name="keywords" content="tableau amortissement, échéancier crédit, amortissement prêt, capital restant dû, calcul mensualité">
+<meta property="og:title" content="Tableau d'amortissement de prêt en ligne">
+<link rel="canonical" href="https://calviro.vercel.app/tableau-amortissement.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>📊 Tableau d'amortissement</h1>
+      <p>Détail mois par mois ou année par année de ton prêt.</p>
+    </div>
+
+    <div class="field">
+      <label for="amt-capital">Capital emprunté (€)</label>
+      <input type="number" id="amt-capital" placeholder="200 000" min="0">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="amt-taux">Taux d'intérêt (%)</label>
+        <input type="number" id="amt-taux" placeholder="3.5" step="0.01" min="0">
+      </div>
+      <div class="field">
+        <label for="amt-duree">Durée (années)</label>
+        <input type="number" id="amt-duree" placeholder="20" min="1" max="30">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="amt-granularite">Affichage</label>
+      <select id="amt-granularite">
+        <option value="annee">Vue annuelle (recommandée)</option>
+        <option value="mois">Vue mensuelle (60 premiers mois)</option>
+      </select>
+    </div>
+
+    <button class="btn" onclick="calcAmortissement()">Générer le tableau</button>
+
+    <div class="result" id="amt-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Qu'est-ce qu'un tableau d'amortissement ?</h2>
+    <p>Un <strong>tableau d'amortissement</strong> (ou échéancier) est le document qui détaille, pour chaque mensualité de ton prêt, comment elle se répartit entre <strong>capital remboursé</strong> et <strong>intérêts payés</strong>. C'est un document obligatoire que la banque doit te fournir avant la signature du crédit (article L. 313-22 du Code de la consommation).</p>
+
+    <h2>Pourquoi c'est important ?</h2>
+    <p>Le tableau d'amortissement permet de :</p>
+    <ul>
+      <li><strong>Comprendre où va vraiment ton argent</strong>. Au début, tu paies surtout des intérêts. À la fin, surtout du capital.</li>
+      <li><strong>Anticiper un remboursement anticipé</strong>. Le tableau te dit exactement combien il reste à devoir à n'importe quel moment.</li>
+      <li><strong>Calculer la déductibilité fiscale</strong>. Pour un investissement locatif, seuls les intérêts sont déductibles (pas le capital). Le tableau te donne le montant exact année par année.</li>
+      <li><strong>Comparer deux offres de prêt</strong>. À mensualité égale, deux taux différents donnent des coûts d'intérêts très différents.</li>
+      <li><strong>Décider de renégocier ou non</strong>. Si tu es dans le premier tiers (intérêts élevés), une baisse de taux est très rentable. Dans le dernier tiers, moins.</li>
+    </ul>
+
+    <h2>La répartition capital / intérêts évolue</h2>
+    <p>C'est le piège : on croit qu'à mensualité fixe, on rembourse une part fixe de capital. C'est faux. Voici un exemple sur un crédit de 200 000 € à 3,5 % sur 20 ans (mensualité fixe d'environ 1 160 €) :</p>
+    <table>
+      <thead><tr><th>Année</th><th>Intérêts payés</th><th>Capital remboursé</th><th>Ratio</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>~6 800 €</td><td>~7 100 €</td><td>49 % / 51 %</td></tr>
+        <tr><td>5</td><td>~5 800 €</td><td>~8 100 €</td><td>42 % / 58 %</td></tr>
+        <tr><td>10</td><td>~3 900 €</td><td>~10 000 €</td><td>28 % / 72 %</td></tr>
+        <tr><td>15</td><td>~1 600 €</td><td>~12 300 €</td><td>11 % / 89 %</td></tr>
+        <tr><td>20</td><td>~250 €</td><td>~13 700 €</td><td>2 % / 98 %</td></tr>
+      </tbody>
+    </table>
+    <p>Conclusion : les premières années, presque la moitié de chaque mensualité disparaît en intérêts. Les dernières années, presque tout va dans ton capital.</p>
+
+    <h2>Le coût d'intérêts en image</h2>
+    <p>Sur le même exemple (200 000 € à 3,5 % sur 20 ans), tu paies au total environ <strong>78 000 € d'intérêts</strong>. Cela représente <strong>39 %</strong> du capital emprunté. Sur un crédit sur 25 ans, ça monte à 50 %+. Sur 30 ans, à 70 %+. La durée a un impact énorme.</p>
+
+    <h2>Remboursement anticipé</h2>
+    <p>Tu peux rembourser ton crédit en avance, partiellement ou totalement. La banque peut appliquer des <strong>indemnités de remboursement anticipé (IRA)</strong> plafonnées par la loi à :</p>
+    <ul>
+      <li>3 % du capital restant dû</li>
+      <li>OU 6 mois d'intérêts sur le capital remboursé</li>
+    </ul>
+    <p>Le plus faible des deux s'applique. <strong>Pas d'IRA</strong> en cas de vente du bien pour cause de licenciement, mutation professionnelle, décès du conjoint, ou cessation forcée d'activité.</p>
+
+    <h2>Renégociation : quand ça vaut le coup</h2>
+    <p>Si les taux du marché baissent significativement après ton achat, tu peux renégocier. Les conditions classiques pour que ça soit rentable :</p>
+    <ul>
+      <li>Écart d'<strong>au moins 1 point</strong> entre ton taux actuel et le nouveau</li>
+      <li>Tu es dans le <strong>premier tiers</strong> de ton prêt</li>
+      <li>Le capital restant dû est <strong>au moins 50 000 €</strong></li>
+    </ul>
+
+    <h2>Différence avec un crédit in fine</h2>
+    <p>Notre calculateur génère un tableau pour un <strong>crédit amortissable</strong> (le plus courant). Il existe aussi le <strong>crédit in fine</strong> : tu ne rembourses que les intérêts pendant toute la durée, et tu rembourses le capital en une seule fois à la fin. Coût total beaucoup plus élevé mais mensualité plus faible. Réservé aux investisseurs avec stratégie patrimoniale précise.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

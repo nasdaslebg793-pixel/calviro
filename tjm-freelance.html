@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calcul TJM freelance : taux journalier minimum 2026 — Calviro</title>
+<meta name="description" content="Calcule ton TJM freelance : le taux journalier à facturer pour atteindre ton salaire net cible. Auto-entrepreneur, EURL, SASU.">
+<meta name="keywords" content="calcul tjm, tjm freelance, taux journalier, tjm auto-entrepreneur, tjm consultant, tjm minimum">
+<meta property="og:title" content="Calcul TJM freelance — taux journalier minimum">
+<link rel="canonical" href="https://calviro.vercel.app/tjm-freelance.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>💼 TJM freelance</h1>
+      <p>Le taux journalier à facturer pour atteindre ton net cible.</p>
+    </div>
+
+    <div class="field">
+      <label for="tjm-salaire">Salaire net mensuel souhaité (€)</label>
+      <input type="number" id="tjm-salaire" placeholder="3 000" min="0">
+    </div>
+
+    <div class="field">
+      <label for="tjm-statut">Statut juridique</label>
+      <select id="tjm-statut">
+        <option value="auto">Auto-entrepreneur (micro-BNC)</option>
+        <option value="eurl">EURL / EI au réel (TNS)</option>
+        <option value="sasu">SASU (assimilé salarié)</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="tjm-jours">Jours travaillés par an (218 par défaut)</label>
+      <input type="number" id="tjm-jours" placeholder="218" min="100" max="365" value="218">
+    </div>
+
+    <button class="btn" onclick="calcTJM()">Calculer mon TJM</button>
+
+    <div class="result" id="tjm-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Qu'est-ce que le TJM ?</h2>
+    <p>Le <strong>TJM (Taux Journalier Moyen)</strong>, c'est le tarif que tu factures pour une journée de prestation en tant que freelance. C'est l'unité de référence dans la plupart des secteurs : informatique, conseil, design, formation, marketing digital, ingénierie. Il s'exprime toujours en <strong>HT (hors taxes)</strong>.</p>
+
+    <h2>Pourquoi calculer son TJM est crucial ?</h2>
+    <p>L'erreur classique du débutant : facturer trop bas en pensant "c'est pas mal, je gagne plus qu'en salarié". Sauf que tu oublies :</p>
+    <ul>
+      <li>Les <strong>charges sociales</strong> (45 % en moyenne pour les TNS)</li>
+      <li>L'<strong>impôt sur le revenu</strong> (ou sur les sociétés)</li>
+      <li>Les <strong>jours non facturables</strong> : congés, formation, recherche de clients, comptabilité, intercontrat</li>
+      <li>Les <strong>frais professionnels</strong> : ordinateur, logiciels, abonnements, déplacements, assurance pro</li>
+      <li>L'<strong>épargne retraite</strong> (tu n'as pas la cotisation retraite obligatoire complète)</li>
+    </ul>
+    <p>Résultat : un TJM mal calculé peut te faire gagner <strong>moins qu'un salarié</strong> pour le même travail, sans la protection sociale.</p>
+
+    <h2>Statut juridique : ça change tout</h2>
+    
+    <h3>Auto-entrepreneur (micro-BNC)</h3>
+    <p>Charges sociales : <strong>~22 %</strong>. Très simple, mais plafond de CA (77 700 € pour les prestations de services en 2024). Pas de déduction de charges, abattement forfaitaire de 34 % seulement.</p>
+
+    <h3>EURL / EI au réel (TNS)</h3>
+    <p>Charges sociales : <strong>~45 %</strong>. Beaucoup plus de paperasse, mais permet de déduire toutes les charges réelles (matériel, déplacements, formation, etc.). Adapté quand tes charges dépassent 30 % du CA.</p>
+
+    <h3>SASU (assimilé salarié)</h3>
+    <p>Charges : <strong>~65 %</strong> (cotisations sociales + IS + dividendes). Plus de protection sociale (couverture maladie identique au salarié). Plus complexe administrativement. Adapté pour les très hauts revenus (>100k€/an de CA).</p>
+
+    <h2>Jours facturables : la vraie limite</h2>
+    <p>L'année compte 365 jours, mais voici la décomposition réaliste pour un freelance :</p>
+    <ul>
+      <li>365 jours − 104 weekends − 11 fériés = <strong>250 jours ouvrés</strong></li>
+      <li>− 25 jours de congés annuels = <strong>225 jours travaillés</strong></li>
+      <li>− 10 jours de formation/admin/recherche client = <strong>215 jours facturables</strong></li>
+      <li>− 15 % d'intercontrat (en moyenne) = <strong>~180 jours réellement vendus</strong></li>
+    </ul>
+    <p>Notre calculateur utilise 218 jours par défaut, mais sois honnête avec toi-même : si tu débutes ou si tu changes souvent de client, baisse à 180-190 jours.</p>
+
+    <h2>TJM moyens par secteur en 2026</h2>
+    <table>
+      <thead><tr><th>Métier</th><th>Débutant</th><th>Senior</th><th>Expert</th></tr></thead>
+      <tbody>
+        <tr><td>Dev. JavaScript / React</td><td>400-500 €</td><td>600-800 €</td><td>900-1 200 €</td></tr>
+        <tr><td>Dev. Python / Data</td><td>450-550 €</td><td>650-850 €</td><td>1 000-1 500 €</td></tr>
+        <tr><td>DevOps / Cloud</td><td>500-650 €</td><td>750-1 000 €</td><td>1 100-1 500 €</td></tr>
+        <tr><td>Designer UX/UI</td><td>350-450 €</td><td>500-700 €</td><td>800-1 100 €</td></tr>
+        <tr><td>Consultant marketing</td><td>400-550 €</td><td>650-900 €</td><td>1 000-1 500 €</td></tr>
+        <tr><td>Rédacteur web</td><td>200-300 €</td><td>350-500 €</td><td>600-900 €</td></tr>
+        <tr><td>Formateur</td><td>500-700 €</td><td>800-1 200 €</td><td>1 500-2 500 €</td></tr>
+        <tr><td>Consultant tech (Big 4 alternatif)</td><td>600-800 €</td><td>900-1 200 €</td><td>1 300-1 800 €</td></tr>
+      </tbody>
+    </table>
+    <p>Ces fourchettes varient selon Paris/province (+30 % en région parisienne typiquement), la rareté de la compétence, et la taille du client (grands comptes payent mieux que startups).</p>
+
+    <h2>Stratégies pour augmenter ton TJM</h2>
+    <ul>
+      <li><strong>Spécialise-toi</strong> : un expert en React + GraphQL + AWS facture 2x plus qu'un "dev full-stack généraliste"</li>
+      <li><strong>Construis une marque personnelle</strong> : LinkedIn actif, blog technique, conférences → tu vends ton expertise, plus juste tes mains</li>
+      <li><strong>Cible les grands comptes</strong> : BNP, AXA, LVMH ont des budgets que les startups n'ont pas</li>
+      <li><strong>Refuse les missions sous-payées</strong> : ça abîme ton positionnement à long terme</li>
+      <li><strong>Augmente progressivement</strong> : +5-10 % à chaque nouveau client ou renouvellement</li>
+      <li><strong>Vends des packages</strong> au lieu de jours : "audit complet à 5 000 €" est psychologiquement plus simple à valider que "10 jours à 500 €"</li>
+      <li><strong>Forme-toi en continu</strong> : les compétences obsolètes plafonnent le TJM</li>
+    </ul>
+
+    <h2>Les pièges à éviter</h2>
+    <ul>
+      <li><strong>Le syndrome du "j'ai un bon réseau, je vais m'en sortir"</strong> : prévois 6 mois de trésorerie avant de te lancer</li>
+      <li><strong>Oublier la TVA</strong> : au-delà des seuils (~36 800 € pour services), tu factures HT mais tu collectes la TVA</li>
+      <li><strong>Travailler trop pour un seul client</strong> : risque de requalification en salariat déguisé</li>
+      <li><strong>Sous-estimer les charges administratives</strong> : compte 1 jour par mois pour la paperasse</li>
+      <li><strong>Ne pas se former</strong> : la stagnation = baisse de valeur sur le marché</li>
+    </ul>
+
+    <h2>Limites de notre calcul</h2>
+    <p>Notre simulateur donne une <strong>estimation simplifiée</strong>. Le calcul exact dépend de :</p>
+    <ul>
+      <li>Ta tranche marginale d'imposition (IR)</li>
+      <li>Tes frais professionnels réels (déductibles au réel)</li>
+      <li>Ton niveau de CA (charges progressives, dépassement de seuils)</li>
+      <li>Ton statut matrimonial (impact sur l'IR)</li>
+    </ul>
+    <p>Pour un calcul précis, demande à un expert-comptable. Beaucoup proposent une consultation gratuite pour les nouveaux freelances.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

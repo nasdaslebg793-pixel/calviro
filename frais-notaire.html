@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frais de notaire 2026 : calcul exact ancien et neuf — Calviro</title>
+<meta name="description" content="Calcul des frais de notaire pour un achat immobilier en France. Estimation détaillée : droits, émoluments, débours. Ancien et neuf.">
+<meta name="keywords" content="frais de notaire, calcul frais notaire, frais notaire ancien, frais notaire neuf, droits enregistrement, émoluments notaire">
+<meta property="og:title" content="Calcul frais de notaire — ancien et neuf">
+<meta property="og:description" content="Estimation détaillée des frais d'acquisition immobilière.">
+<link rel="canonical" href="https://calviro.vercel.app/frais-notaire.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🧮 Frais de notaire</h1>
+      <p>Estimation détaillée des frais d'acquisition immobilière.</p>
+    </div>
+
+    <div class="field">
+      <label for="not-prix">Prix d'achat du bien (€)</label>
+      <input type="number" id="not-prix" placeholder="250 000" min="0">
+    </div>
+
+    <div class="field">
+      <label for="not-type">Type de bien</label>
+      <select id="not-type">
+        <option value="ancien">Ancien (plus de 5 ans)</option>
+        <option value="neuf">Neuf (VEFA, moins de 5 ans)</option>
+      </select>
+    </div>
+
+    <button class="btn" onclick="calcNotaire()">Calculer les frais</button>
+
+    <div class="result" id="not-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>"Frais de notaire" : ce qu'on appelle ça improprement</h2>
+    <p>L'expression "frais de notaire" est trompeuse. En réalité, <strong>moins de 15 % de ces frais reviennent au notaire</strong>. La grande majorité est composée de <strong>taxes versées à l'État et aux collectivités locales</strong>. Il serait plus juste de parler de "frais d'acquisition", mais l'usage est ancré.</p>
+
+    <h2>Décomposition détaillée</h2>
+
+    <h3>1. Droits d'enregistrement (~80 % du total)</h3>
+    <p>Ce sont les <strong>taxes payées à l'État et au département</strong> lors de la mutation immobilière. Le taux est de :</p>
+    <ul>
+      <li><strong>Dans l'ancien</strong> : 5,80 % du prix d'achat (4,50 % pour le département, 1,20 % pour la commune, 0,10 % pour l'État). Quelques départements appliquent 5,09 %.</li>
+      <li><strong>Dans le neuf</strong> : seulement 0,71 % (taxe de publicité foncière réduite, car la TVA à 20 % est déjà incluse dans le prix de vente).</li>
+    </ul>
+
+    <h3>2. Émoluments du notaire (~10 % du total)</h3>
+    <p>C'est la <strong>rémunération du notaire</strong>, tarif réglementé par décret. Elle est dégressive selon des tranches :</p>
+    <table>
+      <thead><tr><th>Tranche de prix</th><th>Taux</th></tr></thead>
+      <tbody>
+        <tr><td>De 0 à 6 500 €</td><td>3,95 %</td></tr>
+        <tr><td>De 6 500 à 17 000 €</td><td>1,627 %</td></tr>
+        <tr><td>De 17 000 à 60 000 €</td><td>1,085 %</td></tr>
+        <tr><td>Au-delà de 60 000 €</td><td>0,814 %</td></tr>
+      </tbody>
+    </table>
+    <p>Sur un achat à 250 000 €, les émoluments du notaire sont d'environ 2 500 €. Depuis 2021, le notaire peut accorder une <strong>remise jusqu'à 20 %</strong> sur la part des émoluments dépassant 100 000 €.</p>
+
+    <h3>3. Débours (~5 % du total)</h3>
+    <p>Ce sont les <strong>frais avancés par le notaire</strong> pour ton compte : extrait cadastral, état hypothécaire, certificats d'urbanisme, courriers recommandés, etc. Environ 800 à 1 500 € selon le dossier.</p>
+
+    <h3>4. Contribution de sécurité immobilière (~1 % du total)</h3>
+    <p>Une taxe de 0,10 % du prix de vente perçue par l'État pour l'enregistrement de l'acte au service de la publicité foncière. Sur 250 000 €, soit 250 €.</p>
+
+    <h2>Exemples concrets</h2>
+    <table>
+      <thead><tr><th>Prix d'achat</th><th>Ancien (~7-8 %)</th><th>Neuf (~2-3 %)</th></tr></thead>
+      <tbody>
+        <tr><td>150 000 €</td><td>~12 000 €</td><td>~4 000 €</td></tr>
+        <tr><td>250 000 €</td><td>~19 000 €</td><td>~6 500 €</td></tr>
+        <tr><td>400 000 €</td><td>~29 000 €</td><td>~9 500 €</td></tr>
+        <tr><td>600 000 €</td><td>~42 000 €</td><td>~14 000 €</td></tr>
+        <tr><td>1 000 000 €</td><td>~68 000 €</td><td>~22 000 €</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Frais de notaire et apport personnel</h2>
+    <p>Important : les frais de notaire <strong>ne peuvent généralement pas être financés par le prêt immobilier</strong>. Tu dois les payer en cash, avec ton apport personnel. C'est pour ça qu'on parle de "10 % d'apport minimum" = 10 % du prix + les frais d'acquisition.</p>
+    <p>Pour un achat à 250 000 € dans l'ancien :</p>
+    <ul>
+      <li>Prix : 250 000 €</li>
+      <li>Frais : ~19 000 €</li>
+      <li>Total : 269 000 €</li>
+      <li>Apport minimum recommandé (10 % + frais) : <strong>~44 000 €</strong></li>
+      <li>Emprunt : 225 000 €</li>
+    </ul>
+
+    <h2>Frais de notaire dans le neuf : pourquoi moins chers ?</h2>
+    <p>Dans le neuf, le prix de vente <strong>inclut déjà 20 % de TVA</strong>. Pour éviter la "double taxation", l'État réduit fortement les droits d'enregistrement (de 5,80 % à 0,71 %). Résultat : les frais d'acquisition tombent de 7-8 % à 2-3 % du prix.</p>
+    <p>C'est l'un des principaux arguments commerciaux des promoteurs immobiliers. Sur un achat à 250 000 €, l'économie est de l'ordre de <strong>12 000 à 14 000 €</strong>.</p>
+
+    <h2>Astuces pour réduire les frais</h2>
+    <ul>
+      <li><strong>Acheter dans le neuf</strong> : économie de 4-5 points sur le prix</li>
+      <li><strong>Séparer mobilier et bien</strong> : si le bien est vendu meublé, la valeur du mobilier peut être déduite du prix de référence pour les droits (cuisine équipée, électroménager, salle de bains). Doit être documenté avec un inventaire détaillé. Économie typique : 3-5 % du prix.</li>
+      <li><strong>Négocier les émoluments</strong> au-delà de 100 000 € (remise possible jusqu'à 20 %)</li>
+      <li><strong>Acheter en SCI familiale</strong> : permet certaines optimisations en cas de transmission</li>
+      <li><strong>Acheter à plusieurs en démembrement</strong> : nue-propriété + usufruit, économie significative dans certains montages</li>
+    </ul>
+
+    <h2>Frais en cas de revente</h2>
+    <p>Lors d'une revente, c'est <strong>l'acheteur</strong> qui paie les frais de notaire (sauf clause contraire dans le compromis). Sauf en cas d'<strong>acte en main</strong> où le vendeur les prend en charge — pratique rare réservée aux vendeurs très pressés.</p>
+
+    <h2>Suite logique</h2>
+    <p>Maintenant que tu connais les frais d'acquisition, calcule ta <a href="capacite-emprunt.html">capacité d'emprunt</a> pour savoir combien tu peux emprunter, puis simule ton crédit avec le <a href="credit-immobilier.html">simulateur de crédit immobilier</a>.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

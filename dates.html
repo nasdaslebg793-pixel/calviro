@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jours entre 2 dates : calcul de durée précis — Calviro</title>
+<meta name="description" content="Calcule le nombre de jours, semaines, mois ou heures entre deux dates. Jours ouvrés, weekends, et durée totale.">
+<meta name="keywords" content="jours entre 2 dates, calcul durée entre dates, différence dates, jours ouvrés, calcul jours">
+<meta property="og:title" content="Jours entre 2 dates — durée précise">
+<link rel="canonical" href="https://calviro.vercel.app/dates.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>📅 Jours entre 2 dates</h1>
+      <p>Durée totale en jours, semaines, mois, et jours ouvrés.</p>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="dates-debut">Date de début</label>
+        <input type="date" id="dates-debut">
+      </div>
+      <div class="field">
+        <label for="dates-fin">Date de fin</label>
+        <input type="date" id="dates-fin">
+      </div>
+    </div>
+
+    <button class="btn" onclick="calcDates()">Calculer la durée</button>
+
+    <div class="result" id="dates-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Calcul de durée entre deux dates</h2>
+    <p>Combien de jours te séparent de tes vacances ? Combien de temps depuis ton dernier check chez le médecin ? Quelle est la durée précise entre la signature d'un contrat et son terme ? Ce calculateur répond à toutes ces questions en un clic, avec une <strong>précision absolue</strong>.</p>
+
+    <h2>Cas d'usage les plus fréquents</h2>
+    <ul>
+      <li><strong>Préavis de location</strong> : 3 mois en zone détendue, 1 mois en zone tendue (sauf cas spécifiques)</li>
+      <li><strong>Délai administratif</strong> : combien de jours avant la date limite d'une démarche officielle</li>
+      <li><strong>Durée de contrat</strong> : combien de jours travaillés ouvrent droit aux congés payés</li>
+      <li><strong>Préparation d'un projet</strong> : déadline et planification rétroactive</li>
+      <li><strong>Anniversaires</strong> : compte à rebours précis</li>
+      <li><strong>Suivi de bébé / d'animal</strong> : âge précis en jours et semaines</li>
+      <li><strong>Calculs sportifs</strong> : nombre de jours d'entraînement avant une course</li>
+      <li><strong>Calculs juridiques</strong> : prescription, délai de rétractation</li>
+      <li><strong>Calculs RH</strong> : ancienneté, période d'essai</li>
+    </ul>
+
+    <h2>Jours ouvrés vs jours calendaires</h2>
+    <p>Notre outil distingue deux notions importantes :</p>
+    <ul>
+      <li><strong>Jours calendaires</strong> : tous les jours du calendrier (365 par an, ou 366 les années bissextiles)</li>
+      <li><strong>Jours ouvrés</strong> : du lundi au vendredi (5 jours/semaine, en moyenne 252 par an en France)</li>
+      <li><strong>Jours ouvrables</strong> : du lundi au samedi (6 jours/semaine), notion juridique pour certains contrats</li>
+    </ul>
+    <p>⚠ Notre outil utilise les <strong>jours ouvrés simplifiés</strong> (lun-ven) sans tenir compte des jours fériés français. Pour un calcul juridique précis (préavis, prescription), retire toi-même les 11 jours fériés annuels.</p>
+
+    <h2>Les jours fériés en France métropolitaine</h2>
+    <ol>
+      <li>Jour de l'An (1er janvier)</li>
+      <li>Lundi de Pâques (variable mars-avril)</li>
+      <li>Fête du Travail (1er mai)</li>
+      <li>Victoire 1945 (8 mai)</li>
+      <li>Ascension (variable mai)</li>
+      <li>Lundi de Pentecôte (variable mai-juin)</li>
+      <li>Fête Nationale (14 juillet)</li>
+      <li>Assomption (15 août)</li>
+      <li>Toussaint (1er novembre)</li>
+      <li>Armistice 1918 (11 novembre)</li>
+      <li>Noël (25 décembre)</li>
+    </ol>
+    <p>L'Alsace-Moselle a 2 jours fériés supplémentaires : Vendredi Saint et 26 décembre (Saint Étienne).</p>
+
+    <h2>Astuce : la règle pour calculer mentalement</h2>
+    <p>Pour avoir un ordre d'idée rapide entre deux dates :</p>
+    <ul>
+      <li><strong>1 an</strong> ≈ 365 jours ≈ 52 semaines ≈ 8 760 heures</li>
+      <li><strong>1 mois</strong> ≈ 30,4 jours ≈ 4,35 semaines</li>
+      <li><strong>1 semaine</strong> = 7 jours = 168 heures</li>
+      <li><strong>1 jour</strong> = 1 440 minutes = 86 400 secondes</li>
+    </ul>
+
+    <h2>Années bissextiles : la subtilité</h2>
+    <p>Une année est bissextile (366 jours au lieu de 365) si elle est divisible par 4, sauf si elle est divisible par 100 sans l'être par 400. Donc :</p>
+    <ul>
+      <li>2024 : bissextile (divisible par 4 et pas par 100)</li>
+      <li>2028 : bissextile</li>
+      <li>2100 : NON bissextile (divisible par 100 mais pas par 400)</li>
+      <li>2000 : bissextile (divisible par 400)</li>
+    </ul>
+    <p>Notre calculateur gère automatiquement cette règle.</p>
+
+    <h2>Durées légales utiles</h2>
+    <ul>
+      <li><strong>Délai de rétractation</strong> (achat à distance) : 14 jours calendaires</li>
+      <li><strong>Préavis locataire (zone tendue)</strong> : 1 mois</li>
+      <li><strong>Préavis locataire (zone détendue)</strong> : 3 mois</li>
+      <li><strong>Préavis CDI démission</strong> : 1 à 3 mois selon convention</li>
+      <li><strong>Période d'essai CDI cadre</strong> : 4 mois renouvelable</li>
+      <li><strong>Garantie légale de conformité</strong> : 2 ans</li>
+      <li><strong>Délai de prescription civile générale</strong> : 5 ans</li>
+      <li><strong>Permis de construire (validité)</strong> : 3 ans</li>
+      <li><strong>Carte d'identité</strong> : 15 ans (adulte) / 10 ans (mineur)</li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
