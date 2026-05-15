@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Générateur de lien WhatsApp : wa.me avec message — Calviro</title>
+<meta name="description" content="Crée un lien WhatsApp cliquable wa.me avec ton numéro et message pré-rempli. Pour ta bio Instagram, site web, signature email.">
+<meta name="keywords" content="lien whatsapp, wa.me, generateur whatsapp, lien direct whatsapp, whatsapp business">
+<meta property="og:title" content="Générateur lien WhatsApp (wa.me)">
+<link rel="canonical" href="https://calviro.vercel.app/lien-whatsapp.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🔗 Lien WhatsApp</h1>
+      <p>Crée un lien wa.me avec message pré-rempli.</p>
+    </div>
+
+    <div class="field">
+      <label for="wa-numero">Numéro de téléphone</label>
+      <input type="tel" id="wa-numero" placeholder="06 12 34 56 78 ou +33 6 12 34 56 78">
+    </div>
+
+    <div class="field">
+      <label for="wa-message">Message pré-rempli (optionnel)</label>
+      <textarea id="wa-message" rows="3" placeholder="Bonjour, je vous contacte au sujet de..."></textarea>
+    </div>
+
+    <button class="btn" onclick="genererLienWhatsapp()">Générer mon lien</button>
+
+    <div class="result" id="wa-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Qu'est-ce qu'un lien WhatsApp ?</h2>
+    <p>Un <strong>lien WhatsApp direct</strong> (format <code>wa.me/{numéro}</code>) permet à n'importe qui d'ouvrir une conversation WhatsApp avec toi en un seul clic, sans avoir à enregistrer ton numéro dans ses contacts. C'est <strong>le format officiel</strong> recommandé par WhatsApp.</p>
+
+    <h2>Pourquoi c'est utile ?</h2>
+    <ul>
+      <li><strong>Bio Instagram / TikTok</strong> : remplace le numéro de téléphone par un lien direct cliquable</li>
+      <li><strong>Site web</strong> : bouton "Nous contacter sur WhatsApp"</li>
+      <li><strong>Signature email professionnelle</strong> : un clic et tes clients te répondent sur WhatsApp</li>
+      <li><strong>Carte de visite</strong> : avec un QR code pointant vers ton lien WhatsApp</li>
+      <li><strong>Publicités</strong> : générer des leads facilement</li>
+      <li><strong>WhatsApp Business</strong> : automatiser le premier contact avec un message type</li>
+    </ul>
+
+    <h2>Format du lien</h2>
+    <p>Le format officiel est :</p>
+    <pre style="background:var(--bg-subtle); padding:12px; border-radius:6px; font-size:13px;">https://wa.me/336XXXXXXXX?text=Message%20pr%C3%A9-rempli</pre>
+    <p>Décomposition :</p>
+    <ul>
+      <li><strong>wa.me</strong> : domaine raccourci officiel WhatsApp</li>
+      <li><strong>336XXXXXXXX</strong> : ton numéro en format international, <strong>sans le +</strong>, <strong>sans le 0 initial</strong>, <strong>sans espaces ni tirets</strong></li>
+      <li><strong>?text=...</strong> : le message pré-rempli, encodé URL</li>
+    </ul>
+
+    <h2>Comment formater son numéro ?</h2>
+    <p>Le format international est obligatoire. Pour un numéro français :</p>
+    <table>
+      <thead><tr><th>Format saisi</th><th>Format wa.me</th></tr></thead>
+      <tbody>
+        <tr><td>06 12 34 56 78</td><td>336 12 34 56 78 → <strong>33612345678</strong></td></tr>
+        <tr><td>+33 6 12 34 56 78</td><td><strong>33612345678</strong></td></tr>
+        <tr><td>0033612345678</td><td><strong>33612345678</strong></td></tr>
+      </tbody>
+    </table>
+    <p>Notre outil gère <strong>automatiquement</strong> ces conversions, tu peux saisir n'importe quel format usuel.</p>
+
+    <h2>Indicatifs internationaux courants</h2>
+    <table>
+      <thead><tr><th>Pays</th><th>Indicatif</th><th>Exemple</th></tr></thead>
+      <tbody>
+        <tr><td>🇫🇷 France</td><td>33</td><td>33612345678</td></tr>
+        <tr><td>🇧🇪 Belgique</td><td>32</td><td>32475123456</td></tr>
+        <tr><td>🇨🇭 Suisse</td><td>41</td><td>41791234567</td></tr>
+        <tr><td>🇨🇦 Canada / 🇺🇸 USA</td><td>1</td><td>14155551234</td></tr>
+        <tr><td>🇬🇧 UK</td><td>44</td><td>447700900123</td></tr>
+        <tr><td>🇩🇪 Allemagne</td><td>49</td><td>491701234567</td></tr>
+        <tr><td>🇪🇸 Espagne</td><td>34</td><td>34612345678</td></tr>
+        <tr><td>🇮🇹 Italie</td><td>39</td><td>393312345678</td></tr>
+        <tr><td>🇲🇦 Maroc</td><td>212</td><td>212612345678</td></tr>
+        <tr><td>🇩🇿 Algérie</td><td>213</td><td>213512345678</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Le message pré-rempli : un atout majeur</h2>
+    <p>Le message pré-rempli est ce qui rend ce lien <strong>vraiment puissant</strong>. Au lieu de "Salut", ton interlocuteur reçoit un message qui :</p>
+    <ul>
+      <li><strong>Te qualifie immédiatement</strong> : "Bonjour, je suis intéressé(e) par votre formation marketing"</li>
+      <li><strong>Brise la glace</strong> : la personne sait pourquoi elle écrit</li>
+      <li><strong>Améliore le taux de conversion</strong> : moins de friction, plus de réponses</li>
+      <li><strong>Permet de qualifier</strong> : message différent selon l'origine du lien</li>
+    </ul>
+
+    <h2>Exemples de messages efficaces</h2>
+    <ul>
+      <li><em>"Bonjour, j'ai vu votre site et j'aimerais en savoir plus sur [votre service]."</em></li>
+      <li><em>"Bonjour ! Je vous contacte de la part de [Instagram]. Pouvez-vous m'envoyer plus d'infos ?"</em></li>
+      <li><em>"Hello [Prénom] ! Je suis intéressé(e) par une consultation."</em></li>
+      <li><em>"Bonjour, je souhaite réserver une [date/heure]."</em></li>
+      <li><em>"Bonjour, vendez-vous encore [produit] ?"</em></li>
+    </ul>
+
+    <h2>Pour les pros : WhatsApp Business</h2>
+    <p>Si tu fais du commercial sur WhatsApp, télécharge l'app <strong>WhatsApp Business</strong> (gratuite, séparée de WhatsApp normal). Elle ajoute :</p>
+    <ul>
+      <li><strong>Messages automatiques</strong> (bienvenue, absence)</li>
+      <li><strong>Catalogue produits</strong> intégré</li>
+      <li><strong>Étiquettes</strong> pour organiser les conversations</li>
+      <li><strong>Réponses rapides</strong> (raccourcis clavier)</li>
+      <li><strong>Statistiques</strong></li>
+      <li><strong>Profil pro</strong> (adresse, horaires, site web)</li>
+    </ul>
+
+    <h2>Confidentialité de ton numéro</h2>
+    <p>⚠️ Important : <strong>le numéro est visible dans l'URL</strong>. Quiconque clique sur ton lien voit ton numéro. Pour préserver ta vie privée :</p>
+    <ul>
+      <li>Utilise un <strong>numéro pro dédié</strong> (pas ton perso)</li>
+      <li>Considère un <strong>numéro virtuel</strong> (Skype, OnOff, OVH)</li>
+      <li>Active les paramètres de confidentialité (qui peut voir ta photo, ton statut, etc.)</li>
+    </ul>
+
+    <h2>Bonus : générer un QR code</h2>
+    <p>Pour une carte de visite physique ou un sticker, génère un <strong>QR code</strong> qui pointe vers ton lien WhatsApp grâce à notre <a href="qr-code.html">générateur QR Code</a>. Scan = ouverture directe de la conversation.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

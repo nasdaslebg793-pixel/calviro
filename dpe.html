@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DPE : calcul de la classe énergie A à G — Calviro</title>
+<meta name="description" content="Estime ta classe DPE (A à G) selon la consommation kWh/m²/an et les émissions de CO2. Loi Climat, interdictions de location.">
+<meta name="keywords" content="calcul dpe, classe énergie, étiquette dpe, passoire thermique, dpe maison, dpe appartement">
+<meta property="og:title" content="Calcul classe DPE (étiquette énergie)">
+<link rel="canonical" href="https://calviro.vercel.app/dpe.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🔥 DPE — Classe énergie</h1>
+      <p>Estimation de l'étiquette énergétique A à G.</p>
+    </div>
+
+    <div class="field">
+      <label for="dpe-conso">Consommation énergétique (kWh/m²/an)</label>
+      <input type="number" id="dpe-conso" placeholder="180" min="0">
+    </div>
+
+    <div class="field">
+      <label for="dpe-ges">Émissions GES (kgCO₂eq/m²/an, optionnel)</label>
+      <input type="number" id="dpe-ges" placeholder="30" min="0">
+    </div>
+
+    <button class="btn" onclick="calcDPE()">Calculer ma classe</button>
+
+    <div class="result" id="dpe-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Le DPE : qu'est-ce que c'est ?</h2>
+    <p>Le <strong>Diagnostic de Performance Énergétique (DPE)</strong> est un document obligatoire qui évalue la consommation d'énergie d'un logement et ses émissions de gaz à effet de serre. Il donne une <strong>étiquette de A (très performant) à G (passoire thermique)</strong>.</p>
+    <p>Le DPE est obligatoire pour <strong>vendre ou louer</strong> un bien depuis 2006, refondu en 2021 pour être plus fiable et opposable juridiquement.</p>
+
+    <h2>Comment se lit le DPE ?</h2>
+    <table>
+      <thead><tr><th>Classe</th><th>Consommation</th><th>Émissions GES</th><th>Performance</th></tr></thead>
+      <tbody>
+        <tr><td style="color:#0a8050;"><strong>A</strong></td><td>≤ 70 kWh/m²/an</td><td>≤ 6 kgCO₂</td><td>Excellente</td></tr>
+        <tr><td style="color:#4cae50;"><strong>B</strong></td><td>71-110</td><td>7-11</td><td>Très bonne</td></tr>
+        <tr><td style="color:#8bc34a;"><strong>C</strong></td><td>111-180</td><td>12-30</td><td>Bonne</td></tr>
+        <tr><td style="color:#ffc107;"><strong>D</strong></td><td>181-250</td><td>31-50</td><td>Moyenne</td></tr>
+        <tr><td style="color:#ff9800;"><strong>E</strong></td><td>251-330</td><td>51-70</td><td>Médiocre</td></tr>
+        <tr><td style="color:#ff5722;"><strong>F</strong></td><td>331-420</td><td>71-100</td><td>Passoire</td></tr>
+        <tr><td style="color:#d32f2f;"><strong>G</strong></td><td>&gt; 420</td><td>&gt; 100</td><td>Passoire</td></tr>
+      </tbody>
+    </table>
+    <p>⚠️ Le DPE retient toujours le <strong>moins bon des deux critères</strong> (énergie ou GES). Un logement A sur l'énergie mais D sur le GES sera classé D.</p>
+
+    <h2>Loi Climat : le calendrier des interdictions</h2>
+    <p>La <strong>loi Climat et Résilience (août 2021)</strong> interdit progressivement la location des passoires thermiques :</p>
+    <ul>
+      <li><strong>2023</strong> : interdiction de louer les logements consommant plus de 450 kWh/m²/an (les pires G)</li>
+      <li><strong>2025</strong> : interdiction de louer toute la classe <strong>G</strong></li>
+      <li><strong>2028</strong> : interdiction de louer la classe <strong>F</strong></li>
+      <li><strong>2034</strong> : interdiction de louer la classe <strong>E</strong></li>
+    </ul>
+    <p>Conséquence concrète : si tu loues une passoire thermique, tu dois <strong>la rénover ou la vendre</strong>. Sinon le locataire peut exiger des travaux ou un dédommagement.</p>
+
+    <h2>Impact sur le prix de vente</h2>
+    <p>Selon les Notaires de France, l'écart de prix entre un logement A et un G peut atteindre <strong>15 à 25 %</strong> à surface équivalente. C'est ce qu'on appelle la <strong>"valeur verte"</strong>.</p>
+    <p>Acheter une passoire thermique avec l'idée de la rénover peut être une bonne affaire, mais compte au moins <strong>500-1000 €/m²</strong> de travaux pour passer de G à C.</p>
+
+    <h2>Comment obtenir le DPE officiel ?</h2>
+    <p>Un DPE officiel doit être réalisé par un <strong>diagnostiqueur certifié</strong>. Coûts :</p>
+    <ul>
+      <li>Studio / 2 pièces : 80-150 €</li>
+      <li>Appartement T3-T4 : 100-200 €</li>
+      <li>Maison : 150-300 €</li>
+    </ul>
+    <p>Le diagnostic est valide <strong>10 ans</strong>. Compare plusieurs devis avant de choisir.</p>
+
+    <h2>Comment améliorer son DPE ?</h2>
+    <p>Les <strong>postes de travaux les plus rentables</strong> :</p>
+    <ol>
+      <li><strong>Isolation des combles</strong> : 15-30 €/m², gain de 2-3 classes parfois</li>
+      <li><strong>Isolation murs par l'extérieur (ITE)</strong> : 100-200 €/m², très efficace</li>
+      <li><strong>Changement du chauffage</strong> : pompe à chaleur, chaudière à granulés</li>
+      <li><strong>Double vitrage</strong> performant</li>
+      <li><strong>VMC double-flux</strong></li>
+      <li><strong>Isolation du sol/plancher bas</strong></li>
+    </ol>
+
+    <h2>Aides à la rénovation</h2>
+    <ul>
+      <li><strong>MaPrimeRénov'</strong> : jusqu'à 70 000 € selon les revenus et le gain énergétique</li>
+      <li><strong>Éco-prêt à taux zéro</strong> : jusqu'à 50 000 € sur 20 ans</li>
+      <li><strong>TVA réduite à 5,5 %</strong> sur les travaux d'amélioration énergétique</li>
+      <li><strong>Certificats d'économies d'énergie (CEE)</strong> : primes versées par les fournisseurs d'énergie</li>
+      <li><strong>Aides locales</strong> : régions, départements, communes</li>
+    </ul>
+
+    <h2>Limites de notre estimation</h2>
+    <p>Notre calculateur donne une <strong>estimation indicative</strong>. Le DPE officiel prend en compte :</p>
+    <ul>
+      <li>Le mode de chauffage (gaz, électrique, fioul, pompe à chaleur)</li>
+      <li>L'orientation et l'exposition du logement</li>
+      <li>L'isolation (murs, toiture, sol, fenêtres)</li>
+      <li>Le système de production d'eau chaude</li>
+      <li>La ventilation (simple flux, double flux)</li>
+      <li>L'éclairage et auxiliaires</li>
+    </ul>
+    <p>Pour une étiquette officielle, fais réaliser un DPE par un professionnel certifié.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

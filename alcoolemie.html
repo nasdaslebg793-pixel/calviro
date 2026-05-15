@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calcul d'alcoolémie : taux d'alcool dans le sang (Widmark) — Calviro</title>
+<meta name="description" content="Estimation d'alcoolémie selon la formule de Widmark. Vérification des seuils légaux (0,2 et 0,5 g/L). Outil indicatif uniquement.">
+<meta name="keywords" content="calcul alcoolémie, taux alcool sang, formule widmark, seuil alcool conduite, éthylotest virtuel">
+<meta property="og:title" content="Calculateur d'alcoolémie indicatif">
+<link rel="canonical" href="https://calviro.vercel.app/alcoolemie.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🍷 Alcoolémie estimée</h1>
+      <p>Estimation indicative selon la formule de Widmark.</p>
+    </div>
+
+    <div style="background:#fef3c7; padding:14px; border-radius:8px; margin-bottom:20px; border-left: 4px solid #f59e0b;">
+      <strong>⚠ Avertissement important</strong><br>
+      Cet outil donne une <strong>estimation purement indicative</strong>. Il ne remplace en aucun cas un éthylotest. De nombreux facteurs personnels (médicaments, fatigue, état de santé, métabolisme individuel) peuvent fausser le calcul. <strong>En cas de doute, ne conduis pas.</strong>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="alc-sexe">Sexe</label>
+        <select id="alc-sexe">
+          <option value="homme">Homme</option>
+          <option value="femme">Femme</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="alc-poids">Poids (kg)</label>
+        <input type="number" id="alc-poids" placeholder="70" min="30" max="200">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="alc-biere">Bières (25 cl, 5°)</label>
+        <input type="number" id="alc-biere" placeholder="0" min="0" value="0">
+      </div>
+      <div class="field">
+        <label for="alc-vin">Verres de vin (12 cl, 12°)</label>
+        <input type="number" id="alc-vin" placeholder="0" min="0" value="0">
+      </div>
+      <div class="field">
+        <label for="alc-fort">Alcool fort (4 cl, 40°)</label>
+        <input type="number" id="alc-fort" placeholder="0" min="0" value="0">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="alc-heures">Heures écoulées depuis le 1er verre</label>
+        <input type="number" id="alc-heures" placeholder="2" step="0.25" min="0" value="0">
+      </div>
+      <div class="field">
+        <label for="alc-estomac">Estomac</label>
+        <select id="alc-estomac">
+          <option value="vide">Vide (à jeun)</option>
+          <option value="plein">Plein (après un repas)</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn" onclick="calcAlcoolemie()">Estimer mon alcoolémie</button>
+
+    <div class="result" id="alc-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>La formule de Widmark</h2>
+    <p>La <strong>formule de Widmark</strong>, publiée en 1932, reste la méthode scientifique de référence pour estimer l'alcoolémie. Elle est utilisée par les médecins légistes, les forces de l'ordre et les experts en sécurité routière.</p>
+    <p><strong>Alcoolémie (g/L) = (alcool consommé en grammes) ÷ (poids en kg × coefficient de diffusion)</strong></p>
+    <p>Le <strong>coefficient de diffusion</strong> représente le pourcentage du corps composé d'eau (l'alcool se dilue dans l'eau corporelle) :</p>
+    <ul>
+      <li><strong>Hommes</strong> : 0,7</li>
+      <li><strong>Femmes</strong> : 0,6 (à poids égal, l'alcoolémie est plus élevée chez les femmes)</li>
+    </ul>
+
+    <h2>Combien d'alcool dans 1 verre ?</h2>
+    <p>La réglementation française définit un <strong>"verre standard"</strong> comme contenant <strong>10 g d'alcool pur</strong>. C'est calibré pour que tous les verres servis dans un café/bar contiennent la même dose d'alcool, quelle que soit la boisson :</p>
+    <table>
+      <thead><tr><th>Boisson</th><th>Volume</th><th>Degré d'alcool</th><th>Alcool pur</th></tr></thead>
+      <tbody>
+        <tr><td>Bière "standard"</td><td>25 cl</td><td>5°</td><td>~10 g</td></tr>
+        <tr><td>Vin</td><td>12 cl</td><td>12°</td><td>~11,5 g</td></tr>
+        <tr><td>Champagne</td><td>10 cl</td><td>12°</td><td>~9,5 g</td></tr>
+        <tr><td>Apéritif (Pastis, Porto)</td><td>4 cl</td><td>18°</td><td>~6 g</td></tr>
+        <tr><td>Whisky / Vodka / Gin</td><td>4 cl</td><td>40°</td><td>~12,8 g</td></tr>
+        <tr><td>Bière forte / IPA</td><td>33 cl</td><td>8°</td><td>~21 g (2 verres !)</td></tr>
+        <tr><td>Cocktail (mojito, gin tonic)</td><td>~25 cl</td><td>~10°</td><td>~20 g (2 verres)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Les seuils légaux en France</h2>
+    <table>
+      <thead><tr><th>Profil</th><th>Seuil légal</th><th>Sanction si dépassé</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Conducteur expérimenté</strong></td><td>0,5 g/L sang (0,25 mg/L air expiré)</td><td>Amende 135 €, −6 points, suspension possible</td></tr>
+        <tr><td><strong>Jeune permis (< 3 ans)</strong></td><td>0,2 g/L sang (0,1 mg/L air)</td><td>Idem, plus probable annulation du permis</td></tr>
+        <tr><td><strong>Transport en commun</strong></td><td>0,2 g/L (chauffeur de bus, taxi, VTC)</td><td>Idem + perte de la carte pro</td></tr>
+        <tr><td><strong>Au-delà de 0,8 g/L</strong></td><td>—</td><td><strong>Délit</strong> : jusqu'à 2 ans de prison, 4 500 € d'amende, annulation du permis</td></tr>
+      </tbody>
+    </table>
+
+    <h2>L'élimination de l'alcool</h2>
+    <p>Le foie élimine l'alcool à un <strong>rythme constant d'environ 0,15 g/L par heure</strong>. Quelques règles :</p>
+    <ul>
+      <li>Tu ne peux <strong>pas accélérer</strong> l'élimination (ni café, ni douche froide, ni sport)</li>
+      <li>Si tu as bu 4 verres (0,8 g/L environ), il te faut environ <strong>5h pour redescendre sous 0,5</strong></li>
+      <li>L'élimination commence dès le 1er verre — pas seulement après le dernier</li>
+      <li>Vomir n'aide pas (l'alcool est déjà dans le sang après quelques minutes)</li>
+    </ul>
+
+    <h2>Conseils essentiels</h2>
+    <ul>
+      <li><strong>Mange avant et pendant</strong> : ça ralentit l'absorption (mais ne réduit pas l'alcoolémie finale)</li>
+      <li><strong>Hydrate-toi</strong> : 1 verre d'eau entre chaque verre d'alcool</li>
+      <li><strong>Connais tes limites</strong> : 2 verres pour une femme de 60 kg = déjà ~0,5 g/L</li>
+      <li><strong>Désigne un "Sam"</strong> dans le groupe (celui qui ne boit pas)</li>
+      <li><strong>Privilégie taxi/VTC/transports en commun</strong> si tu as bu</li>
+      <li><strong>Achète un éthylotest</strong> (3-5 € en pharmacie) : c'est le seul moyen fiable</li>
+    </ul>
+
+    <h2>En cas de contrôle</h2>
+    <p>Si tu dépasses le seuil légal :</p>
+    <ul>
+      <li><strong>0,5 - 0,8 g/L</strong> : <strong>contravention</strong>. Amende forfaitaire 135 €, perte de 6 points. Possibilité de stage de sensibilisation (210-280 €).</li>
+      <li><strong>≥ 0,8 g/L ou refus de souffler</strong> : <strong>délit</strong>. Procédure judiciaire, jusqu'à 2 ans de prison, 4 500 € d'amende, annulation du permis, retrait immédiat du véhicule.</li>
+      <li><strong>Récidive</strong> : peines doublées, confiscation du véhicule possible</li>
+    </ul>
+
+    <h2>Pourquoi cet outil n'est qu'indicatif</h2>
+    <p>Les facteurs qui faussent l'estimation :</p>
+    <ul>
+      <li><strong>Métabolisme individuel</strong> : peut varier de ±30 % entre 2 personnes apparemment identiques</li>
+      <li><strong>Médicaments</strong> : antidépresseurs, antalgiques, antibiotiques amplifient l'alcoolémie</li>
+      <li><strong>État de santé</strong> : maladies du foie, diabète</li>
+      <li><strong>Fatigue / stress</strong> : ralentissent l'élimination</li>
+      <li><strong>Volume exact des verres</strong> : les verres "maison" sont souvent plus grands qu'un "verre standard"</li>
+      <li><strong>Degré exact des boissons</strong> : variable selon le producteur</li>
+    </ul>
+    <p><strong>L'éthylotest reste le seul moyen fiable.</strong> Il en existe des chimiques jetables (3-5 €) ou électroniques (30-100 €).</p>
+
+    <h2>Numéros utiles</h2>
+    <p>Si tu as besoin d'aide ou de soutien :</p>
+    <ul>
+      <li><strong>Alcool Info Service</strong> : 0 980 980 930 (anonyme, gratuit)</li>
+      <li><strong>SOS Médecins</strong> : 3624 (urgence médicale)</li>
+      <li><strong>SAMU</strong> : 15 (en cas de coma éthylique)</li>
+      <li><strong>Soutien sans alcool</strong> : alcooliques-anonymes.fr</li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

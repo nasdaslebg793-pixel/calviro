@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulateur Livret A et épargne : capitalisation et intérêts — Calviro</title>
+<meta name="description" content="Calcule la croissance de ton Livret A ou autre livret d'épargne (LDDS, LEP). Versements mensuels, intérêts annuels.">
+<meta name="keywords" content="simulateur livret a, calcul livret a, épargne livret, intérêts livret a, ldds calcul, lep simulation">
+<meta property="og:title" content="Simulateur Livret A et épargne réglementée">
+<link rel="canonical" href="https://calviro.vercel.app/livret-a.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🏦 Livret A / Épargne</h1>
+      <p>Croissance de ton Livret A avec versements mensuels.</p>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="liv-initial">Capital initial (€)</label>
+        <input type="number" id="liv-initial" placeholder="500" min="0" value="0">
+      </div>
+      <div class="field">
+        <label for="liv-versement">Versement mensuel (€)</label>
+        <input type="number" id="liv-versement" placeholder="100" min="0" value="100">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="liv-taux">Taux annuel (%)</label>
+        <input type="number" id="liv-taux" placeholder="2.4" step="0.01" value="2.4">
+      </div>
+      <div class="field">
+        <label for="liv-duree">Durée (années)</label>
+        <input type="number" id="liv-duree" placeholder="10" min="1" max="50" value="10">
+      </div>
+    </div>
+
+    <button class="btn" onclick="calcLivretA()">Simuler mon épargne</button>
+
+    <div class="result" id="liv-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Les livrets d'épargne réglementée en France</h2>
+    <p>La France propose des <strong>livrets d'épargne défiscalisés</strong> uniques au monde : aucun impôt sur le revenu, aucun prélèvement social. Le capital et les intérêts sont disponibles à tout moment, sans frais.</p>
+
+    <h2>Comparatif des livrets en 2026</h2>
+    <table>
+      <thead><tr><th>Livret</th><th>Taux</th><th>Plafond</th><th>Condition</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Livret A</strong></td><td>~2,4 %</td><td>22 950 €</td><td>Tout résident</td></tr>
+        <tr><td><strong>LDDS</strong></td><td>~2,4 %</td><td>12 000 €</td><td>Majeur, 1 par foyer</td></tr>
+        <tr><td><strong>LEP</strong></td><td>~3,5 %</td><td>10 000 €</td><td>Revenus modestes (RFR &lt; ~22k)</td></tr>
+        <tr><td><strong>Livret Jeune</strong></td><td>~3 %</td><td>1 600 €</td><td>12-25 ans</td></tr>
+        <tr><td><strong>PEL</strong></td><td>~1,75 %</td><td>61 200 €</td><td>Bloqué 4 ans min</td></tr>
+        <tr><td><strong>Livret bancaire</strong></td><td>0,5 - 4 %</td><td>Aucun</td><td>Soumis à fiscalité</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Comment fonctionne le Livret A ?</h2>
+    <ul>
+      <li><strong>Calcul des intérêts</strong> : par quinzaines (versements avant le 15 ou avant le 1er = quinzaine pleine)</li>
+      <li><strong>Versement des intérêts</strong> : une fois par an, au 31 décembre</li>
+      <li><strong>Capitalisation</strong> : les intérêts s'ajoutent au capital → l'année suivante tu touches des intérêts sur les intérêts (effet boule de neige)</li>
+      <li><strong>Liquidité</strong> : retrait possible à tout moment, gratuit</li>
+      <li><strong>Plafond</strong> : 22 950 € (mais les intérêts capitalisés peuvent porter le solde au-delà)</li>
+    </ul>
+
+    <h2>Astuce : la règle des quinzaines</h2>
+    <p>Pour optimiser tes intérêts :</p>
+    <ul>
+      <li><strong>Verser avant le 15 ou avant le 1er du mois</strong></li>
+      <li><strong>Retirer après le 16 ou après le 1er du mois</strong></li>
+    </ul>
+    <p>Sinon tu perds une quinzaine d'intérêts. Sur de petits montants ça ne change pas grand-chose, sur de gros versements ça compte.</p>
+
+    <h2>Stratégie d'épargne</h2>
+    <ol>
+      <li><strong>Épargne de précaution (3-6 mois de salaire)</strong> : Livret A, totalement disponible</li>
+      <li><strong>Au-delà (LDDS plein, LEP si éligible)</strong> : compléter avec d'autres livrets défiscalisés</li>
+      <li><strong>Long terme</strong> : assurance vie, PEA, PER pour battre l'inflation</li>
+      <li><strong>Très long terme</strong> : SCPI, immobilier physique, actions diversifiées</li>
+    </ol>
+
+    <h2>Pour aller plus loin</h2>
+    <p>Si tu veux simuler des placements à <strong>taux plus élevé</strong> (PEA actions, assurance vie en UC), utilise notre calculateur d'<a href="interets-composes.html">intérêts composés</a> qui prend en compte les versements mensuels et la capitalisation.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

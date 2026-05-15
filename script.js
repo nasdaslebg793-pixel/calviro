@@ -2364,3 +2364,561 @@ function genererQR() {
     `);
   }, 100);
 }
+
+// ---------- 41. CRÉDIT AUTO ----------
+
+function calcCreditAuto() {
+  const montant = parseFloat($('auto-montant').value);
+  const taux = parseFloat($('auto-taux').value);
+  const dureeMois = parseInt($('auto-duree').value, 10);
+
+  if (isNaN(montant) || isNaN(taux) || isNaN(dureeMois) || montant <= 0 || dureeMois <= 0) {
+    showResult('auto-result', '<div class="note">⚠ Remplis tous les champs.</div>');
+    return;
+  }
+
+  const tauxM = taux / 100 / 12;
+  let mensualite;
+  if (tauxM === 0) {
+    mensualite = montant / dureeMois;
+  } else {
+    mensualite = montant * tauxM / (1 - Math.pow(1 + tauxM, -dureeMois));
+  }
+  const coutTotal = mensualite * dureeMois - montant;
+
+  showResult('auto-result', `
+    <div class="result-label">Mensualité du crédit auto</div>
+    <div class="result-value">${formatEur(mensualite)} <span class="unit">/ mois</span></div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Montant emprunté</span><strong>${formatEur(montant)}</strong></div>
+      <div class="result-detail-row"><span>Durée</span><strong>${dureeMois} mois (${formatNum(dureeMois/12, 1)} ans)</strong></div>
+      <div class="result-detail-row"><span>Total des intérêts</span><strong>${formatEur(coutTotal)}</strong></div>
+      <div class="result-detail-row"><span>Coût total (capital + intérêts)</span><strong>${formatEur(montant + coutTotal)}</strong></div>
+    </div>
+    <div class="note">Calcul hors assurance et frais de dossier. Le TAEG affiché par les banques inclut ces frais et est donc légèrement supérieur au taux nominal.</div>
+  `);
+}
+
+// ---------- 42. CRÉDIT CONSO ----------
+
+function calcCreditConso() {
+  const montant = parseFloat($('conso-montant').value);
+  const taux = parseFloat($('conso-taux').value);
+  const dureeMois = parseInt($('conso-duree').value, 10);
+
+  if (isNaN(montant) || isNaN(taux) || isNaN(dureeMois) || montant <= 0 || dureeMois <= 0) {
+    showResult('conso-result', '<div class="note">⚠ Remplis tous les champs.</div>');
+    return;
+  }
+
+  const tauxM = taux / 100 / 12;
+  let mensualite;
+  if (tauxM === 0) {
+    mensualite = montant / dureeMois;
+  } else {
+    mensualite = montant * tauxM / (1 - Math.pow(1 + tauxM, -dureeMois));
+  }
+  const coutTotal = mensualite * dureeMois - montant;
+  const ratioInterets = (coutTotal / montant) * 100;
+
+  let alerte = '';
+  if (taux > 15) alerte = '⚠️ Taux très élevé, proche du taux d\'usure. Compare plusieurs offres avant de signer.';
+  else if (taux > 10) alerte = 'Taux élevé. Vérifie si une banque traditionnelle ne propose pas mieux que ce taux.';
+
+  showResult('conso-result', `
+    <div class="result-label">Mensualité</div>
+    <div class="result-value">${formatEur(mensualite)} <span class="unit">/ mois</span></div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Montant emprunté</span><strong>${formatEur(montant)}</strong></div>
+      <div class="result-detail-row"><span>Durée</span><strong>${dureeMois} mois</strong></div>
+      <div class="result-detail-row"><span>Taux annuel</span><strong>${formatNum(taux, 2)} %</strong></div>
+      <div class="result-detail-row"><span>Coût total des intérêts</span><strong>${formatEur(coutTotal)}</strong></div>
+      <div class="result-detail-row"><span>Tu rembourseras au total</span><strong>${formatEur(montant + coutTotal)}</strong></div>
+      <div class="result-detail-row"><span>Soit ${formatNum(ratioInterets, 1)}% du capital en intérêts</span><strong></strong></div>
+    </div>
+    ${alerte ? `<div class="note">${alerte}</div>` : ''}
+  `);
+}
+
+// ---------- 43. LIVRET A / ÉPARGNE ----------
+
+function calcLivretA() {
+  const initial = parseFloat($('liv-initial').value) || 0;
+  const versement = parseFloat($('liv-versement').value) || 0;
+  const taux = parseFloat($('liv-taux').value);
+  const annees = parseInt($('liv-duree').value, 10);
+
+  if (isNaN(taux) || isNaN(annees) || annees <= 0 || (initial === 0 && versement === 0)) {
+    showResult('liv-result', '<div class="note">⚠ Remplis taux, durée et au moins un versement.</div>');
+    return;
+  }
+
+  // Calcul livret A : capitalisation annuelle, intérêts crédités au 31/12
+  // Convention simplifiée : versements mensuels en début de mois
+  let capital = initial;
+  let totalVerse = initial;
+  
+  for (let a = 1; a <= annees; a++) {
+    let interets = 0;
+    // Approximation: pour chaque mois, le versement compte pour (12-mois)/12 du taux annuel
+    for (let m = 1; m <= 12; m++) {
+      capital += versement;
+      totalVerse += versement;
+      // Intérêts proportionnels au temps restant dans l'année
+      interets += versement * (taux / 100) * (13 - m) / 12;
+    }
+    // Plus intérêts sur le capital de début d'année
+    interets += (capital - versement * 12) * (taux / 100);
+    capital += interets;
+  }
+
+  const interetsTotal = capital - totalVerse;
+
+  showResult('liv-result', `
+    <div class="result-label">Capital final estimé</div>
+    <div class="result-value">${formatEur(capital)}</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Capital initial</span><strong>${formatEur(initial)}</strong></div>
+      <div class="result-detail-row"><span>Versements totaux sur ${annees} ans</span><strong>${formatEur(totalVerse - initial)}</strong></div>
+      <div class="result-detail-row"><span>Total versé</span><strong>${formatEur(totalVerse)}</strong></div>
+      <div class="result-detail-row"><span>Intérêts générés</span><strong>${formatEur(interetsTotal)}</strong></div>
+      <div class="result-detail-row"><span>Capital final</span><strong>${formatEur(capital)}</strong></div>
+    </div>
+    <div class="note">💡 Le Livret A et le LDDS sont défiscalisés (ni impôt ni prélèvements sociaux). Plafonds : 22 950 € (Livret A) et 12 000 € (LDDS).</div>
+  `);
+}
+
+// ---------- 44. DPE (CLASSE ÉNERGIE) ----------
+
+function calcDPE() {
+  const conso = parseFloat($('dpe-conso').value);
+  const ges = parseFloat($('dpe-ges').value);
+
+  if (isNaN(conso) || conso < 0) {
+    showResult('dpe-result', '<div class="note">⚠ Indique la consommation énergétique en kWh/m²/an.</div>');
+    return;
+  }
+
+  // Classification énergie
+  function classeEnergie(c) {
+    if (c < 70) return { letter: 'A', color: '#0a8050', label: 'Très performant', desc: 'Logement à très basse consommation, parfait isolement.' };
+    if (c < 110) return { letter: 'B', color: '#4cae50', label: 'Performant', desc: 'Très bonne performance énergétique.' };
+    if (c < 180) return { letter: 'C', color: '#8bc34a', label: 'Correct', desc: 'Performance énergétique correcte.' };
+    if (c < 250) return { letter: 'D', color: '#ffc107', label: 'Moyen', desc: 'Performance énergétique moyenne. Marge de progression.' };
+    if (c < 330) return { letter: 'E', color: '#ff9800', label: 'Peu performant', desc: 'Performance énergétique faible.' };
+    if (c < 420) return { letter: 'F', color: '#ff5722', label: 'Passoire thermique', desc: '⚠️ Interdiction de louer depuis 2025.' };
+    return { letter: 'G', color: '#d32f2f', label: 'Passoire thermique', desc: '⚠️ Interdiction de louer depuis 2023. Indécence locative.' };
+  }
+
+  function classeGES(g) {
+    if (g < 6) return { letter: 'A', color: '#0a8050' };
+    if (g < 11) return { letter: 'B', color: '#4cae50' };
+    if (g < 30) return { letter: 'C', color: '#8bc34a' };
+    if (g < 50) return { letter: 'D', color: '#ffc107' };
+    if (g < 70) return { letter: 'E', color: '#ff9800' };
+    if (g < 100) return { letter: 'F', color: '#ff5722' };
+    return { letter: 'G', color: '#d32f2f' };
+  }
+
+  const cE = classeEnergie(conso);
+  const gesValue = !isNaN(ges) && ges > 0 ? ges : conso * 0.2; // Estimation par défaut si non fourni
+  const cG = classeGES(gesValue);
+
+  // Le DPE retient le pire des deux
+  const lettres = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+  const finalLetter = lettres.indexOf(cE.letter) > lettres.indexOf(cG.letter) ? cE.letter : cG.letter;
+  const finalClasse = finalLetter === cE.letter ? cE : { ...cE, letter: finalLetter };
+
+  let loi = '';
+  if (finalLetter === 'G') loi = '🚫 <strong>Logement indécent</strong> depuis 1er janvier 2023. Interdiction de louer.';
+  else if (finalLetter === 'F') loi = '🚫 <strong>Passoire thermique</strong> : interdiction de louer depuis 2025.';
+  else if (finalLetter === 'E') loi = '⚠️ Interdiction prévue à partir de 2034. Anticipe les travaux.';
+  else loi = '✅ Conforme aux exigences de la loi Climat (location autorisée).';
+
+  showResult('dpe-result', `
+    <div class="result-label">Classe DPE estimée</div>
+    <div class="result-value" style="color:${finalClasse.color}; font-size: 56px;">${finalLetter}</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Étiquette énergie</span><strong style="color:${cE.color};">${cE.letter} — ${cE.label}</strong></div>
+      <div class="result-detail-row"><span>Consommation énergétique</span><strong>${formatNum(conso, 0)} kWh/m²/an</strong></div>
+      <div class="result-detail-row"><span>Étiquette climat (GES)</span><strong style="color:${cG.color};">${cG.letter}</strong></div>
+      <div class="result-detail-row"><span>Émissions GES</span><strong>${formatNum(gesValue, 1)} kgCO₂eq/m²/an</strong></div>
+      <div class="result-detail-row"><span>Statut légal</span><strong>${loi}</strong></div>
+    </div>
+    <div class="note">⚠ Estimation indicative. Le DPE officiel est réalisé par un diagnostiqueur certifié et coûte 100-250 € pour un appartement. Obligatoire pour vendre ou louer.</div>
+  `);
+}
+
+// ---------- 45. SURFACE HABITABLE / CARREZ ----------
+
+function calcSurface() {
+  const surfaces = ($('sur-pieces').value || '').split(/[,\n;]/).map(s => parseFloat(s.trim())).filter(n => !isNaN(n) && n > 0);
+  if (surfaces.length === 0) {
+    showResult('sur-result', '<div class="note">⚠ Entre au moins une surface valide en m².</div>');
+    return;
+  }
+
+  const total = surfaces.reduce((a, b) => a + b, 0);
+  const moyenne = total / surfaces.length;
+  const max = Math.max(...surfaces);
+  const min = Math.min(...surfaces);
+
+  showResult('sur-result', `
+    <div class="result-label">Surface totale</div>
+    <div class="result-value">${formatNum(total, 2)} m²</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Nombre de pièces</span><strong>${surfaces.length}</strong></div>
+      <div class="result-detail-row"><span>Surface moyenne par pièce</span><strong>${formatNum(moyenne, 2)} m²</strong></div>
+      <div class="result-detail-row"><span>Plus grande pièce</span><strong>${formatNum(max, 2)} m²</strong></div>
+      <div class="result-detail-row"><span>Plus petite pièce</span><strong>${formatNum(min, 2)} m²</strong></div>
+      <div class="result-detail-row"><span>Total en m²</span><strong>${formatNum(total, 2)} m²</strong></div>
+      <div class="result-detail-row"><span>Soit en pieds²</span><strong>${formatNum(total * 10.764, 0)} ft²</strong></div>
+    </div>
+    <div class="note">📐 Pour la loi Carrez (copropriété), n'inclus pas : caves, garages, parkings, balcons, terrasses, ni les espaces sous 1,80 m de hauteur sous plafond.</div>
+  `);
+}
+
+// ---------- 46. CYCLES DE SOMMEIL ----------
+
+function calcSommeil() {
+  const mode = $('som-mode').value;
+  const heure = $('som-heure').value;
+
+  if (!heure) {
+    showResult('som-result', '<div class="note">⚠ Indique une heure.</div>');
+    return;
+  }
+
+  const [h, m] = heure.split(':').map(Number);
+  const baseTime = new Date();
+  baseTime.setHours(h, m, 0, 0);
+
+  // Délai d'endormissement moyen = 15 min
+  const cycleMinutes = 90;
+  const endormissement = 15;
+  
+  let resultats = [];
+  for (let nbCycles = 3; nbCycles <= 6; nbCycles++) {
+    const totalMinutes = nbCycles * cycleMinutes + endormissement;
+    let temps;
+    if (mode === 'reveil') {
+      // On part de l'heure de réveil, on remonte
+      temps = new Date(baseTime.getTime() - totalMinutes * 60000);
+    } else {
+      // On part de l'heure de coucher, on avance
+      temps = new Date(baseTime.getTime() + totalMinutes * 60000);
+    }
+    const dureeH = Math.floor(totalMinutes / 60);
+    const dureeM = totalMinutes % 60;
+    resultats.push({
+      cycles: nbCycles,
+      heure: temps.getHours().toString().padStart(2, '0') + ':' + temps.getMinutes().toString().padStart(2, '0'),
+      duree: `${dureeH}h${dureeM.toString().padStart(2, '0')}`,
+      qualite: nbCycles === 5 ? '✓ Idéal' : (nbCycles === 6 ? '✓ Très bon' : (nbCycles === 4 ? 'Acceptable' : '⚠️ Court'))
+    });
+  }
+
+  const labelMode = mode === 'reveil' ? 'Tu dois te coucher à' : 'Tu vas te réveiller à';
+  const meilleurResultat = resultats[2]; // 5 cycles = idéal
+
+  let tableaux = resultats.map(r => `
+    <div class="result-detail-row">
+      <span>${r.cycles} cycles (${r.duree} de sommeil)</span>
+      <strong>${r.heure} <span style="font-size:12px; color:var(--text-muted);">${r.qualite}</span></strong>
+    </div>
+  `).join('');
+
+  showResult('som-result', `
+    <div class="result-label">${labelMode} :</div>
+    <div class="result-value">${meilleurResultat.heure}</div>
+    <div class="result-detail">
+      ${tableaux}
+    </div>
+    <div class="note">Un cycle de sommeil dure environ 90 minutes. Se réveiller à la fin d'un cycle (et non au milieu) garantit un réveil plus reposé. 5 cycles = 7h30 + 15min d'endormissement = 7h45 au lit.</div>
+  `);
+}
+
+// ---------- 47. ALCOOLÉMIE (WIDMARK) ----------
+
+function calcAlcoolemie() {
+  const sexe = $('alc-sexe').value;
+  const poids = parseFloat($('alc-poids').value);
+  const heures = parseFloat($('alc-heures').value) || 0;
+  const estomac = $('alc-estomac').value;
+
+  // Récupérer les verres
+  const biere = parseInt($('alc-biere').value, 10) || 0;
+  const vin = parseInt($('alc-vin').value, 10) || 0;
+  const fort = parseInt($('alc-fort').value, 10) || 0;
+
+  if (isNaN(poids) || poids <= 0) {
+    showResult('alc-result', '<div class="note">⚠ Indique ton poids.</div>');
+    return;
+  }
+
+  const totalVerres = biere + vin + fort;
+  if (totalVerres === 0) {
+    showResult('alc-result', '<div class="note">⚠ Indique au moins un verre consommé.</div>');
+    return;
+  }
+
+  // En France, 1 verre standard = 10 g d'alcool pur
+  // bière 25cl 5° = 10g, vin 12cl 12° = 11.5g, alcool fort 4cl 40° = 12.8g
+  const alcoolTotal = biere * 10 + vin * 11.5 + fort * 12.8;
+
+  // Coefficient de Widmark
+  const coeff = sexe === 'homme' ? 0.7 : 0.6;
+
+  // Coefficient d'absorption (estomac plein réduit le pic)
+  const coeffAbsorption = estomac === 'plein' ? 0.85 : 1.0;
+
+  // Alcoolémie initiale
+  const alcoolemieInitiale = (alcoolTotal * coeffAbsorption) / (poids * coeff);
+
+  // Élimination = 0,15 g/L/h
+  const eliminationParHeure = 0.15;
+  const alcoolemieActuelle = Math.max(0, alcoolemieInitiale - heures * eliminationParHeure);
+
+  // Calcul du temps avant de redescendre sous les seuils
+  function tempsPour(seuil) {
+    if (alcoolemieActuelle <= seuil) return 0;
+    return (alcoolemieActuelle - seuil) / eliminationParHeure;
+  }
+  
+  function fmtHeures(h) {
+    const heuresEntiers = Math.floor(h);
+    const minutes = Math.round((h - heuresEntiers) * 60);
+    if (heuresEntiers === 0) return `${minutes} min`;
+    return `${heuresEntiers}h${minutes.toString().padStart(2, '0')}`;
+  }
+
+  let statut, couleur, message;
+  if (alcoolemieActuelle === 0) {
+    statut = '✅ Aucune alcoolémie';
+    couleur = '#10b981';
+    message = 'Tu peux conduire en toute légalité.';
+  } else if (alcoolemieActuelle < 0.2) {
+    statut = '✅ En dessous de tous les seuils légaux';
+    couleur = '#10b981';
+    message = 'Mais reste prudent : même peu d\'alcool altère les réflexes.';
+  } else if (alcoolemieActuelle < 0.5) {
+    statut = '⚠️ Au-dessus de 0,2 g/L (jeune permis : INTERDIT)';
+    couleur = '#f59e0b';
+    message = 'Si tu as moins de 3 ans de permis, ne conduis PAS. Sanction : 135€ + 6 points + interdiction.';
+  } else if (alcoolemieActuelle < 0.8) {
+    statut = '🚫 INFRACTION : conduite avec alcoolémie';
+    couleur = '#dc2626';
+    message = 'Sanction : amende 135€, 6 points en moins, possible suspension de permis. Ne conduis surtout pas.';
+  } else {
+    statut = '🚨 DÉLIT : alcoolémie élevée';
+    couleur = '#991b1b';
+    message = 'Sanction : jusqu\'à 2 ans de prison, 4 500€ d\'amende, perte de 6 points, suspension de permis. NE CONDUIS PAS.';
+  }
+
+  showResult('alc-result', `
+    <div class="result-label">Alcoolémie estimée</div>
+    <div class="result-value" style="color:${couleur};">${formatNum(alcoolemieActuelle, 2)} <span class="unit">g/L</span></div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Pic d'alcoolémie initial</span><strong>${formatNum(alcoolemieInitiale, 2)} g/L</strong></div>
+      <div class="result-detail-row"><span>Heures écoulées</span><strong>${formatNum(heures, 1)} h</strong></div>
+      <div class="result-detail-row"><span>Alcool pur consommé</span><strong>${formatNum(alcoolTotal, 1)} g</strong></div>
+      <div class="result-detail-row"><span>Statut</span><strong style="color:${couleur};">${statut}</strong></div>
+      <div class="result-detail-row"><span>Temps avant 0,5 g/L</span><strong>${fmtHeures(tempsPour(0.5))}</strong></div>
+      <div class="result-detail-row"><span>Temps avant 0,2 g/L (jeune)</span><strong>${fmtHeures(tempsPour(0.2))}</strong></div>
+      <div class="result-detail-row"><span>Temps avant 0,0 g/L</span><strong>${fmtHeures(tempsPour(0))}</strong></div>
+    </div>
+    <div class="note" style="background:#fef3c7; padding:12px; border-radius:8px; margin-top:12px;">
+      <strong>⚠ ESTIMATION INDICATIVE UNIQUEMENT</strong><br>
+      ${message}<br><br>
+      <strong>Cette estimation ne remplace pas un éthylotest.</strong> De nombreux facteurs peuvent fausser le calcul : médicaments, fatigue, métabolisme individuel, stress. <strong>En cas de doute, ne prends pas le volant. Appelle un taxi, un VTC, un proche, ou couche-toi sur place.</strong>
+    </div>
+  `);
+}
+
+// ---------- 48. TIRAGE AU SORT ----------
+
+let _tirageHistorique = [];
+
+function tirerAuSort() {
+  const liste = ($('tir-liste').value || '').split('\n').map(s => s.trim()).filter(s => s.length > 0);
+  const mode = $('tir-mode').value;
+  const nbEquipes = parseInt($('tir-equipes').value, 10) || 2;
+
+  if (liste.length < 2) {
+    showResult('tir-result', '<div class="note">⚠ Entre au moins 2 noms ou options (un par ligne).</div>');
+    return;
+  }
+
+  let resultat = '';
+
+  if (mode === 'un') {
+    const choisi = liste[Math.floor(Math.random() * liste.length)];
+    _tirageHistorique.push(choisi);
+    if (_tirageHistorique.length > 5) _tirageHistorique.shift();
+    
+    resultat = `
+      <div class="result-label">Résultat du tirage</div>
+      <div class="result-value" style="font-size: 32px;">${choisi}</div>
+      <div class="result-detail">
+        <div class="result-detail-row"><span>Total d'options</span><strong>${liste.length}</strong></div>
+        <div class="result-detail-row"><span>Probabilité</span><strong>1 sur ${liste.length} (${formatNum(100/liste.length, 1)}%)</strong></div>
+        ${_tirageHistorique.length > 1 ? `<div class="result-detail-row"><span>Historique</span><strong>${_tirageHistorique.join(', ')}</strong></div>` : ''}
+      </div>
+    `;
+  } else if (mode === 'ordre') {
+    const shuffled = [...liste];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    const liste_html = shuffled.map((n, i) => `<div class="result-detail-row"><span>${i+1}.</span><strong>${n}</strong></div>`).join('');
+    resultat = `
+      <div class="result-label">Ordre aléatoire</div>
+      <div class="result-detail">${liste_html}</div>
+    `;
+  } else if (mode === 'equipes') {
+    if (nbEquipes < 2 || nbEquipes > liste.length) {
+      showResult('tir-result', '<div class="note">⚠ Le nombre d\'équipes doit être entre 2 et le nombre de participants.</div>');
+      return;
+    }
+    const shuffled = [...liste];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    const equipes = Array.from({length: nbEquipes}, () => []);
+    shuffled.forEach((p, i) => equipes[i % nbEquipes].push(p));
+    
+    const equipes_html = equipes.map((eq, i) => `
+      <div class="result-detail-row" style="border-bottom:1px solid var(--border); padding:8px 0;">
+        <span><strong>Équipe ${i+1}</strong> (${eq.length} membre${eq.length > 1 ? 's' : ''})</span>
+        <strong>${eq.join(', ')}</strong>
+      </div>
+    `).join('');
+    resultat = `
+      <div class="result-label">Équipes constituées</div>
+      <div class="result-detail">${equipes_html}</div>
+    `;
+  }
+
+  showResult('tir-result', resultat + '<div class="note">🎲 Tirage 100% aléatoire (crypto.getRandomValues). Tu peux relancer pour un nouveau résultat.</div>');
+}
+
+function tirageRender() {
+  const mode = $('tir-mode').value;
+  $('tir-equipes-block').style.display = mode === 'equipes' ? 'block' : 'none';
+}
+
+// ---------- 49. LIEN WHATSAPP ----------
+
+function genererLienWhatsapp() {
+  let numero = ($('wa-numero').value || '').replace(/[\s\-\.\(\)]/g, '');
+  const message = $('wa-message').value || '';
+
+  if (!numero) {
+    showResult('wa-result', '<div class="note">⚠ Indique un numéro de téléphone.</div>');
+    return;
+  }
+
+  // Nettoyer le numéro
+  if (numero.startsWith('+')) numero = numero.substring(1);
+  if (numero.startsWith('00')) numero = numero.substring(2);
+  if (numero.startsWith('0') && numero.length === 10) {
+    // Numéro français sans indicatif
+    numero = '33' + numero.substring(1);
+  }
+
+  // Vérification basique
+  if (!/^\d{6,15}$/.test(numero)) {
+    showResult('wa-result', '<div class="note">⚠ Numéro invalide. Format attendu : 0612345678 (France) ou +49123456789 (international).</div>');
+    return;
+  }
+
+  const messageEncode = encodeURIComponent(message);
+  const lien = `https://wa.me/${numero}${message ? '?text=' + messageEncode : ''}`;
+
+  showResult('wa-result', `
+    <div class="result-label">Ton lien WhatsApp est prêt</div>
+    <div class="pseudo-output" style="font-size:14px; word-break:break-all; user-select:all;" id="wa-lien-output">${lien}</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Numéro formaté</span><strong>+${numero}</strong></div>
+      <div class="result-detail-row"><span>Message pré-rempli</span><strong>${message || '(aucun)'}</strong></div>
+    </div>
+    <div class="btn-group">
+      <a href="${lien}" target="_blank" rel="noopener" class="btn">📲 Tester le lien</a>
+      <button class="btn btn-secondary" onclick="copierLienWA('${lien.replace(/'/g, "\\'")}')">📋 Copier le lien</button>
+    </div>
+    <div class="note">💡 Utilise ce lien sur ton site, dans tes emails ou ta bio Instagram. Tes contacts arriveront direct dans une conversation WhatsApp avec ton message pré-rempli.</div>
+  `);
+}
+
+function copierLienWA(lien) {
+  navigator.clipboard.writeText(lien).then(() => {
+    alert('Lien copié dans le presse-papier ! 📋');
+  });
+}
+
+// ---------- 50. FUSEAUX HORAIRES ----------
+
+const FUSEAUX = [
+  { ville: 'Paris', offset: 1, dst: true },
+  { ville: 'Londres', offset: 0, dst: true },
+  { ville: 'New York', offset: -5, dst: true },
+  { ville: 'Los Angeles', offset: -8, dst: true },
+  { ville: 'Toronto', offset: -5, dst: true },
+  { ville: 'Mexico', offset: -6, dst: true },
+  { ville: 'São Paulo', offset: -3, dst: false },
+  { ville: 'Le Cap', offset: 2, dst: false },
+  { ville: 'Dubaï', offset: 4, dst: false },
+  { ville: 'Mumbai', offset: 5.5, dst: false },
+  { ville: 'Bangkok', offset: 7, dst: false },
+  { ville: 'Singapour', offset: 8, dst: false },
+  { ville: 'Hong Kong', offset: 8, dst: false },
+  { ville: 'Pékin', offset: 8, dst: false },
+  { ville: 'Tokyo', offset: 9, dst: false },
+  { ville: 'Séoul', offset: 9, dst: false },
+  { ville: 'Sydney', offset: 10, dst: true },
+  { ville: 'Auckland', offset: 12, dst: true },
+  { ville: 'Honolulu', offset: -10, dst: false },
+  { ville: 'Reykjavik', offset: 0, dst: false }
+];
+
+function calcFuseaux() {
+  const heureRef = $('fus-heure').value;
+  const villeRef = $('fus-ref').value;
+
+  if (!heureRef) {
+    showResult('fus-result', '<div class="note">⚠ Indique une heure de référence.</div>');
+    return;
+  }
+
+  const [h, m] = heureRef.split(':').map(Number);
+  
+  // Trouver l'offset de la ville de référence
+  const ref = FUSEAUX.find(f => f.ville === villeRef);
+  if (!ref) {
+    showResult('fus-result', '<div class="note">⚠ Ville inconnue.</div>');
+    return;
+  }
+
+  // Calculer l'UTC depuis la ville de référence
+  const utcMinutes = h * 60 + m - ref.offset * 60;
+
+  let html = `<div class="result-label">Quand il est ${heureRef} à ${villeRef}, il est :</div><div class="result-detail">`;
+  
+  for (const f of FUSEAUX) {
+    if (f.ville === villeRef) continue;
+    let localMinutes = utcMinutes + f.offset * 60;
+    // Normaliser sur 24h
+    while (localMinutes < 0) localMinutes += 24 * 60;
+    while (localMinutes >= 24 * 60) localMinutes -= 24 * 60;
+    const lh = Math.floor(localMinutes / 60);
+    const lm = Math.floor(localMinutes % 60);
+    const diffHeure = f.offset - ref.offset;
+    const diffStr = diffHeure > 0 ? `+${diffHeure}h` : `${diffHeure}h`;
+    html += `<div class="result-detail-row"><span>${f.ville} <span style="color:var(--text-muted); font-size:12px;">(${diffStr})</span></span><strong>${lh.toString().padStart(2,'0')}:${lm.toString().padStart(2,'0')}</strong></div>`;
+  }
+  html += '</div>';
+
+  showResult('fus-result', html + '<div class="note">Les heures d\'été (DST) ne sont pas prises en compte automatiquement. En France : +1h fin mars à fin octobre.</div>');
+}

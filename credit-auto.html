@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crédit auto : simulateur mensualité 2026 — Calviro</title>
+<meta name="description" content="Calcule la mensualité de ton crédit auto selon montant, taux et durée. Estimation du coût total des intérêts. Gratuit.">
+<meta name="keywords" content="crédit auto, simulateur crédit auto, mensualité prêt auto, calcul crédit voiture, financement auto">
+<meta property="og:title" content="Simulateur crédit auto — mensualité et coût total">
+<link rel="canonical" href="https://calviro.vercel.app/credit-auto.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🚗 Crédit auto</h1>
+      <p>Mensualité et coût total de ton crédit voiture.</p>
+    </div>
+
+    <div class="field">
+      <label for="auto-montant">Montant à emprunter (€)</label>
+      <input type="number" id="auto-montant" placeholder="15 000" min="0">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="auto-taux">Taux d'intérêt (%)</label>
+        <input type="number" id="auto-taux" placeholder="5.5" step="0.01" min="0">
+      </div>
+      <div class="field">
+        <label for="auto-duree">Durée (mois)</label>
+        <input type="number" id="auto-duree" placeholder="60" min="6" max="120">
+      </div>
+    </div>
+
+    <button class="btn" onclick="calcCreditAuto()">Calculer ma mensualité</button>
+
+    <div class="result" id="auto-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Comment fonctionne un crédit auto ?</h2>
+    <p>Un <strong>crédit auto</strong> est un prêt à la consommation <em>affecté</em>, c'est-à-dire que les fonds sont obligatoirement utilisés pour acheter un véhicule. C'est un avantage : si la vente est annulée (vice caché, livraison non conforme), le crédit l'est aussi automatiquement.</p>
+    <p>La durée standard est de <strong>24 à 84 mois</strong> (2 à 7 ans). Au-delà, le véhicule perd souvent plus de valeur que tu ne rembourses → tu deviens "négatif" en équité.</p>
+
+    <h2>Crédit auto vs autres financements</h2>
+    <table>
+      <thead><tr><th>Mode</th><th>Avantages</th><th>Inconvénients</th></tr></thead>
+      <tbody>
+        <tr><td>Crédit auto affecté</td><td>Taux + bas, lien avec la vente</td><td>Démarches plus longues</td></tr>
+        <tr><td>Prêt personnel</td><td>Libre d'utilisation, rapide</td><td>Taux + élevé, pas de lien vente</td></tr>
+        <tr><td>LOA (Location)</td><td>Loyers + bas, garantie incluse</td><td>Tu n'es pas propriétaire</td></tr>
+        <tr><td>LLD (Long terme)</td><td>Tout inclus, prévisible</td><td>Tu loues seulement, kilométrage limité</td></tr>
+        <tr><td>Cash</td><td>Aucun intérêt, négociation facilitée</td><td>Trésorerie mobilisée</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Taux moyens 2026</h2>
+    <ul>
+      <li><strong>Véhicule neuf</strong> : 3,5 à 6 % selon ton profil et la banque</li>
+      <li><strong>Véhicule occasion</strong> : 5 à 8 %</li>
+      <li><strong>Crédit auto par concessionnaire</strong> : souvent un peu plus cher, mais offres promo (0% sur certaines marques)</li>
+      <li><strong>Taux d'usure (plafond légal)</strong> : ~10-11 % pour prêts auto en 2026</li>
+    </ul>
+
+    <h2>Astuces pour réduire le coût</h2>
+    <ul>
+      <li><strong>Apport personnel</strong> : 20-30 % réduit fortement le coût total et améliore ton taux</li>
+      <li><strong>Compare plusieurs banques</strong> : un courtier ou des comparateurs (CafPI, Empruntis) trouvent souvent 1-2 points d'écart</li>
+      <li><strong>Durée plus courte</strong> = mensualité + chère mais coût total beaucoup + bas</li>
+      <li><strong>Négocie l'assurance emprunteur</strong> : facultative pour les crédits conso, peut être déléguée</li>
+      <li><strong>Évite les options inutiles</strong> proposées par le concessionnaire (extension garantie, gravage antivol surfacturé)</li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

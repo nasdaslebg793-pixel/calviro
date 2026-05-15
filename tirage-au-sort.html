@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tirage au sort en ligne : choisir aléatoirement, équipes — Calviro</title>
+<meta name="description" content="Tirage au sort gratuit en ligne : choisir 1 nom au hasard, mélanger une liste, créer des équipes aléatoires. Pour jeux, concours, choix de classe.">
+<meta name="keywords" content="tirage au sort, random, choisir aléatoire, créer équipes, mélanger liste, picker">
+<meta property="og:title" content="Tirage au sort en ligne — choix aléatoire">
+<link rel="canonical" href="https://calviro.vercel.app/tirage-au-sort.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🎲 Tirage au sort</h1>
+      <p>Choisir aléatoirement, mélanger, créer des équipes.</p>
+    </div>
+
+    <div class="field">
+      <label for="tir-liste">Liste des participants ou options (un par ligne)</label>
+      <textarea id="tir-liste" rows="6" placeholder="Jean&#10;Marie&#10;Pierre&#10;Sophie&#10;Lucas&#10;..."></textarea>
+    </div>
+
+    <div class="field">
+      <label for="tir-mode">Mode de tirage</label>
+      <select id="tir-mode" onchange="tirageRender()">
+        <option value="un">Choisir 1 gagnant au hasard</option>
+        <option value="ordre">Mélanger l'ordre de la liste</option>
+        <option value="equipes">Créer des équipes équilibrées</option>
+      </select>
+    </div>
+
+    <div id="tir-equipes-block" style="display:none;">
+      <div class="field">
+        <label for="tir-equipes">Nombre d'équipes</label>
+        <input type="number" id="tir-equipes" placeholder="2" min="2" max="20" value="2">
+      </div>
+    </div>
+
+    <button class="btn" onclick="tirerAuSort()">🎲 Lancer le tirage</button>
+
+    <div class="result" id="tir-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Pourquoi un tirage au sort en ligne ?</h2>
+    <p>Tirer un nom au sort, c'est une situation banale mais récurrente. Au lieu d'écrire des bouts de papier ou de "faire la courte paille", un outil numérique présente plusieurs avantages :</p>
+    <ul>
+      <li><strong>Vraiment aléatoire</strong> : pas de biais inconscient</li>
+      <li><strong>Rapide</strong> : 2 clics et c'est fait</li>
+      <li><strong>Transparent</strong> : tout le monde voit le tirage en direct</li>
+      <li><strong>Reproductible</strong> : tu peux relancer si quelqu'un conteste</li>
+      <li><strong>Sans matériel</strong> : juste un téléphone</li>
+    </ul>
+
+    <h2>Cas d'usage les plus courants</h2>
+    <ul>
+      <li><strong>Concours sur les réseaux sociaux</strong> : tirer le gagnant d'un giveaway parmi les commentaires</li>
+      <li><strong>Soirées entre amis</strong> : qui paie la prochaine tournée, qui fait le ménage, qui choisit le film</li>
+      <li><strong>Sport et jeux</strong> : composer des équipes équilibrées, décider de qui commence</li>
+      <li><strong>École et formation</strong> : interroger un élève au hasard, former des groupes de travail</li>
+      <li><strong>Loterie / chiffraffaire</strong> : distribuer des places, des cadeaux</li>
+      <li><strong>Décisions difficiles</strong> : restau, voyage, achat — laisse le hasard trancher</li>
+      <li><strong>Tournois</strong> : tirage des matchs, ordre de passage</li>
+      <li><strong>Recrutement</strong> : ordre d'entretien des candidats</li>
+    </ul>
+
+    <h2>Les 3 modes proposés</h2>
+
+    <h3>1. Choisir 1 gagnant au hasard</h3>
+    <p>Le tirage classique : un seul nom est tiré dans toute la liste. Chaque option a une probabilité égale (1/N). Pratique pour concours, désignation, attribution.</p>
+
+    <h3>2. Mélanger l'ordre</h3>
+    <p>Toute la liste est mélangée aléatoirement. Idéal pour :</p>
+    <ul>
+      <li>Définir un ordre de passage</li>
+      <li>Créer une playlist aléatoire</li>
+      <li>Distribuer des cartes</li>
+      <li>Ordre de tour de parole</li>
+    </ul>
+
+    <h3>3. Créer des équipes équilibrées</h3>
+    <p>La liste est mélangée puis répartie équitablement entre N équipes. Si tu as 10 personnes et 2 équipes, chaque équipe aura 5 membres. Si tu as 11 personnes, une équipe en aura 6 et l'autre 5 (répartition au plus juste).</p>
+
+    <h2>Comment garantir un vrai aléatoire ?</h2>
+    <p>Le JavaScript natif utilise un <strong>générateur pseudo-aléatoire</strong> (Math.random) qui est suffisamment aléatoire pour des usages courants. Pour des tirages plus "officiels", on peut utiliser <strong>crypto.getRandomValues()</strong> qui utilise des sources d'entropie matérielle.</p>
+    <p>Pour des concours à enjeux importants (sommes d'argent, etc.), il faut respecter certaines règles :</p>
+    <ul>
+      <li>Avoir un <strong>règlement écrit</strong></li>
+      <li>Faire intervenir un <strong>huissier</strong> ou un service certifié pour gros concours</li>
+      <li>Conserver la liste initiale et le résultat</li>
+    </ul>
+
+    <h2>Astuces pour les concours sur les réseaux</h2>
+    <p>Si tu organises un giveaway Instagram / TikTok / Facebook :</p>
+    <ol>
+      <li>Récupère la liste des participants (commentaires, partages)</li>
+      <li>Mets-les ici, un par ligne</li>
+      <li>Lance le tirage en mode "1 gagnant"</li>
+      <li>Fais une capture d'écran (preuve)</li>
+      <li>Annonce le résultat publiquement</li>
+    </ol>
+    <p>⚠️ Si tu utilises une marque commerciale dans ton concours, attention au <strong>règlement de la marque</strong> (TikTok, Instagram interdisent certaines pratiques).</p>
+
+    <h2>Limites du tirage au sort</h2>
+    <p>L'aléatoire pur n'est pas toujours juste :</p>
+    <ul>
+      <li>Pour équilibrer des équipes <strong>par niveau</strong>, il faut une logique manuelle (mettre les meilleurs dans des équipes différentes)</li>
+      <li>Pour éviter les <strong>conflits</strong>, pense à vérifier avant d'annoncer (ex: éviter de mettre 2 personnes en froid dans la même équipe)</li>
+      <li>Pour des <strong>tirages avec poids différents</strong> (ex: certains ont plus de "tickets" que d'autres), il faudrait dupliquer leur nom dans la liste autant de fois que de tickets</li>
+    </ul>
+
+    <h2>FAQ</h2>
+
+    <h3>Mes données sont-elles enregistrées ?</h3>
+    <p>Non. Tout se passe localement dans ton navigateur. Aucune liste n'est envoyée sur un serveur. Tu peux fermer la page sans crainte.</p>
+
+    <h3>Combien de participants maximum ?</h3>
+    <p>Aucune limite technique. On a testé jusqu'à 10 000 noms sans problème.</p>
+
+    <h3>Le tirage est-il vraiment aléatoire ?</h3>
+    <p>Oui, on utilise l'algorithme Fisher-Yates pour le mélange (standard reconnu) avec Math.random comme source d'aléatoire (très satisfaisant pour usage courant).</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

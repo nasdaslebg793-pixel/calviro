@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crédit conso : calcul des intérêts et mensualité 2026 — Calviro</title>
+<meta name="description" content="Simulateur de crédit à la consommation : mensualité, coût total des intérêts. Alerte taux d'usure. Gratuit et instantané.">
+<meta name="keywords" content="crédit conso, prêt personnel, calcul crédit consommation, mensualité crédit, intérêts crédit conso">
+<meta property="og:title" content="Simulateur crédit conso (prêt personnel)">
+<link rel="canonical" href="https://calviro.vercel.app/credit-conso.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>💳 Crédit conso</h1>
+      <p>Calcul mensualité et intérêts d'un prêt personnel.</p>
+    </div>
+
+    <div class="field">
+      <label for="conso-montant">Montant emprunté (€)</label>
+      <input type="number" id="conso-montant" placeholder="5 000" min="0">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="conso-taux">Taux d'intérêt (%)</label>
+        <input type="number" id="conso-taux" placeholder="7" step="0.01" min="0">
+      </div>
+      <div class="field">
+        <label for="conso-duree">Durée (mois)</label>
+        <input type="number" id="conso-duree" placeholder="36" min="3" max="84">
+      </div>
+    </div>
+
+    <button class="btn" onclick="calcCreditConso()">Calculer</button>
+
+    <div class="result" id="conso-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Qu'est-ce qu'un crédit conso ?</h2>
+    <p>Le <strong>crédit à la consommation</strong> (ou prêt personnel non affecté) te permet d'emprunter une somme entre <strong>200 € et 75 000 €</strong> pour une durée de <strong>3 mois à 7 ans</strong>, sans avoir à justifier l'utilisation des fonds. Idéal pour des projets variés : travaux, voyage, mariage, achat équipement, etc.</p>
+
+    <h2>Crédit conso vs autres prêts</h2>
+    <p>Le crédit conso est différent du crédit immobilier (réservé à l'achat immo) et du crédit auto (affecté à un véhicule). C'est généralement le crédit le <strong>plus simple à obtenir</strong>, mais aussi le <strong>plus cher en taux</strong>.</p>
+
+    <h2>Taux d'usure : le plafond légal</h2>
+    <p>Le <strong>taux d'usure</strong> est le taux maximum légal qu'une banque peut te facturer. Au-delà, c'est de l'usure et c'est puni par la loi. Il est défini chaque trimestre par la Banque de France.</p>
+    <p>Pour les crédits conso, le taux d'usure en 2026 se situe autour de :</p>
+    <ul>
+      <li><strong>Crédits ≤ 3 000 €</strong> : ~21-22 %</li>
+      <li><strong>Crédits 3 000 - 6 000 €</strong> : ~12-13 %</li>
+      <li><strong>Crédits > 6 000 €</strong> : ~7-8 %</li>
+    </ul>
+    <p>⚠️ Méfie-toi des organismes qui frôlent ce plafond, c'est le signe que ton dossier est jugé risqué.</p>
+
+    <h2>Crédit revolving : à éviter</h2>
+    <p>Le <strong>crédit renouvelable</strong> (carte de magasin, réserve d'argent) a souvent des taux <strong>au plafond légal (20%+)</strong>. Pratique pour les imprévus mais coûteux à long terme. Si tu en as un, essaie de le racheter avec un prêt personnel classique (taux 3 à 4 fois moins cher).</p>
+
+    <h2>Astuces</h2>
+    <ul>
+      <li><strong>Compare 5-10 organismes</strong> : Cofidis, Cetelem, Younited, banques traditionnelles, courtiers</li>
+      <li><strong>Plus le montant est élevé, meilleur est le taux</strong></li>
+      <li><strong>Durée courte = coût bas</strong> : 24 mois est souvent l'idéal</li>
+      <li><strong>Assurance facultative</strong> : ne la prends que si justifié (TNS, métier à risque)</li>
+      <li><strong>Délai de rétractation : 14 jours</strong> légaux après signature pour annuler sans frais</li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

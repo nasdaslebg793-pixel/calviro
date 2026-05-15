@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparateur de fuseaux horaires : 20 villes du monde — Calviro</title>
+<meta name="description" content="Compare les heures dans 20 grandes villes du monde : Paris, NYC, Tokyo, Sydney, Dubaï. Pratique pour réunions et voyages internationaux.">
+<meta name="keywords" content="fuseaux horaires, comparateur heures, décalage horaire, heure tokyo, heure new york, world clock">
+<meta property="og:title" content="Comparateur fuseaux horaires mondial">
+<link rel="canonical" href="https://calviro.vercel.app/fuseaux-horaires.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+    <a href="index.html" class="back">← Retour</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🌐 Fuseaux horaires</h1>
+      <p>Heure dans 20 grandes villes du monde.</p>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="fus-heure">Heure de référence</label>
+        <input type="time" id="fus-heure" value="14:00">
+      </div>
+      <div class="field">
+        <label for="fus-ref">Ville de référence</label>
+        <select id="fus-ref">
+          <option value="Paris" selected>Paris</option>
+          <option value="Londres">Londres</option>
+          <option value="New York">New York</option>
+          <option value="Los Angeles">Los Angeles</option>
+          <option value="Tokyo">Tokyo</option>
+          <option value="Sydney">Sydney</option>
+          <option value="Dubaï">Dubaï</option>
+          <option value="Singapour">Singapour</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn" onclick="calcFuseaux()">Comparer les heures</button>
+
+    <div class="result" id="fus-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Comprendre les fuseaux horaires</h2>
+    <p>La Terre tourne sur elle-même en 24 heures. Pour éviter d'avoir des heures incohérentes selon où tu es sur la planète, le monde est divisé en <strong>24 fuseaux horaires d'environ 15°</strong> de longitude chacun. Chaque fuseau est centré sur un méridien et porte un nom (UTC, GMT, CET, EST, JST, etc.).</p>
+
+    <h2>UTC : la référence mondiale</h2>
+    <p>L'<strong>UTC (Coordinated Universal Time)</strong> est l'heure de référence mondiale, celle du méridien de Greenwich (Londres). Tous les autres fuseaux sont définis par leur décalage avec UTC :</p>
+    <ul>
+      <li>Paris : <strong>UTC+1</strong> (heure d'hiver) / <strong>UTC+2</strong> (heure d'été)</li>
+      <li>New York : <strong>UTC-5</strong> (hiver) / <strong>UTC-4</strong> (été)</li>
+      <li>Tokyo : <strong>UTC+9</strong> (pas de changement été/hiver)</li>
+      <li>Sydney : <strong>UTC+10</strong> (été austral) / <strong>UTC+11</strong> (hiver austral, leurs saisons sont inversées)</li>
+    </ul>
+
+    <h2>L'heure d'été : DST</h2>
+    <p>Le <strong>Daylight Saving Time (DST)</strong> ou changement d'heure été/hiver est appliqué dans environ 70 pays, principalement en Europe et Amérique du Nord. Le principe : avancer l'heure d'une heure en mars/avril pour profiter du soleil en soirée, et la reculer en octobre/novembre.</p>
+    <p>En France : passage à l'heure d'été le <strong>dernier dimanche de mars</strong>, retour à l'heure d'hiver le <strong>dernier dimanche d'octobre</strong>.</p>
+    <p>⚠️ Notre calculateur ne gère pas automatiquement le changement d'heure d'été pour simplifier. Si tu es en période d'été, ajoute 1h à l'heure cible pour les villes européennes.</p>
+
+    <h2>Cas d'usage les plus courants</h2>
+    <ul>
+      <li><strong>Réunions internationales</strong> : caler un call qui convient à NYC, Paris et Tokyo</li>
+      <li><strong>Voyages</strong> : savoir à quelle heure appeler tes proches restés au pays</li>
+      <li><strong>Trading / Bourse</strong> : suivre les ouvertures des marchés (Tokyo, Londres, NYC)</li>
+      <li><strong>Streaming</strong> : connaître l'heure d'un live ou d'une sortie produit</li>
+      <li><strong>Sport international</strong> : matchs, tournois, JO</li>
+      <li><strong>Décalage horaire</strong> : préparer son corps avant un voyage long-courrier</li>
+    </ul>
+
+    <h2>Les fuseaux atypiques</h2>
+    <p>Tous les pays ne suivent pas un nombre entier d'heures de décalage. Certains ont des décalages de <strong>30 ou 45 minutes</strong>, héritage de raisons politiques ou historiques :</p>
+    <ul>
+      <li><strong>Inde</strong> : UTC+5:30 (un seul fuseau pour tout le pays malgré sa taille !)</li>
+      <li><strong>Iran</strong> : UTC+3:30</li>
+      <li><strong>Afghanistan</strong> : UTC+4:30</li>
+      <li><strong>Birmanie</strong> : UTC+6:30</li>
+      <li><strong>Népal</strong> : UTC+5:45</li>
+      <li><strong>Chatham (NZ)</strong> : UTC+12:45 ou +13:45</li>
+    </ul>
+
+    <h2>La Chine : 1 seul fuseau, 5 zones géographiques</h2>
+    <p>La Chine, malgré sa largeur de 5 000 km (qui devrait couvrir 5 fuseaux), n'utilise qu'<strong>un seul fuseau horaire</strong> (UTC+8) depuis 1949. Conséquence : à Kashgar (extrême ouest), le soleil se lève à 10h du matin en hiver. C'est une décision politique pour favoriser l'unité du pays.</p>
+
+    <h2>Décalage horaire et productivité</h2>
+    <p>Si tu travailles avec des équipes internationales, voici quelques règles :</p>
+    <ul>
+      <li><strong>Paris ↔ NYC</strong> : 6h de décalage. Fenêtre de chevauchement : 15h-18h Paris / 9h-12h NYC. Idéal pour réunions.</li>
+      <li><strong>Paris ↔ Tokyo</strong> : 8h de décalage. Quasi impossible de travailler en synchrone. Mieux vaut l'asynchrone (mail, Slack).</li>
+      <li><strong>Paris ↔ Sydney</strong> : 9-10h. Encore plus difficile. Fenêtre étroite à 8h Paris / 17h Sydney.</li>
+      <li><strong>Paris ↔ Londres</strong> : 1h seulement. Très facile, comme si vous étiez dans la même ville.</li>
+    </ul>
+
+    <h2>Jet lag : conseils pratiques</h2>
+    <p>Le décalage horaire ("jet lag") perturbe ton rythme circadien. Quelques conseils :</p>
+    <ul>
+      <li><strong>Côté Est (vers l'Asie)</strong> : plus difficile car tu "raccourcies" tes journées. Couche-toi tôt 2-3 jours avant le départ.</li>
+      <li><strong>Côté Ouest (vers l'Amérique)</strong> : plus facile car tu "allonges" tes journées.</li>
+      <li><strong>Sur place</strong> : expose-toi à la lumière du jour pour caler ton horloge biologique</li>
+      <li><strong>Évite l'alcool et la caféine</strong> en avion</li>
+      <li><strong>Hydrate-toi</strong> bien (l'air des avions est très sec)</li>
+      <li><strong>Mélatonine</strong> 0,5-1 mg le soir d'arrivée pendant 3-5 jours peut aider</li>
+    </ul>
+
+    <h2>Les villes que nous comparons</h2>
+    <p>Notre outil compare 20 grandes villes représentatives de tous les continents : Paris, Londres, New York, Los Angeles, Toronto, Mexico, São Paulo, Le Cap, Dubaï, Mumbai, Bangkok, Singapour, Hong Kong, Pékin, Tokyo, Séoul, Sydney, Auckland, Honolulu, Reykjavik. Tu peux utiliser n'importe laquelle comme référence.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
