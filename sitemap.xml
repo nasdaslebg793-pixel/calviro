@@ -296,6 +296,31 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://calviro.vercel.app/blog/primo-accedant-2026.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://calviro.vercel.app/blog/freelance-tjm-2026.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://calviro.vercel.app/blog/sommeil-90-minutes.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://calviro.vercel.app/blog/cout-employeur-super-brut.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://calviro.vercel.app/blog/investir-bourse-debutant.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
     <loc>https://calviro.vercel.app/mentions-legales.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
