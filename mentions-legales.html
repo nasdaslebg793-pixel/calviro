@@ -14,13 +14,16 @@
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#18181b">
 <link rel="stylesheet" href="style.css">
+<script>
+(function(){var t=localStorage.getItem('calviro-theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.setAttribute('data-theme','dark');}})();
+</script>
 </head>
 <body>
 
 <div class="container">
   <nav class="nav">
     <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
-    <a href="index.html" class="back">← Retour</a>
+    <div style="display:flex;align-items:center;gap:10px;"><a href="index.html" class="back">← Retour</a><button class="theme-toggle" onclick="toggleTheme()" aria-label="Basculer mode sombre/clair" style="background:var(--surface);border:1px solid var(--border);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;display:inline-flex;align-items:center;justify-content:center;"><span class="moon-icon">🌙</span><span class="sun-icon">☀️</span></button></div>
   </nav>
 
   <article class="blog-article">
@@ -84,5 +87,27 @@
   </footer>
 </div>
 
+<script>
+// Theme toggle global
+window.toggleTheme=function(){var c=document.documentElement.getAttribute('data-theme');if(c==='dark'){document.documentElement.removeAttribute('data-theme');localStorage.setItem('calviro-theme','light');}else{document.documentElement.setAttribute('data-theme','dark');localStorage.setItem('calviro-theme','dark');}};
+// Track visit to this tool
+(function(){
+  try{
+    var path=window.location.pathname.split('/').pop();
+    if(!path||path==='index.html'||path.indexOf('blog')!==-1||path.indexOf('mentions')!==-1||path.indexOf('confident')!==-1||path.indexOf('cgu')!==-1)return;
+    var h1=document.querySelector('.tool-header h1, h1');
+    if(!h1)return;
+    var title=h1.textContent.replace(/^[^a-zA-ZÀ-ÿ0-9]+/, '').trim();
+    var iconMatch=h1.textContent.match(/([\u{1F300}-\u{1F9FF}\u{2600}-\u{27BF}\u{1F000}-\u{1F0FF}])/u);
+    var icon=iconMatch?iconMatch[1]:'🔧';
+    var hist=[];
+    try{hist=JSON.parse(localStorage.getItem('calviro-history')||'[]');}catch(e){}
+    hist=hist.filter(function(i){return i.url!==path;});
+    hist.unshift({url:path,title:title,icon:icon,t:Date.now()});
+    hist=hist.slice(0,12);
+    localStorage.setItem('calviro-history',JSON.stringify(hist));
+  }catch(e){}
+})();
+</script>
 </body>
 </html>
