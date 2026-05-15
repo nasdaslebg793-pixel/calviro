@@ -2922,3 +2922,203 @@ function calcFuseaux() {
 
   showResult('fus-result', html + '<div class="note">Les heures d\'été (DST) ne sont pas prises en compte automatiquement. En France : +1h fin mars à fin octobre.</div>');
 }
+
+// ---------- 51. CONVERTISSEUR PDF (FICHIER → PDF) ----------
+
+let _cvpFiles = [];
+
+function cvpHandleFiles(files) {
+  _cvpFiles = Array.from(files);
+  cvpRenderList();
+}
+
+function cvpRenderList() {
+  const liste = $('cvp-liste');
+  if (_cvpFiles.length === 0) {
+    liste.innerHTML = '';
+    return;
+  }
+  liste.innerHTML = '<div style="margin-top:16px; font-size:13px; font-weight:600; color:var(--text-muted);">Fichiers sélectionnés :</div>' +
+    _cvpFiles.map((f, i) => {
+      const sizeKB = (f.size / 1024).toFixed(1);
+      return `<div class="result-detail-row" style="padding:8px 0; border-bottom:1px solid var(--border);">
+        <span>📄 ${f.name}</span>
+        <strong style="color:var(--text-muted); font-size:12px;">${sizeKB} Ko <a href="#" onclick="cvpRemove(${i}); event.preventDefault();" style="margin-left:8px; color:#dc2626;">✕</a></strong>
+      </div>`;
+    }).join('');
+}
+
+function cvpRemove(idx) {
+  _cvpFiles.splice(idx, 1);
+  cvpRenderList();
+}
+
+async function convertirFichierPdf() {
+  if (_cvpFiles.length === 0) {
+    showResult('cvp-result', '<div class="note">⚠ Sélectionne au moins un fichier à convertir.</div>');
+    return;
+  }
+
+  $('cvp-result').innerHTML = '<div class="note">⏳ Conversion en cours, patiente quelques secondes...</div>';
+  $('cvp-result').classList.add('visible');
+
+  try {
+    // Détecter le type via le premier fichier
+    const firstFile = _cvpFiles[0];
+    const ext = firstFile.name.split('.').pop().toLowerCase();
+    
+    let blob, downloadName;
+    
+    if (['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp'].includes(ext)) {
+      blob = await cvpImagesEnPdf(_cvpFiles);
+      downloadName = _cvpFiles.length === 1 
+        ? firstFile.name.replace(/\.[^/.]+$/, '') + '.pdf'
+        : 'images-' + Date.now() + '.pdf';
+    } else if (ext === 'docx') {
+      blob = await cvpDocxEnPdf(firstFile);
+      downloadName = firstFile.name.replace(/\.docx$/i, '') + '.pdf';
+    } else if (ext === 'txt') {
+      blob = await cvpTexteEnPdf(firstFile);
+      downloadName = firstFile.name.replace(/\.txt$/i, '') + '.pdf';
+    } else if (['html', 'htm'].includes(ext)) {
+      blob = await cvpHtmlEnPdf(firstFile, false);
+      downloadName = firstFile.name.replace(/\.html?$/i, '') + '.pdf';
+    } else if (ext === 'md') {
+      blob = await cvpHtmlEnPdf(firstFile, true);
+      downloadName = firstFile.name.replace(/\.md$/i, '') + '.pdf';
+    } else {
+      showResult('cvp-result', `<div class="note">⚠ Format <strong>.${ext}</strong> non supporté.<br><br>Formats acceptés : <strong>JPG, PNG, WEBP, GIF, BMP, DOCX, TXT, HTML, MD</strong>.<br><br>Pour PPTX, XLSX, ODT, PDF chiffrés : nécessite un serveur (impossible côté navigateur).</div>`);
+      return;
+    }
+    
+    if (!blob) throw new Error('La conversion a échoué.');
+    
+    const url = URL.createObjectURL(blob);
+    const sizeKB = (blob.size / 1024).toFixed(1);
+    
+    showResult('cvp-result', `
+      <div class="result-label">✓ Conversion réussie</div>
+      <div class="result-detail">
+        <div class="result-detail-row"><span>Fichier original</span><strong>${firstFile.name}${_cvpFiles.length > 1 ? ' (+' + (_cvpFiles.length - 1) + ' autres)' : ''}</strong></div>
+        <div class="result-detail-row"><span>Taille du PDF</span><strong>${sizeKB} Ko</strong></div>
+      </div>
+      <div class="btn-group">
+        <a href="${url}" download="${downloadName}" class="btn">📥 Télécharger ${downloadName}</a>
+      </div>
+      <div class="note">Le fichier reste sur ton appareil, rien n'est envoyé sur un serveur.</div>
+    `);
+  } catch (e) {
+    console.error(e);
+    showResult('cvp-result', `<div class="note">⚠ Erreur de conversion : ${e.message || 'Format non lisible.'}<br>Vérifie que le fichier n'est pas protégé par mot de passe et qu'il est dans un format supporté.</div>`);
+  }
+}
+
+async function cvpImagesEnPdf(files) {
+  if (typeof window.jspdf === 'undefined') throw new Error('Bibliothèque jsPDF non chargée');
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+  let first = true;
+  
+  for (const file of files) {
+    if (!first) pdf.addPage();
+    first = false;
+    
+    const dataUrl = await cvpReadAsDataURL(file);
+    const img = await cvpLoadImage(dataUrl);
+    
+    // Marges 10mm
+    const pageWidth = pdf.internal.pageSize.getWidth() - 20;
+    const pageHeight = pdf.internal.pageSize.getHeight() - 20;
+    const ratio = Math.min(pageWidth / img.width, pageHeight / img.height);
+    const w = img.width * ratio;
+    const h = img.height * ratio;
+    const x = (pdf.internal.pageSize.getWidth() - w) / 2;
+    const y = (pdf.internal.pageSize.getHeight() - h) / 2;
+    
+    // Détecter le format
+    const fmt = file.type.includes('png') ? 'PNG' : (file.type.includes('webp') ? 'WEBP' : 'JPEG');
+    pdf.addImage(dataUrl, fmt, x, y, w, h);
+  }
+  
+  return pdf.output('blob');
+}
+
+function cvpReadAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => resolve(e.target.result);
+    reader.onerror = () => reject(new Error('Lecture du fichier échouée'));
+    reader.readAsDataURL(file);
+  });
+}
+
+function cvpLoadImage(dataUrl) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error('Image illisible'));
+    img.src = dataUrl;
+  });
+}
+
+async function cvpDocxEnPdf(file) {
+  if (typeof mammoth === 'undefined') throw new Error('Bibliothèque mammoth (Word) non chargée');
+  const arrayBuffer = await file.arrayBuffer();
+  const result = await mammoth.convertToHtml({ arrayBuffer });
+  return await cvpHtmlVersBlob(result.value);
+}
+
+async function cvpTexteEnPdf(file) {
+  const text = await file.text();
+  const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const html = `<div style="font-family: 'Helvetica', Arial, sans-serif; font-size: 13px; line-height: 1.5; white-space: pre-wrap; color: #18181b;">${escaped}</div>`;
+  return await cvpHtmlVersBlob(html);
+}
+
+async function cvpHtmlEnPdf(file, isMarkdown) {
+  let html = await file.text();
+  if (isMarkdown && typeof marked !== 'undefined') {
+    html = marked.parse(html);
+  }
+  return await cvpHtmlVersBlob(html);
+}
+
+function cvpHtmlVersBlob(htmlContent) {
+  return new Promise((resolve, reject) => {
+    if (typeof html2pdf === 'undefined') {
+      reject(new Error('Bibliothèque html2pdf non chargée'));
+      return;
+    }
+    
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'fixed';
+    wrapper.style.top = '-10000px';
+    wrapper.style.left = '0';
+    wrapper.style.width = '210mm';
+    wrapper.style.padding = '15mm';
+    wrapper.style.fontFamily = "'Helvetica', Arial, sans-serif";
+    wrapper.style.color = '#18181b';
+    wrapper.style.background = '#ffffff';
+    wrapper.style.fontSize = '12px';
+    wrapper.style.lineHeight = '1.5';
+    wrapper.innerHTML = htmlContent;
+    document.body.appendChild(wrapper);
+    
+    const opt = {
+      margin: 10,
+      filename: 'output.pdf',
+      image: { type: 'jpeg', quality: 0.95 },
+      html2canvas: { scale: 2, useCORS: true, logging: false },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    };
+    
+    html2pdf().set(opt).from(wrapper).outputPdf('blob').then(blob => {
+      document.body.removeChild(wrapper);
+      resolve(blob);
+    }).catch(err => {
+      if (wrapper.parentNode) document.body.removeChild(wrapper);
+      reject(err);
+    });
+  });
+}

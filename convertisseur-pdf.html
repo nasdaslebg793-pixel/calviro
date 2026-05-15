@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convertisseur PDF gratuit : Image, Word, Texte → PDF — Calviro</title>
+<meta name="description" content="Convertis tes fichiers en PDF gratuitement : JPG, PNG, Word (DOCX), texte, HTML. 100% privé, tout reste dans ton navigateur. Sans inscription.">
+<meta name="keywords" content="convertisseur pdf, convertir en pdf, jpg en pdf, word en pdf, image en pdf, pdf gratuit, docx pdf">
+<meta property="og:title" content="Convertisseur PDF gratuit (Image, Word, Texte → PDF)">
+<meta property="og:description" content="Convertis tes fichiers en PDF. 100% local, privé, sans inscription.">
+<link rel="canonical" href="https://calviro.vercel.app/convertisseur-pdf.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+<script>
+(function(){var t=localStorage.getItem('calviro-theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.setAttribute('data-theme','dark');}})();
+</script>
+<style>
+  .drop-zone {
+    border: 2px dashed var(--border-strong);
+    border-radius: var(--radius);
+    padding: 40px 20px;
+    text-align: center;
+    background: var(--surface);
+    transition: all var(--transition);
+    cursor: pointer;
+    margin-top: 16px;
+  }
+  .drop-zone:hover, .drop-zone.dragover {
+    border-color: var(--text);
+    background: var(--surface-2);
+  }
+  .drop-zone-icon { font-size: 36px; margin-bottom: 10px; }
+  .drop-zone-text { font-size: 15px; color: var(--text); margin-bottom: 6px; font-weight: 500; }
+  .drop-zone-sub { font-size: 13px; color: var(--text-muted); }
+  .drop-zone input[type="file"] { display: none; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="index.html" class="back">← Retour</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Basculer mode sombre/clair" style="background:var(--surface);border:1px solid var(--border);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;display:inline-flex;align-items:center;justify-content:center;">
+        <span class="moon-icon">🌙</span>
+        <span class="sun-icon">☀️</span>
+      </button>
+    </div>
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>📄 Convertisseur PDF</h1>
+      <p>Image, Word, texte ou HTML → PDF gratuit et instantané.</p>
+    </div>
+
+    <div class="drop-zone" id="cvp-zone" onclick="document.getElementById('cvp-file').click();">
+      <input type="file" id="cvp-file" multiple accept=".jpg,.jpeg,.png,.webp,.gif,.bmp,.docx,.txt,.html,.htm,.md" onchange="cvpHandleFiles(this.files)">
+      <div class="drop-zone-icon">📂</div>
+      <div class="drop-zone-text">Clique ici ou glisse tes fichiers</div>
+      <div class="drop-zone-sub">JPG, PNG, WebP, DOCX, TXT, HTML, MD acceptés</div>
+    </div>
+
+    <div id="cvp-liste"></div>
+
+    <button class="btn" onclick="convertirFichierPdf()" style="margin-top:16px;">📥 Convertir en PDF</button>
+
+    <div class="result" id="cvp-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Convertisseur PDF gratuit, sans inscription, sans limite</h2>
+    <p>Notre convertisseur PDF transforme tes fichiers en PDF directement <strong>dans ton navigateur</strong>, sans rien envoyer à un serveur. C'est gratuit, illimité, et 100 % privé.</p>
+
+    <h2>Quels formats sont supportés ?</h2>
+    <table>
+      <thead><tr><th>Format</th><th>Extensions</th><th>Qualité</th></tr></thead>
+      <tbody>
+        <tr><td>🖼️ <strong>Images</strong></td><td>.jpg, .jpeg, .png, .webp, .gif, .bmp</td><td>Parfaite</td></tr>
+        <tr><td>📝 <strong>Word</strong></td><td>.docx (Word 2007+)</td><td>Très bonne</td></tr>
+        <tr><td>📃 <strong>Texte</strong></td><td>.txt</td><td>Parfaite</td></tr>
+        <tr><td>🌐 <strong>HTML</strong></td><td>.html, .htm</td><td>Excellente</td></tr>
+        <tr><td>📑 <strong>Markdown</strong></td><td>.md</td><td>Excellente</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Formats NON supportés</h2>
+    <p>Honnêteté oblige, certains formats ne peuvent <strong>pas</strong> être convertis dans un navigateur :</p>
+    <ul>
+      <li>❌ <strong>PowerPoint (.pptx)</strong> : trop complexe (animations, transitions, layouts spécifiques)</li>
+      <li>❌ <strong>Excel (.xlsx)</strong> : rendu de tableaux médiocre, mieux vaut faire export PDF depuis Excel directement</li>
+      <li>❌ <strong>Word ancien (.doc)</strong> : format propriétaire fermé. Ouvre-le dans Word et enregistre en .docx d'abord.</li>
+      <li>❌ <strong>ODT (LibreOffice)</strong> : librairies trop limitées</li>
+      <li>❌ <strong>PDF chiffrés</strong> : ne peuvent pas être lus sans le mot de passe</li>
+      <li>❌ <strong>RAR, ZIP, archives</strong> : ce sont des conteneurs, pas des documents</li>
+    </ul>
+    <p>Pour ces formats, il faut un service en ligne qui héberge un serveur (LibreOffice, Aspose...) — comme iLovePDF, SmallPDF ou ConvertAPI. Mais alors tu envoies ton fichier sur leurs serveurs.</p>
+
+    <h2>Mes 3 cas d'usage les plus courants</h2>
+
+    <h3>1. Plusieurs photos → un seul PDF</h3>
+    <p>Tu as scanné un contrat, un dossier d'inscription, ou pris en photo plusieurs pages d'un livre ? Sélectionne tous tes fichiers JPG/PNG, ils seront combinés <strong>dans l'ordre</strong> en un seul PDF, une image par page. Pratique pour envoyer un document complet.</p>
+
+    <h3>2. CV Word → PDF "propre"</h3>
+    <p>Tu as ton CV en Word mais les recruteurs préfèrent le PDF (pas de risque de modifs accidentelles, mise en page figée) ? Glisse ton .docx, télécharge le .pdf. C'est aussi simple.</p>
+
+    <h3>3. Rapport texte/HTML → PDF pour partage</h3>
+    <p>Tu as rédigé une note dans le bloc-notes ou un rapport en HTML ? Convertis en PDF pour un partage formel.</p>
+
+    <h2>Pourquoi convertir en PDF ?</h2>
+    <ul>
+      <li><strong>Mise en page figée</strong> : ton document s'affiche pareil chez tous, peu importe le logiciel</li>
+      <li><strong>Format universel</strong> : ouvert sur tous les téléphones, ordis, sans logiciel spécifique</li>
+      <li><strong>Sécurité</strong> : difficile à modifier accidentellement</li>
+      <li><strong>Standard professionnel</strong> : ce que les administrations et entreprises attendent</li>
+      <li><strong>Compatible signature électronique</strong> : DocuSign, Adobe Sign, Yousign</li>
+      <li><strong>Compression</strong> : généralement plus léger qu'un Word ou un dossier de photos</li>
+    </ul>
+
+    <h2>Privé à 100%, garanti</h2>
+    <p>Tout se passe <strong>localement dans ton navigateur</strong>. Tes fichiers ne quittent jamais ton appareil. Aucun upload vers nos serveurs (et pour cause : on n'a pas de serveur). C'est techniquement vérifiable en regardant le code source du site ou en inspectant les requêtes réseau (DevTools → onglet Network).</p>
+    <p>C'est l'avantage majeur sur les services type iLovePDF/SmallPDF : eux uploadent tes fichiers et peuvent les conserver pendant 24-72 heures (selon leur politique). Pour des documents sensibles (contrats, RIB, fiches de paie), notre solution est plus sûre.</p>
+
+    <h2>Combien de fichiers max ?</h2>
+    <p>Pas de limite stricte. La performance dépend de ton appareil :</p>
+    <ul>
+      <li><strong>Photos haute résolution</strong> : 20-50 images en simultané passent bien sur la plupart des appareils</li>
+      <li><strong>Documents Word</strong> : un par un (chaque conversion crée un PDF séparé)</li>
+      <li><strong>Très gros documents</strong> : sois patient, ça peut prendre 5-10 secondes</li>
+    </ul>
+
+    <h2>Conseils pour un meilleur résultat</h2>
+
+    <h3>Pour les images</h3>
+    <ul>
+      <li>Ordonne tes fichiers par nom alphabétique (1.jpg, 2.jpg... ou A.jpg, B.jpg)</li>
+      <li>Préfère le JPG ou PNG au WebP pour une compatibilité maximale</li>
+      <li>Si l'image est tournée, redresse-la dans la galerie photo avant d'importer</li>
+      <li>Pour scanner des documents avec ton tel, utilise une appli dédiée (Adobe Scan, Microsoft Lens) qui détecte automatiquement les contours</li>
+    </ul>
+
+    <h3>Pour Word (.docx)</h3>
+    <ul>
+      <li>Évite les polices très exotiques : elles seront remplacées par Arial</li>
+      <li>Les en-têtes / pieds de page peuvent ne pas être préservés</li>
+      <li>Les commentaires/révisions sont supprimés</li>
+      <li>Les tableaux et images simples passent bien</li>
+      <li>Pour une qualité parfaite, utilise <strong>Word lui-même</strong> et fais "Enregistrer sous → PDF"</li>
+    </ul>
+
+    <h3>Pour HTML</h3>
+    <ul>
+      <li>Le CSS interne au fichier est respecté</li>
+      <li>Les liens externes (CSS, JS) peuvent ne pas se charger</li>
+      <li>Les images intégrées en base64 fonctionnent</li>
+      <li>Idéal pour exporter une newsletter ou un email en PDF</li>
+    </ul>
+
+    <h2>Notre outil PDF vs iLovePDF / SmallPDF</h2>
+    <table>
+      <thead><tr><th>Critère</th><th>Calviro</th><th>iLovePDF / SmallPDF</th></tr></thead>
+      <tbody>
+        <tr><td>Gratuit</td><td>✅ Sans limite</td><td>⚠️ Limité (2-3/jour gratuits, sinon abonnement)</td></tr>
+        <tr><td>Inscription</td><td>✅ Aucune</td><td>⚠️ Demandée pour beaucoup de fonctions</td></tr>
+        <tr><td>Privacité</td><td>✅ 100% local, rien n'est envoyé</td><td>❌ Tes fichiers passent par leurs serveurs</td></tr>
+        <tr><td>Taille de fichier max</td><td>Selon ton appareil</td><td>Limite à 100-200 MB selon plan</td></tr>
+        <tr><td>Formats Word/Excel/PPT</td><td>❌ Word seulement</td><td>✅ Tous formats</td></tr>
+        <tr><td>Vitesse</td><td>⚡ Instantané</td><td>Quelques secondes d'upload + traitement</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Et après la conversion ?</h2>
+    <p>Une fois ton PDF généré, tu peux :</p>
+    <ul>
+      <li>Le télécharger sur ton appareil</li>
+      <li>Le partager (email, WhatsApp avec notre <a href="lien-whatsapp.html">générateur de lien WhatsApp</a>)</li>
+      <li>Le compresser ou le fusionner avec d'autres PDF via notre <a href="pdf.html">outil PDF</a></li>
+      <li>Le signer électroniquement avec un service tiers (DocuSign, Yousign)</li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<!-- Bibliothèques de conversion -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="script.js"></script>
+
+<script>
+// Drag and drop
+const zone = document.getElementById('cvp-zone');
+['dragenter', 'dragover'].forEach(evt => {
+  zone.addEventListener(evt, e => { e.preventDefault(); zone.classList.add('dragover'); });
+});
+['dragleave', 'drop'].forEach(evt => {
+  zone.addEventListener(evt, e => { e.preventDefault(); zone.classList.remove('dragover'); });
+});
+zone.addEventListener('drop', e => {
+  e.preventDefault();
+  if (e.dataTransfer.files.length > 0) {
+    cvpHandleFiles(e.dataTransfer.files);
+  }
+});
+
+// Theme toggle global
+window.toggleTheme=function(){var c=document.documentElement.getAttribute('data-theme');if(c==='dark'){document.documentElement.removeAttribute('data-theme');localStorage.setItem('calviro-theme','light');}else{document.documentElement.setAttribute('data-theme','dark');localStorage.setItem('calviro-theme','dark');}};
+
+// Track this visit
+(function(){
+  try{
+    var hist=JSON.parse(localStorage.getItem('calviro-history')||'[]');
+    hist=hist.filter(function(i){return i.url!=='convertisseur-pdf.html';});
+    hist.unshift({url:'convertisseur-pdf.html',title:"Convertisseur PDF",icon:'📄',t:Date.now()});
+    hist=hist.slice(0,12);
+    localStorage.setItem('calviro-history',JSON.stringify(hist));
+  }catch(e){}
+})();
+</script>
+
+</body>
+</html>
