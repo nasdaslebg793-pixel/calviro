@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>À propos de Calviro — Calculateurs gratuits du quotidien</title>
+<meta name="description" content="Calviro : 51 calculateurs gratuits, open source, sans inscription. Notre mission : des outils utiles, rapides et respectueux de ta vie privée.">
+<meta property="og:title" content="À propos de Calviro">
+<meta property="og:description" content="Calviro : 51 calculateurs gratuits, open source, sans inscription.">
+<link rel="canonical" href="https://calviro.vercel.app/apropos.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+<script>
+(function(){var t=localStorage.getItem('calviro-theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.setAttribute('data-theme','dark');}})();
+</script>
+</head>
+<body>
+
+<div class="container">
+  <nav class="nav">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="index.html" class="back">← Retour</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Mode sombre/clair" style="background:var(--surface);border:1px solid var(--border);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;display:inline-flex;align-items:center;justify-content:center;">
+        <span class="moon-icon">🌙</span><span class="sun-icon">☀️</span>
+      </button>
+    </div>
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+  </nav>
+
+  <article class="blog-article">
+    <h1>À propos de Calviro</h1>
+    <p style="color: var(--text-muted); font-size: 16px; margin-bottom: 32px;">Un site pour calculer ce dont t'as besoin au quotidien, sans prise de tête.</p>
+
+    <h2>🎯 Notre mission</h2>
+    <p>Internet regorge de calculateurs en ligne, mais la plupart sont insupportables : <strong>3 popups de pub avant d'arriver au formulaire</strong>, demandent ton email avant de te donner le résultat, ou bloquent les fonctionnalités utiles derrière un abonnement. Calviro fait l'inverse : tu arrives, tu calcules, t'as ton résultat. Point.</p>
+
+    <h2>💡 Notre philosophie</h2>
+    <ul>
+      <li><strong>Gratuit, vraiment</strong> : pas de paywall, pas de "version premium". Les 51 outils sont accessibles sans condition.</li>
+      <li><strong>Aucune inscription</strong> : on ne te demande ni ton email, ni ton numéro de téléphone, rien.</li>
+      <li><strong>100% privé</strong> : tous les calculs se font dans ton navigateur. Aucune donnée n'est envoyée sur un serveur.</li>
+      <li><strong>Pas de pub envahissante</strong> : aujourd'hui aucune pub. Si on en ajoute un jour ce sera discret et hors du flux de l'outil.</li>
+      <li><strong>Open source</strong> : le code est <a href="https://github.com/nasdaslebg793-pixel/calviro" target="_blank" rel="noopener">consultable sur GitHub</a>. Tu peux vérifier qu'on ne ment pas sur la privacité.</li>
+      <li><strong>Rapide</strong> : aucun chargement lourd, pas de tracker qui ralentit le site. Calviro est conçu pour fonctionner sur n'importe quel appareil, même un vieux téléphone.</li>
+    </ul>
+
+    <h2>🔢 Calviro en chiffres</h2>
+    <ul>
+      <li><strong>51 calculateurs</strong> en ligne</li>
+      <li><strong>7 catégories</strong> : Immobilier, Finance, Travail, Santé, Temps, Quotidien, Études/Jeux</li>
+      <li><strong>6 articles de blog</strong> pour approfondir certains sujets</li>
+      <li><strong>~41 000 mots</strong> de contenu pédagogique</li>
+      <li><strong>0 cookie</strong> de tracking</li>
+      <li><strong>0 demande</strong> d'inscription</li>
+      <li><strong>0 euro</strong> de paiement requis</li>
+    </ul>
+
+    <h2>📂 Qu'est-ce qu'on trouve sur Calviro ?</h2>
+    <p>Une bibliothèque de calculateurs pour les sujets les plus recherchés du quotidien français :</p>
+    <ul>
+      <li><strong>🏠 Immobilier</strong> : simulateur de crédit, capacité d'emprunt, frais de notaire, rentabilité locative, plus-value, DPE, surface habitable, tableau d'amortissement</li>
+      <li><strong>💰 Finance</strong> : impôts, intérêts composés, crédit auto et conso, livret A, TVA</li>
+      <li><strong>💼 Travail</strong> : salaire brut/net, salaire chargé, TJM freelance, chômage, retraite, APL, indemnité de licenciement</li>
+      <li><strong>🏃 Santé</strong> : IMC, calories quotidiennes (TDEE/BMR), eau, allure de course, cycles de sommeil, date d'accouchement et d'ovulation, alcoolémie</li>
+      <li><strong>📅 Temps</strong> : âge précis, jours entre 2 dates, Pomodoro, fuseaux horaires</li>
+      <li><strong>🛠️ Quotidien</strong> : CV, mot de passe, QR code, lien WhatsApp, PDF (fusion, conversion), monnaies, conversion unités, pourcentage, pourboire, quantité peinture</li>
+      <li><strong>🎓 Études & jeux</strong> : Bac, compteur de mots, pseudo, probabilités, calcul mental chronométré, tirage au sort</li>
+    </ul>
+
+    <h2>🔧 Comment c'est construit ?</h2>
+    <p>Calviro est un site <strong>100% statique</strong> hébergé chez Vercel. C'est-à-dire qu'il n'y a pas de serveur applicatif, pas de base de données, pas de backend. Tout le code s'exécute dans ton navigateur, en JavaScript pur.</p>
+    <p>Conséquences :</p>
+    <ul>
+      <li>Le site est <strong>instantané</strong> (aucune attente serveur)</li>
+      <li>Aucune donnée ne quitte ton appareil (sauf si tu utilises explicitement le convertisseur de monnaies qui interroge une API publique de taux de change)</li>
+      <li>Le site peut fonctionner <strong>hors-ligne</strong> grâce à la PWA</li>
+      <li>Le coût d'hébergement est <strong>quasi nul</strong> (raison pour laquelle on peut se permettre d'être gratuit)</li>
+    </ul>
+
+    <h2>🛡️ Privacité & sécurité</h2>
+    <p>On prend la privacité au sérieux :</p>
+    <ul>
+      <li><strong>Aucun tracker</strong> : pas de Google Analytics, pas de Facebook Pixel, pas de Hotjar</li>
+      <li><strong>Aucun cookie tiers</strong> : juste les "cookies" techniques (en réalité du localStorage) pour mémoriser ton thème, tes favoris, ton historique — tout reste local</li>
+      <li><strong>HTTPS partout</strong> : tes données sont chiffrées en transit</li>
+      <li><strong>Hébergeur fiable</strong> : Vercel, l'un des hébergeurs les plus respectueux du standard</li>
+      <li><strong>Code public</strong> : si tu doutes, va vérifier sur <a href="https://github.com/nasdaslebg793-pixel/calviro" target="_blank" rel="noopener">GitHub</a>. Toute promesse non tenue serait visible.</li>
+    </ul>
+    <p>Pour les détails légaux : <a href="confidentialite.html">politique de confidentialité</a>, <a href="mentions-legales.html">mentions légales</a>, <a href="cgu.html">CGU</a>.</p>
+
+    <h2>📅 Roadmap</h2>
+    <p>Ce qu'on aimerait ajouter dans les prochains mois :</p>
+    <ul>
+      <li>Plus d'articles de blog (1 par mois) pour approfondir les sujets</li>
+      <li>Version anglaise du site (gros chantier mais énorme potentiel)</li>
+      <li>Plus de calculateurs sur demande (envoie-nous tes idées)</li>
+      <li>Améliorer l'accessibilité (lecteurs d'écran, navigation clavier)</li>
+      <li>Mode "compact" pour ceux qui préfèrent un affichage dense</li>
+    </ul>
+
+    <h2>💬 Contact</h2>
+    <p>Une question, une suggestion, un bug à signaler ? Envoie-nous un email à <strong>calviro.contact@gmail.com</strong>. On répond en général sous 48h.</p>
+    <p>Si tu trouves Calviro utile, le meilleur moyen de nous remercier c'est de <strong>partager le site</strong> avec tes amis, collègues, ou sur tes réseaux. C'est ce qui nous permet de continuer à proposer un service gratuit.</p>
+
+    <h2>🙏 Merci</h2>
+    <p>Merci d'utiliser Calviro. Vraiment. À l'ère où chaque clic est monétisé, partager des outils gratuits et privés n'est plus si courant. Tant qu'il y a des gens qui apprécient ce qu'on fait ici, on continuera de l'améliorer.</p>
+  </article>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · 
+    <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions légales</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · 
+    Calviro 2026
+  </footer>
+</div>
+
+<script>
+window.toggleTheme=function(){var c=document.documentElement.getAttribute('data-theme');if(c==='dark'){document.documentElement.removeAttribute('data-theme');localStorage.setItem('calviro-theme','light');}else{document.documentElement.setAttribute('data-theme','dark');localStorage.setItem('calviro-theme','dark');}};
+</script>
+<script src="v3.js" defer></script>
+</body>
+</html>

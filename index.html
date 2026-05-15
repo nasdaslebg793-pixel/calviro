@@ -315,6 +315,38 @@
     <p>Calviro est gratuit parce que tous les calculs sont faits localement dans ton navigateur — aucun serveur, aucune base de données. Pas de paywall, pas d'inscription, pas d'email demandé. Tu utilises ce que tu veux, autant que tu veux.</p>
   </section>
 
+  <section class="faq-section">
+    <h2>Questions fréquentes</h2>
+    <div class="faq-item">
+      <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">Calviro est-il vraiment gratuit ?</div>
+      <div class="faq-answer">Oui, totalement. Aucune inscription, aucun paiement, aucune limite d'utilisation. Tous les 51 calculateurs sont accessibles sans condition. Le site est entièrement développé en JavaScript côté navigateur, donc il n'y a pas de coût d'hébergement par utilisateur.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">Mes données sont-elles enregistrées ?</div>
+      <div class="faq-answer">Non. Tous les calculs sont effectués localement dans ton navigateur, aucune information n'est envoyée à nos serveurs. Tes préférences (thème, favoris, historique) sont stockées uniquement sur ton appareil via localStorage.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">Les résultats sont-ils précis ?</div>
+      <div class="faq-answer">Les calculateurs utilisent les formules officielles et les barèmes en vigueur en France. Cependant, ils sont fournis à titre indicatif. Pour des décisions importantes (achat immobilier, départ retraite, etc.), nous recommandons toujours de vérifier auprès d'un professionnel ou de l'administration compétente.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">Puis-je utiliser Calviro hors-ligne ?</div>
+      <div class="faq-answer">Oui ! Calviro est une PWA (Progressive Web App). Tu peux l'installer sur ton téléphone (icône sur l'écran d'accueil) et l'utiliser même sans connexion internet pour la plupart des outils.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">Comment installer Calviro sur mon téléphone ?</div>
+      <div class="faq-answer">Sur iPhone : ouvre Calviro dans Safari, clique sur le bouton "Partager" puis "Ajouter à l'écran d'accueil". Sur Android : ouvre dans Chrome, le menu te proposera "Ajouter à l'écran d'accueil" ou tu peux utiliser le menu (⋮) "Installer l'application".</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">Pourquoi Calviro existe ?</div>
+      <div class="faq-answer">Parce que les calculateurs en ligne sont souvent surchargés de pubs, demandent une inscription, ou cachent les fonctionnalités utiles derrière un abonnement. Calviro propose l'inverse : tout est gratuit, sans pub, sans tracking, et avec un design propre. <a href="apropos.html" style="text-decoration:underline;">En savoir plus</a></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">Comment proposer un nouvel outil ?</div>
+      <div class="faq-answer">On adore les suggestions ! Envoie-nous ton idée par email à calviro.contact@gmail.com avec une description et un exemple de cas d'usage. Si l'outil est utile et techniquement faisable côté navigateur, on l'ajoutera au site.</div>
+    </div>
+  </section>
+
   <footer class="footer">
     <a href="index.html">Accueil</a> · 
     <a href="blog/">Blog</a> · 
@@ -399,5 +431,6 @@ function clearHistory() {
 renderHistory();
 </script>
 
+<script src="v3.js" defer></script>
 </body>
 </html>

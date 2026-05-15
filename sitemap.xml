@@ -211,6 +211,11 @@
     <priority>0.95</priority>
   </url>
   <url>
+    <loc>https://calviro.vercel.app/apropos.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://calviro.vercel.app/credit-auto.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>

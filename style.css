@@ -992,3 +992,345 @@ html[data-theme="dark"] .theme-toggle .moon-icon { display: none; }
     padding-right: 20px;
   }
 }
+
+/* ===========================
+   V3 : OUTILS LIÉS
+   =========================== */
+
+.related-tools {
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+.related-tools h3 {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.related-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 13px;
+  transition: all var(--transition);
+}
+
+.related-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.related-card .ico {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+/* ===========================
+   V3 : BOUTONS DE PARTAGE
+   =========================== */
+
+.share-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  flex-wrap: wrap;
+}
+
+.share-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-right: 4px;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  text-decoration: none;
+  color: var(--text);
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: inherit;
+}
+
+.share-btn:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+}
+
+/* ===========================
+   V3 : BOUTON "RETOUR HAUT"
+   =========================== */
+
+.top-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--bg);
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all var(--transition);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.top-btn.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.top-btn:hover {
+  transform: scale(1.05);
+}
+
+/* ===========================
+   V3 : BANNIÈRE COOKIES
+   =========================== */
+
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 20px;
+  display: none;
+  z-index: 999;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
+
+.cookie-banner.visible { display: block; }
+
+.cookie-content {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cookie-text {
+  flex: 1;
+  font-size: 14px;
+  color: var(--text);
+  min-width: 250px;
+}
+
+.cookie-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.cookie-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  transition: all var(--transition);
+  font-family: inherit;
+}
+
+.cookie-btn:hover {
+  border-color: var(--border-strong);
+}
+
+.cookie-btn.primary {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+/* ===========================
+   V3 : FAQ
+   =========================== */
+
+.faq-section {
+  margin-top: 48px;
+  margin-bottom: 32px;
+}
+
+.faq-section h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.faq-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.faq-question {
+  padding: 16px 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--text);
+  transition: background var(--transition);
+}
+
+.faq-question:hover {
+  background: var(--surface-2);
+}
+
+.faq-question::after {
+  content: '+';
+  font-size: 24px;
+  color: var(--text-muted);
+  transition: transform var(--transition);
+  font-weight: 300;
+}
+
+.faq-item.open .faq-question::after {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  padding: 0 20px;
+  max-height: 0;
+  overflow: hidden;
+  transition: all var(--transition);
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.faq-item.open .faq-answer {
+  padding: 0 20px 20px;
+  max-height: 500px;
+}
+
+/* ===========================
+   V3 : FAVORIS
+   =========================== */
+
+.fav-star {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  opacity: 0.3;
+  transition: all var(--transition);
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--text-muted);
+}
+
+.fav-star:hover {
+  opacity: 1;
+  background: var(--surface-2);
+}
+
+.fav-star.active {
+  opacity: 1;
+  color: #f59e0b;
+}
+
+.tool-card { position: relative; }
+
+/* ===========================
+   V3 : ANIMATIONS
+   =========================== */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-on-scroll {
+  opacity: 0;
+}
+
+.animate-on-scroll.visible {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Smooth scroll global */
+html { scroll-behavior: smooth; }
+
+/* ===========================
+   V3 : RESPONSIVE
+   =========================== */
+
+@media (max-width: 600px) {
+  .top-btn {
+    bottom: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .share-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .cookie-content {
+    flex-direction: column;
+    text-align: center;
+  }
+}
