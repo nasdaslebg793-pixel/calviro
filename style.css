@@ -1395,14 +1395,10 @@ html[data-theme="dark"] .tab-pill.active {
   color: var(--bg);
 }
 
-/* Section cachée par défaut sauf "all" */
+/* CATEGORY VISIBILITY - 100% CSS basé sur body[data-cat] */
 .category-section {
-  display: none;
-  animation: fadeInSection 0.3s ease-out;
-}
-
-.category-section.visible {
   display: block;
+  animation: fadeInSection 0.3s ease-out;
 }
 
 @keyframes fadeInSection {
@@ -1410,17 +1406,20 @@ html[data-theme="dark"] .tab-pill.active {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Mode "All" : afficher tout sans header de catégorie */
-body[data-cat="all"] .category-section {
+/* Mode "Tous" : tout visible (par défaut) */
+body[data-cat="all"] .category-section,
+body:not([data-cat]) .category-section {
   display: block;
 }
 
-body[data-cat="all"] .category-header {
-  display: flex;
-}
-
-/* Hide category headers when filtering (clean look) */
-.category-section.alone .category-header {
+/* Mode filtré : cache toutes les sections sauf celle qui correspond */
+body[data-cat="immobilier"] .category-section:not(#immobilier),
+body[data-cat="finance"] .category-section:not(#finance),
+body[data-cat="travail"] .category-section:not(#travail),
+body[data-cat="sante"] .category-section:not(#sante),
+body[data-cat="temps"] .category-section:not(#temps),
+body[data-cat="quotidien"] .category-section:not(#quotidien),
+body[data-cat="etudes"] .category-section:not(#etudes) {
   display: none;
 }
 
