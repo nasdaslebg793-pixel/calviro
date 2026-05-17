@@ -211,6 +211,31 @@
     <priority>0.95</priority>
   </url>
   <url>
+    <loc>https://calviro.vercel.app/cout-ia.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://calviro.vercel.app/taxe-vinted.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://calviro.vercel.app/frais-paypal.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://calviro.vercel.app/conso-clim.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
+    <loc>https://calviro.vercel.app/recharge-ve.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
     <loc>https://calviro.vercel.app/apropos.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

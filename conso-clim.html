@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculateur consommation clim 2026 : coût électricité — Calviro</title>
+<meta name="description" content="Calcule la consommation et le coût de ta climatisation. Presets par type de clim, scénarios canicule, comparaisons alternatives.">
+<meta name="keywords" content="consommation climatisation, coût clim, prix climatiseur électricité, conso clim kwh">
+<meta property="og:title" content="Calculateur consommation clim 2026">
+<link rel="canonical" href="https://calviro.vercel.app/conso-clim.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+<script>(function(){var t=localStorage.getItem('calviro-theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.setAttribute('data-theme','dark');}})();</script>
+<style>
+  .preset-group { margin-bottom: 16px; }
+  .preset-label { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+  .preset-buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+  .preset-btn { 
+    padding: 6px 12px; 
+    background: var(--surface); 
+    border: 1px solid var(--border); 
+    border-radius: 8px; 
+    font-size: 12px; 
+    cursor: pointer; 
+    color: var(--text);
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .preset-btn:hover { border-color: var(--text); }
+  .preset-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+</style>
+</head>
+<body>
+<div class="container">
+  <nav class="nav">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="index.html" class="back">← Retour</a>
+      <button class="theme-toggle" onclick="toggleTheme()" style="background:var(--surface);border:1px solid var(--border);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;display:inline-flex;align-items:center;justify-content:center;"><span class="moon-icon">🌙</span><span class="sun-icon">☀️</span></button>
+    </div>
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>❄️ Coût de la clim</h1>
+      <p>Combien va te coûter ta climatisation cet été ?</p>
+    </div>
+
+    <div class="preset-group">
+      <div class="preset-label">⚡ Choisis ton type de clim (presets) :</div>
+      <div class="preset-buttons">
+        <button class="preset-btn clim-preset-btn" data-key="mobile-petite" onclick="climPreset('mobile-petite')">Mobile petit (800W)</button>
+        <button class="preset-btn clim-preset-btn" data-key="mobile-grande" onclick="climPreset('mobile-grande')">Mobile grand (1500W)</button>
+        <button class="preset-btn clim-preset-btn" data-key="split-7000" onclick="climPreset('split-7000')">Split 7k BTU (650W)</button>
+        <button class="preset-btn clim-preset-btn" data-key="split-9000" onclick="climPreset('split-9000')">Split 9k BTU (850W)</button>
+        <button class="preset-btn clim-preset-btn" data-key="split-12000" onclick="climPreset('split-12000')">Split 12k BTU (1150W)</button>
+        <button class="preset-btn clim-preset-btn" data-key="split-18000" onclick="climPreset('split-18000')">Split 18k BTU (1700W)</button>
+        <button class="preset-btn clim-preset-btn" data-key="split-24000" onclick="climPreset('split-24000')">Split 24k BTU (2300W)</button>
+        <button class="preset-btn clim-preset-btn" data-key="multi-split" onclick="climPreset('multi-split')">Multi-split (3500W)</button>
+      </div>
+    </div>
+
+    <div class="preset-group">
+      <div class="preset-label">🌡️ Scénario d'utilisation :</div>
+      <div class="preset-buttons">
+        <button class="preset-btn clim-scenario-btn" data-key="canicule" onclick="climScenario('canicule')">Canicule (12h × 30j)</button>
+        <button class="preset-btn clim-scenario-btn" data-key="standard-ete" onclick="climScenario('standard-ete')">Été standard (6h × 60j)</button>
+        <button class="preset-btn clim-scenario-btn" data-key="occasionnel" onclick="climScenario('occasionnel')">Occasionnel (4h × 20j)</button>
+        <button class="preset-btn clim-scenario-btn" data-key="bureau-travail" onclick="climScenario('bureau-travail')">Bureau (8h × 22j)</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="clim-puissance">Puissance électrique (W)</label>
+      <input type="number" id="clim-puissance" placeholder="1150" min="100" max="10000" value="1150">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="clim-heures">Heures par jour</label>
+        <input type="number" id="clim-heures" placeholder="6" min="0.5" max="24" step="0.5" value="6">
+      </div>
+      <div class="field">
+        <label for="clim-jours">Nombre de jours</label>
+        <input type="number" id="clim-jours" placeholder="60" min="1" max="365" value="60">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="clim-prix-kwh">Prix du kWh (€)</label>
+        <input type="number" id="clim-prix-kwh" placeholder="0.25" min="0.05" max="1" step="0.01" value="0.25">
+      </div>
+      <div class="field">
+        <label for="clim-temp">Température extérieure moy. (°C)</label>
+        <input type="number" id="clim-temp" placeholder="30" min="20" max="45" value="30">
+      </div>
+    </div>
+
+    <button class="btn" onclick="calcConsoClim()">Calculer le coût</button>
+
+    <div class="result" id="clim-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Combien consomme une climatisation ?</h2>
+    <p>La consommation d'une clim dépend de sa puissance et de sa durée d'utilisation. La règle simple : <strong>Puissance (W) × Heures = Wh</strong>. Diviser par 1 000 donne les kWh, à multiplier par le prix du kWh (~0,25 € en 2026).</p>
+
+    <h2>Conso typique selon le type</h2>
+    <table>
+      <thead><tr><th>Type de clim</th><th>Puissance</th><th>Coût 8h/jour pendant 30j</th></tr></thead>
+      <tbody>
+        <tr><td>Clim mobile 7 000 BTU</td><td>800 W</td><td>~48 €</td></tr>
+        <tr><td>Split mural 9 000 BTU</td><td>850 W</td><td>~51 €</td></tr>
+        <tr><td>Split mural 12 000 BTU (salon)</td><td>1 150 W</td><td>~69 €</td></tr>
+        <tr><td>Split mural 18 000 BTU</td><td>1 700 W</td><td>~102 €</td></tr>
+        <tr><td>Multi-split (maison)</td><td>3 500 W</td><td>~210 €</td></tr>
+        <tr><td>Centrale (immeuble/bureau)</td><td>5 000 W</td><td>~300 €</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Comment réduire sa facture de clim ?</h2>
+
+    <h3>1. La règle des 7°C (ADEME)</h3>
+    <p>L'écart entre intérieur et extérieur ne devrait jamais dépasser <strong>7°C</strong>. S'il fait 35°C dehors, mets ta clim à 28°C, pas à 22°C. Tu économises 30-40% de conso pour un confort équivalent.</p>
+
+    <h3>2. Chaque degré compte</h3>
+    <p>Selon l'ADEME, <strong>chaque degré supplémentaire en chauffage ou clim coûte 7%</strong>. Passer de 22°C à 26°C peut diviser ta facture par 1,4.</p>
+
+    <h3>3. Vraies astuces (gratuites)</h3>
+    <ul>
+      <li><strong>Volets fermés</strong> dès le matin (gratuit, -30%)</li>
+      <li><strong>Ventilation nocturne</strong> (ouvrir les fenêtres la nuit quand il fait frais)</li>
+      <li><strong>Plantes et arbres</strong> côté soleil (ombre naturelle)</li>
+      <li><strong>Films solaires</strong> sur vitres (~20 €/m², -60% chaleur entrante)</li>
+      <li><strong>Ventilateur plafond</strong> (50W) en complément (+3°C de confort ressenti)</li>
+    </ul>
+
+    <h3>4. Quand acheter du matériel performant</h3>
+    <p>Un climatiseur classe <strong>A+++</strong> coûte 20% de plus à l'achat mais consomme 30% de moins. Rentabilisé en 2-3 ans selon usage. Vérifie le <strong>SEER (Seasonal Energy Efficiency Ratio)</strong> : SEER 6 = bon, SEER 8+ = excellent.</p>
+
+    <h3>5. Climatisation réversible : 2 en 1</h3>
+    <p>Une PAC air-air (clim réversible) sert aussi de <strong>chauffage</strong> en hiver. Coefficient de performance (COP) souvent de 3-4 : pour 1 kWh consommé, tu obtiens 3-4 kWh de chaleur. Beaucoup plus efficace qu'un radiateur électrique classique.</p>
+
+    <h2>Calcul du retour sur investissement</h2>
+    <p>Exemple : tu hésites entre une clim à 800 € classe A et une à 1 200 € classe A+++. La A+++ consomme 30% de moins. Si tu paies 100 €/an de clim, tu économises 30 €/an. <strong>Retour sur investissement : 13 ans</strong>. Pas terrible pour la clim seule. Mais si tu l'utilises aussi en chauffage (où tu paies 800 €/an), le ROI tombe à <strong>1,5 ans</strong>. Choix évident.</p>
+
+    <h2>Comparaison avec autres modes de rafraîchissement</h2>
+    <table>
+      <thead><tr><th>Méthode</th><th>Conso</th><th>Coût 1 mois</th><th>Efficacité</th></tr></thead>
+      <tbody>
+        <tr><td>Climatisation 1 200 W</td><td>240 kWh</td><td>60 €</td><td>★★★★★</td></tr>
+        <tr><td>Ventilateur sur pied 50 W</td><td>10 kWh</td><td>2,50 €</td><td>★★ (juste brassage)</td></tr>
+        <tr><td>Rafraîchisseur d'air 80 W</td><td>16 kWh</td><td>4 €</td><td>★★★ (-3°C max)</td></tr>
+        <tr><td>Volets + ventilation nuit</td><td>0 kWh</td><td>0 €</td><td>★★ (-5°C max)</td></tr>
+      </tbody>
+    </table>
+    <p>Si tu peux te contenter d'un brassage d'air à -3°C, le rafraîchisseur ou le ventilateur sont 20x moins chers. Pour vraiment refroidir, la clim reste indispensable.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · Calviro 2026
+  </footer>
+</div>
+<script>window.toggleTheme=function(){var c=document.documentElement.getAttribute('data-theme');if(c==='dark'){document.documentElement.removeAttribute('data-theme');localStorage.setItem('calviro-theme','light');}else{document.documentElement.setAttribute('data-theme','dark');localStorage.setItem('calviro-theme','dark');}};</script>
+<script src="script.js"></script>
+<script src="v3.js" defer></script>
+</body>
+</html>

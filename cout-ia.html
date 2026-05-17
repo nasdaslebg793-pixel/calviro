@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Combien coûte ChatGPT par mois ? Comparateur d'abonnements IA — Calviro</title>
+<meta name="description" content="Calcule le coût mensuel de ChatGPT, Claude, Gemini, Perplexity. Compare les plans Free, Plus, Pro pour particuliers et entreprises.">
+<meta name="keywords" content="prix chatgpt, coût claude, abonnement IA, chatgpt plus prix, claude pro tarif, gemini advanced prix">
+<meta property="og:title" content="Combien coûte ChatGPT par mois ?">
+<link rel="canonical" href="https://calviro.vercel.app/cout-ia.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+<script>(function(){var t=localStorage.getItem('calviro-theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.setAttribute('data-theme','dark');}})();</script>
+</head>
+<body>
+<div class="container">
+  <nav class="nav">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="index.html" class="back">← Retour</a>
+      <button class="theme-toggle" onclick="toggleTheme()" style="background:var(--surface);border:1px solid var(--border);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;display:inline-flex;align-items:center;justify-content:center;"><span class="moon-icon">🌙</span><span class="sun-icon">☀️</span></button>
+    </div>
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>🤖 Coût IA mensuel</h1>
+      <p>ChatGPT, Claude, Gemini, Perplexity : prix réels.</p>
+    </div>
+
+    <div class="field">
+      <label for="ia-plan">Plan d'abonnement</label>
+      <select id="ia-plan">
+        <optgroup label="ChatGPT (OpenAI)">
+          <option value="chatgpt-free">ChatGPT Free — Gratuit</option>
+          <option value="chatgpt-plus" selected>ChatGPT Plus — 20 €/mois</option>
+          <option value="chatgpt-pro">ChatGPT Pro — 200 €/mois</option>
+          <option value="chatgpt-team">ChatGPT Team — 25 €/user/mois</option>
+        </optgroup>
+        <optgroup label="Claude (Anthropic)">
+          <option value="claude-free">Claude Free — Gratuit</option>
+          <option value="claude-pro">Claude Pro — 20 €/mois</option>
+          <option value="claude-max-5">Claude Max 5x — 100 €/mois</option>
+          <option value="claude-max-20">Claude Max 20x — 200 €/mois</option>
+        </optgroup>
+        <optgroup label="Autres">
+          <option value="gemini-free">Gemini Free — Gratuit</option>
+          <option value="gemini-advanced">Gemini Advanced — 21,99 €/mois</option>
+          <option value="perplexity-pro">Perplexity Pro — 20 €/mois</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="ia-utilisateurs">Nombre d'utilisateurs</label>
+        <input type="number" id="ia-utilisateurs" min="1" max="100" value="1">
+      </div>
+      <div class="field">
+        <label for="ia-duree">Durée (mois)</label>
+        <input type="number" id="ia-duree" min="1" max="60" value="12">
+      </div>
+    </div>
+
+    <button class="btn" onclick="calcCoutIA()">Calculer le coût</button>
+
+    <div class="result" id="ia-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Combien coûte vraiment ChatGPT ?</h2>
+    <p>ChatGPT propose plusieurs plans selon tes besoins. Voici les tarifs en vigueur en 2026 (en France, TVA incluse) :</p>
+    
+    <h3>ChatGPT — OpenAI</h3>
+    <ul>
+      <li><strong>Free</strong> : gratuit, accès limité à GPT-4o-mini, quelques messages GPT-4o/jour</li>
+      <li><strong>Plus</strong> : 20 €/mois (24 USD), accès illimité à GPT-4o, mode vocal, image, DALL-E</li>
+      <li><strong>Pro</strong> : 200 €/mois (228 USD), accès illimité à o1 et o1-pro, raisonnement avancé</li>
+      <li><strong>Team</strong> : 25 €/user/mois (30 USD), espace de travail partagé, données protégées</li>
+      <li><strong>Enterprise</strong> : sur devis, SLA, contrôle avancé</li>
+    </ul>
+
+    <h3>Claude — Anthropic</h3>
+    <ul>
+      <li><strong>Free</strong> : accès limité à Claude Sonnet</li>
+      <li><strong>Pro</strong> : 20 €/mois, Sonnet et Opus illimités, projets</li>
+      <li><strong>Max 5x</strong> : 100 €/mois, 5x les limites de Pro</li>
+      <li><strong>Max 20x</strong> : 200 €/mois, 20x les limites de Pro</li>
+      <li><strong>Team / Enterprise</strong> : sur devis</li>
+    </ul>
+
+    <h3>Gemini — Google</h3>
+    <ul>
+      <li><strong>Free</strong> : Gemini 2.0 avec limites</li>
+      <li><strong>Advanced</strong> : 21,99 €/mois, Gemini 2.5 Pro, 2 To de stockage Google</li>
+    </ul>
+
+    <h2>Quel plan choisir ?</h2>
+    <table>
+      <thead><tr><th>Profil</th><th>Plan recommandé</th><th>Pourquoi</th></tr></thead>
+      <tbody>
+        <tr><td>Découverte</td><td>Plan Free</td><td>Suffisant pour tester</td></tr>
+        <tr><td>Usage régulier perso</td><td>Plus / Pro 20€</td><td>Le meilleur rapport qualité/prix</td></tr>
+        <tr><td>Codeur intensif</td><td>Claude Max ou Pro</td><td>Claude est le plus fort en code</td></tr>
+        <tr><td>Recherche / analyses</td><td>Perplexity Pro ou Gemini Advanced</td><td>Accès web temps réel</td></tr>
+        <tr><td>Petite entreprise</td><td>Team ChatGPT (5+ users)</td><td>Conformité + partage</td></tr>
+        <tr><td>Grande entreprise</td><td>Enterprise</td><td>SLA, sécurité, audit</td></tr>
+      </tbody>
+    </table>
+
+    <h2>API : moins cher pour les développeurs</h2>
+    <p>Si tu es développeur et que tu utilises l'IA via API plutôt que par chat, c'est <strong>beaucoup moins cher</strong>. Tu payes à la token consommée :</p>
+    <ul>
+      <li><strong>GPT-4o</strong> : ~5$/M tokens input, 15$/M tokens output</li>
+      <li><strong>Claude Sonnet</strong> : ~3$/M input, 15$/M output</li>
+      <li><strong>Gemini 2.5 Pro</strong> : ~1,25$/M input, 5$/M output</li>
+    </ul>
+    <p>1 token ≈ 0,75 mot. Une page A4 ≈ 500-700 tokens. Un usage modéré (50k tokens/jour) coûte 5-15 €/mois en API.</p>
+
+    <h2>Astuces pour économiser</h2>
+    <ul>
+      <li><strong>Annuel</strong> : certains plans ont 15-20% de réduction sur abonnement annuel</li>
+      <li><strong>Étudiants</strong> : OpenAI et Anthropic proposent parfois des programmes éducation</li>
+      <li><strong>Multi-tools</strong> : combiner Free + Claude Pro 20€ couvre 80% des besoins</li>
+      <li><strong>Tester avant</strong> : commence en Free, upgrade si tu atteins les limites souvent</li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · Calviro 2026
+  </footer>
+</div>
+<script>window.toggleTheme=function(){var c=document.documentElement.getAttribute('data-theme');if(c==='dark'){document.documentElement.removeAttribute('data-theme');localStorage.setItem('calviro-theme','light');}else{document.documentElement.setAttribute('data-theme','dark');localStorage.setItem('calviro-theme','dark');}};</script>
+<script src="script.js"></script>
+<script src="v3.js" defer></script>
+</body>
+</html>

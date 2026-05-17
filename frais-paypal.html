@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculateur frais PayPal 2026 : commissions et montant net — Calviro</title>
+<meta name="description" content="Calcule les frais PayPal selon le type de transaction (perso, commercial, international). Connais le montant net que tu recevras vraiment.">
+<meta name="keywords" content="frais paypal, commission paypal, paypal calculateur, frais paypal international, paypal commercial">
+<meta property="og:title" content="Calculateur frais PayPal 2026">
+<link rel="canonical" href="https://calviro.vercel.app/frais-paypal.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18181b">
+<link rel="stylesheet" href="style.css">
+<script>(function(){var t=localStorage.getItem('calviro-theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.setAttribute('data-theme','dark');}})();</script>
+</head>
+<body>
+<div class="container">
+  <nav class="nav">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="index.html" class="back">← Retour</a>
+      <button class="theme-toggle" onclick="toggleTheme()" style="background:var(--surface);border:1px solid var(--border);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;display:inline-flex;align-items:center;justify-content:center;"><span class="moon-icon">🌙</span><span class="sun-icon">☀️</span></button>
+    </div>
+    <a href="index.html" class="brand"><span class="brand-dot"></span>Calviro</a>
+  </nav>
+
+  <div class="tool">
+    <div class="tool-header">
+      <h1>💳 Frais PayPal</h1>
+      <p>Commissions et montant net réellement reçu.</p>
+    </div>
+
+    <div class="field">
+      <label for="pp-montant">Montant de la transaction (€)</label>
+      <input type="number" id="pp-montant" placeholder="100" min="0" step="0.01">
+    </div>
+
+    <div class="field">
+      <label for="pp-type">Type de transaction</label>
+      <select id="pp-type">
+        <option value="perso">Envoi entre amis/famille (gratuit en EUR)</option>
+        <option value="commercial" selected>Paiement commercial (Vinted, Etsy, etc.)</option>
+        <option value="bouton">Bouton PayPal sur site web</option>
+        <option value="micropaiement">Micropaiement (&lt; 10 €)</option>
+        <option value="carte-achat">PayPal Carte d'achat</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="pp-international">Transaction internationale ?</label>
+      <select id="pp-international">
+        <option value="non" selected>Non (zone EUR)</option>
+        <option value="oui">Oui (conversion devise + frais)</option>
+      </select>
+    </div>
+
+    <button class="btn" onclick="calcFraisPaypal()">Calculer les frais</button>
+
+    <div class="result" id="pp-result"></div>
+  </div>
+
+  <section class="seo-content">
+    <h2>Tarifs PayPal en France (2026)</h2>
+    <p>PayPal est gratuit pour beaucoup d'usages perso, mais prend des commissions dès que c'est commercial. Voici les tarifs officiels :</p>
+
+    <table>
+      <thead><tr><th>Type</th><th>Frais</th><th>Quand ?</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Envoi entre amis/famille</strong></td><td><strong>Gratuit</strong> (EUR)</td><td>Solde PayPal vers proche en EUR</td></tr>
+        <tr><td>Paiement commercial</td><td><strong>2,9% + 0,35 €</strong></td><td>Achat boutique, Vinted, etc.</td></tr>
+        <tr><td>Bouton PayPal site web</td><td><strong>3,4% + 0,35 €</strong></td><td>Intégration commerçant</td></tr>
+        <tr><td>Micropaiement (&lt; 10 €)</td><td><strong>5% + 0,05 €</strong></td><td>Tarif spécial petits montants</td></tr>
+        <tr><td>PayPal Carte d'achat</td><td><strong>1,6% + 0,10 €</strong></td><td>Plus de 12 000 €/mois</td></tr>
+        <tr><td>International (conversion)</td><td><strong>+1,5% de change</strong></td><td>En plus des autres frais</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Exemples concrets</h2>
+    <ul>
+      <li><strong>Tu envoies 100 € à un ami en France</strong> → 0 € de frais (gratuit)</li>
+      <li><strong>Tu vends sur Vinted 50 €</strong> → ~1,80 € de frais → tu reçois 48,20 €</li>
+      <li><strong>Tu factures 1 000 € à un client français</strong> → ~29,35 € de frais → tu reçois 970,65 €</li>
+      <li><strong>Tu reçois 100 USD des États-Unis</strong> → conversion + frais commercial → tu reçois environ 87 € net</li>
+    </ul>
+
+    <h2>Astuces pour éviter les frais</h2>
+
+    <h3>1. Bien choisir le type d'envoi</h3>
+    <p>Quand quelqu'un t'envoie de l'argent, demande-lui de choisir <strong>"Envoi à un proche"</strong> (gratuit) plutôt que "Paiement de biens et services" (avec frais). Attention : "envoi à un proche" ne donne pas de <strong>protection acheteur</strong>.</p>
+
+    <h3>2. Alternatives moins chères pour les pros</h3>
+    <table>
+      <thead><tr><th>Service</th><th>Frais (commerce)</th><th>Avantages</th></tr></thead>
+      <tbody>
+        <tr><td>PayPal</td><td>2,9% + 0,35 €</td><td>Confiance, universel</td></tr>
+        <tr><td>Stripe</td><td>1,5% + 0,25 € (FR)</td><td>Moins cher, APIs propres</td></tr>
+        <tr><td>Wise Business</td><td>~0,4% (transfert)</td><td>Excellent pour international</td></tr>
+        <tr><td>Revolut Business</td><td>Gratuit (forfait)</td><td>Comptes multi-devises</td></tr>
+        <tr><td>Lydia / Lyf Pay</td><td>Gratuit en EUR</td><td>Pour particuliers</td></tr>
+      </tbody>
+    </table>
+
+    <h3>3. Pour les freelances</h3>
+    <p>Si tu factures à l'international, PayPal te coûte facilement <strong>3-5% du montant</strong>. Sur 5 000 €/mois, ça fait 150-250 €/mois perdus. <strong>Wise Business</strong> ou <strong>Revolut</strong> sont 5-10x moins chers pour ce volume.</p>
+
+    <h2>Le piège du taux de change PayPal</h2>
+    <p>PayPal facture des frais de 1,5% sur la conversion de devise EN PLUS du taux interbancaire défavorable (qu'ils retiennent à leur profit). En réalité, le coût total d'une conversion est plus proche de <strong>3-4% du montant</strong>.</p>
+    <p>Astuce : <strong>refuse</strong> la conversion par PayPal et laisse ta banque convertir (souvent meilleur taux).</p>
+
+    <h2>FAQ</h2>
+
+    <h3>Les frais sont déduits du montant reçu ou s'ajoutent ?</h3>
+    <p>Les frais sont <strong>déduits du montant reçu</strong>. Si quelqu'un t'envoie 100 €, tu reçois ~96,75 €.</p>
+
+    <h3>Le client peut-il payer les frais ?</h3>
+    <p>Tu peux augmenter ton prix pour les couvrir, mais tu ne peux pas faire payer les frais directement au client (interdit par les CGV PayPal). Sauf en USD avec certains pays.</p>
+
+    <h3>Y a-t-il un seuil pour passer "pro" chez PayPal ?</h3>
+    <p>Pas de seuil officiel, mais au-delà de 8 000 €/an reçu, PayPal peut te demander des justificatifs et te requalifier en compte commercial.</p>
+
+    <h3>PayPal facture-t-il pour retirer l'argent ?</h3>
+    <p>Vers ta banque française en EUR : <strong>gratuit</strong>. Vers ta banque étrangère : 1-2 €. Carte PayPal physique : 1 € de retrait.</p>
+  </section>
+
+  <footer class="footer">
+    <a href="index.html">Accueil</a> · <a href="blog/">Blog</a> · 
+    <a href="mentions-legales.html">Mentions</a> · 
+    <a href="confidentialite.html">Confidentialité</a> · 
+    <a href="cgu.html">CGU</a> · Calviro 2026
+  </footer>
+</div>
+<script>window.toggleTheme=function(){var c=document.documentElement.getAttribute('data-theme');if(c==='dark'){document.documentElement.removeAttribute('data-theme');localStorage.setItem('calviro-theme','light');}else{document.documentElement.setAttribute('data-theme','dark');localStorage.setItem('calviro-theme','dark');}};</script>
+<script src="script.js"></script>
+<script src="v3.js" defer></script>
+</body>
+</html>

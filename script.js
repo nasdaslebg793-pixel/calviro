@@ -3122,3 +3122,448 @@ function cvpHtmlVersBlob(htmlContent) {
     });
   });
 }
+
+// ========== 52. CHATGPT / IA COÛT MENSUEL ==========
+
+const IA_PLANS = {
+  'chatgpt-free': { name: 'ChatGPT Free', cost: 0, desc: 'Accès limité GPT-4o-mini' },
+  'chatgpt-plus': { name: 'ChatGPT Plus', cost: 20, desc: 'GPT-4o, voix, image, DALL-E' },
+  'chatgpt-pro': { name: 'ChatGPT Pro', cost: 200, desc: 'O1 illimité, accès prioritaire' },
+  'chatgpt-team': { name: 'ChatGPT Team', cost: 25, desc: 'Par utilisateur, espace partagé' },
+  'claude-free': { name: 'Claude Free', cost: 0, desc: 'Accès limité Sonnet' },
+  'claude-pro': { name: 'Claude Pro', cost: 20, desc: 'Sonnet + Opus illimité' },
+  'claude-max-5': { name: 'Claude Max 5x', cost: 100, desc: '5x les limites de Pro' },
+  'claude-max-20': { name: 'Claude Max 20x', cost: 200, desc: '20x les limites de Pro' },
+  'gemini-free': { name: 'Gemini Free', cost: 0, desc: 'Accès Gemini 2.0 limité' },
+  'gemini-advanced': { name: 'Gemini Advanced', cost: 21.99, desc: 'Gemini 2.5 Pro, 2 To stockage' },
+  'perplexity-pro': { name: 'Perplexity Pro', cost: 20, desc: 'Recherche IA illimitée' }
+};
+
+function calcCoutIA() {
+  const plan = $('ia-plan').value;
+  const utilisateurs = parseInt($('ia-utilisateurs').value, 10) || 1;
+  const duree = parseInt($('ia-duree').value, 10) || 1;
+  
+  if (!plan || !IA_PLANS[plan]) {
+    showResult('ia-result', '<div class="note">⚠ Sélectionne un plan IA.</div>');
+    return;
+  }
+  
+  const planInfo = IA_PLANS[plan];
+  const coutMensuel = planInfo.cost * utilisateurs;
+  const coutTotal = coutMensuel * duree;
+  const coutAnnuel = coutMensuel * 12;
+  
+  // Comparaison avec d'autres plans
+  const comparaisons = Object.entries(IA_PLANS)
+    .filter(([key, info]) => key !== plan && info.cost > 0)
+    .map(([key, info]) => `<div class="result-detail-row"><span>${info.name}</span><strong>${info.cost * utilisateurs} €/mois</strong></div>`)
+    .slice(0, 5)
+    .join('');
+  
+  showResult('ia-result', `
+    <div class="result-label">Coût ${planInfo.name}</div>
+    <div class="result-value">${formatEur(coutMensuel)} <span class="unit">/ mois</span></div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Plan choisi</span><strong>${planInfo.name}</strong></div>
+      <div class="result-detail-row"><span>Description</span><strong>${planInfo.desc}</strong></div>
+      <div class="result-detail-row"><span>Utilisateurs</span><strong>${utilisateurs}</strong></div>
+      <div class="result-detail-row"><span>Coût mensuel</span><strong>${formatEur(coutMensuel)}</strong></div>
+      <div class="result-detail-row"><span>Coût sur ${duree} mois</span><strong>${formatEur(coutTotal)}</strong></div>
+      <div class="result-detail-row"><span>Coût annuel</span><strong>${formatEur(coutAnnuel)}</strong></div>
+    </div>
+    ${comparaisons ? `<div class="note"><strong>💡 Comparaison avec d'autres plans (${utilisateurs} utilisateur${utilisateurs > 1 ? 's' : ''}) :</strong></div><div class="result-detail" style="margin-top:8px;">${comparaisons}</div>` : ''}
+    <div class="note">💰 Tarifs en EUR pour 2026. La TVA est généralement incluse pour les particuliers en France. Pour des usages très intensifs, l'API peut revenir moins cher que les abonnements.</div>
+  `);
+}
+
+// ========== 53. TAXE VINTED ==========
+
+function calcTaxeVinted() {
+  const ventes = parseInt($('vt-ventes').value, 10) || 0;
+  const ca = parseFloat($('vt-ca').value) || 0;
+  const type = $('vt-type').value;
+  
+  if (ventes === 0 || ca === 0) {
+    showResult('vt-result', '<div class="note">⚠ Remplis le nombre de ventes et le montant total.</div>');
+    return;
+  }
+  
+  const seuilVentes = 30;
+  const seuilCA = 2000;
+  
+  const declarationAuto = ventes >= seuilVentes || ca >= seuilCA;
+  const seuilDepassement = [];
+  if (ventes >= seuilVentes) seuilDepassement.push(`${ventes} ventes ≥ 30`);
+  if (ca >= seuilCA) seuilDepassement.push(`${formatEur(ca)} ≥ 2 000 €`);
+  
+  let statut, couleur, action, impot;
+  
+  if (type === 'perso') {
+    // Vente de biens personnels d'occasion
+    if (!declarationAuto) {
+      statut = '✅ Aucune déclaration nécessaire';
+      couleur = '#10b981';
+      action = 'Tu vends tes affaires perso d\'occasion sous les seuils, rien à faire.';
+      impot = 0;
+    } else {
+      statut = '📋 Déclaration automatique mais non imposable';
+      couleur = '#f59e0b';
+      action = `Vinted déclare automatiquement à l'administration (seuils dépassés : ${seuilDepassement.join(', ')}). Comme ce sont des biens personnels d'occasion, tu n'es PAS imposé sauf cas particuliers (objet > 5 000€, métaux précieux, bijoux).`;
+      impot = 0;
+    }
+  } else if (type === 'pro') {
+    // Vente avec marge / activité régulière
+    statut = '⚠️ Activité professionnelle - imposable';
+    couleur = '#dc2626';
+    action = 'Tu es considéré comme vendeur professionnel. Tu dois t\'immatriculer (micro-entreprise, SASU, etc.) et déclarer tes revenus.';
+    // Estimation impôt : 22% si micro-entreprise (services + impôt libératoire)
+    impot = ca * 0.22;
+  } else if (type === 'collection') {
+    // Bijoux, métaux précieux, objets de collection
+    statut = '⚠️ Taxation forfaitaire des biens précieux';
+    couleur = '#dc2626';
+    action = 'Les bijoux, objets de collection et métaux précieux sont soumis à une taxe forfaitaire (6,5% sur le prix de vente pour les bijoux/objets > 5000€, 11% pour les métaux précieux).';
+    impot = ca * 0.065;
+  }
+  
+  showResult('vt-result', `
+    <div class="result-label">Situation fiscale Vinted</div>
+    <div class="result-value" style="font-size:24px; color:${couleur};">${statut}</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Nombre de ventes</span><strong>${ventes}</strong></div>
+      <div class="result-detail-row"><span>Chiffre d'affaires</span><strong>${formatEur(ca)}</strong></div>
+      <div class="result-detail-row"><span>Type de vente</span><strong>${type === 'perso' ? 'Biens personnels d\'occasion' : (type === 'pro' ? 'Vendeur professionnel' : 'Bijoux / Collection / Métaux précieux')}</strong></div>
+      <div class="result-detail-row"><span>Déclaration automatique par Vinted</span><strong>${declarationAuto ? '✅ Oui' : '❌ Non'}</strong></div>
+      ${impot > 0 ? `<div class="result-detail-row"><span>Estimation impôt</span><strong>${formatEur(impot)}</strong></div>` : ''}
+    </div>
+    <div class="note"><strong>📌 À retenir :</strong> ${action}</div>
+    <div class="note">⚠ Estimation indicative basée sur les règles 2026. Pour ta situation précise, consulte le site des impôts (impots.gouv.fr) ou un conseiller fiscal.</div>
+  `);
+}
+
+// ========== 54. FRAIS PAYPAL ==========
+
+function calcFraisPaypal() {
+  const montant = parseFloat($('pp-montant').value) || 0;
+  const type = $('pp-type').value;
+  const international = $('pp-international').value === 'oui';
+  
+  if (montant <= 0) {
+    showResult('pp-result', '<div class="note">⚠ Indique un montant.</div>');
+    return;
+  }
+  
+  let pourcentage, fixe, nomType;
+  
+  switch (type) {
+    case 'perso':
+      pourcentage = 0;
+      fixe = 0;
+      nomType = 'Envoi entre amis (perso)';
+      break;
+    case 'commercial':
+      pourcentage = 0.029;
+      fixe = 0.35;
+      nomType = 'Achat / Paiement commercial';
+      break;
+    case 'bouton':
+      pourcentage = 0.034;
+      fixe = 0.35;
+      nomType = 'Bouton de paiement (sites)';
+      break;
+    case 'micropaiement':
+      pourcentage = 0.05;
+      fixe = 0.05;
+      nomType = 'Micropaiement (< 10 €)';
+      break;
+    case 'carte-achat':
+      pourcentage = 0.016;
+      fixe = 0.10;
+      nomType = 'PayPal Carte d\'achat';
+      break;
+    default:
+      pourcentage = 0.029;
+      fixe = 0.35;
+      nomType = 'Commercial standard';
+  }
+  
+  let fraisPourcentage = montant * pourcentage;
+  let fraisInternational = 0;
+  
+  if (international) {
+    // Frais conversion + transfert international
+    fraisInternational = montant * 0.015; // 1.5% de change
+    fraisPourcentage += montant * 0.005; // 0.5% supplémentaire
+  }
+  
+  const totalFrais = fraisPourcentage + fixe + fraisInternational;
+  const netRecu = montant - totalFrais;
+  
+  showResult('pp-result', `
+    <div class="result-label">Frais PayPal estimés</div>
+    <div class="result-value" style="color:#dc2626;">${formatEur(totalFrais)}</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Montant initial</span><strong>${formatEur(montant)}</strong></div>
+      <div class="result-detail-row"><span>Type de transaction</span><strong>${nomType}</strong></div>
+      <div class="result-detail-row"><span>Frais en %</span><strong>${formatEur(fraisPourcentage)} (${(pourcentage*100).toFixed(2)}%)</strong></div>
+      <div class="result-detail-row"><span>Frais fixe</span><strong>${formatEur(fixe)}</strong></div>
+      ${international ? `<div class="result-detail-row"><span>Frais international</span><strong>${formatEur(fraisInternational)} (~1.5%)</strong></div>` : ''}
+      <div class="result-detail-row"><span>Total des frais</span><strong style="color:#dc2626;">${formatEur(totalFrais)}</strong></div>
+      <div class="result-detail-row"><span>Montant net reçu</span><strong style="color:#10b981;">${formatEur(netRecu)}</strong></div>
+      <div class="result-detail-row"><span>Pourcentage prélevé</span><strong>${((totalFrais/montant)*100).toFixed(2)}%</strong></div>
+    </div>
+    <div class="note">💡 <strong>Astuce :</strong> Pour éviter les frais entre amis/famille, choisis "Envoi à un proche" lors du paiement (gratuit en EUR). Pour les boutiques en ligne, certaines alternatives comme Wise ou Stripe peuvent être moins chères selon le volume.</div>
+  `);
+}
+
+// ========== 55. CONSOMMATION CLIM (RICHE) ==========
+
+const CLIM_PRESETS = {
+  'mobile-petite': { name: 'Climatiseur mobile petit', w: 800, surface: '10-15m²' },
+  'mobile-grande': { name: 'Climatiseur mobile grand', w: 1500, surface: '20-30m²' },
+  'split-7000': { name: 'Split 7 000 BTU (chambre)', w: 650, surface: '12-18m²' },
+  'split-9000': { name: 'Split 9 000 BTU (chambre/bureau)', w: 850, surface: '18-25m²' },
+  'split-12000': { name: 'Split 12 000 BTU (salon moyen)', w: 1150, surface: '25-35m²' },
+  'split-18000': { name: 'Split 18 000 BTU (grand salon)', w: 1700, surface: '35-50m²' },
+  'split-24000': { name: 'Split 24 000 BTU (très grand)', w: 2300, surface: '50-70m²' },
+  'multi-split': { name: 'Multi-split 3-4 unités', w: 3500, surface: 'Maison entière' },
+  'centrale': { name: 'Climatisation centrale', w: 5000, surface: 'Maison/Bureaux' }
+};
+
+function climPreset(key) {
+  if (!CLIM_PRESETS[key]) return;
+  $('clim-puissance').value = CLIM_PRESETS[key].w;
+  // Visual feedback
+  document.querySelectorAll('.clim-preset-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.clim-preset-btn[data-key="${key}"]`);
+  if (btn) btn.classList.add('active');
+}
+
+function climScenario(scenario) {
+  // Présets de scénarios complets
+  const scenarios = {
+    'canicule': { heures: 12, jours: 30, label: 'Canicule (juillet/août intensif)' },
+    'standard-ete': { heures: 6, jours: 60, label: 'Été standard (juin → août)' },
+    'occasionnel': { heures: 4, jours: 20, label: 'Occasionnel (juste les pics)' },
+    'bureau-travail': { heures: 8, jours: 22, label: 'Bureau (5j/sem × 4 sem)' }
+  };
+  if (!scenarios[scenario]) return;
+  $('clim-heures').value = scenarios[scenario].heures;
+  $('clim-jours').value = scenarios[scenario].jours;
+  document.querySelectorAll('.clim-scenario-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.clim-scenario-btn[data-key="${scenario}"]`);
+  if (btn) btn.classList.add('active');
+}
+
+function calcConsoClim() {
+  const puissance = parseFloat($('clim-puissance').value) || 0;
+  const heures = parseFloat($('clim-heures').value) || 0;
+  const jours = parseInt($('clim-jours').value, 10) || 0;
+  const prixKwh = parseFloat($('clim-prix-kwh').value) || 0.25;
+  const temperatureExt = parseFloat($('clim-temp').value) || 30;
+  
+  if (puissance <= 0 || heures <= 0 || jours <= 0) {
+    showResult('clim-result', '<div class="note">⚠ Remplis tous les champs (puissance, heures/jour, jours).</div>');
+    return;
+  }
+  
+  // Calcul de base
+  const consoJourKwh = (puissance * heures) / 1000;
+  const consoTotaleKwh = consoJourKwh * jours;
+  const coutJour = consoJourKwh * prixKwh;
+  const coutTotal = consoTotaleKwh * prixKwh;
+  const coutMois = coutJour * 30;
+  const coutHeure = (puissance / 1000) * prixKwh;
+  
+  // Estimation CO2 (mix énergétique français ~50g CO2/kWh)
+  const co2Kg = (consoTotaleKwh * 50) / 1000;
+  
+  // Bonus : économie possible en montant la consigne
+  // Chaque +1°C économise ~7% (référence ADEME)
+  const economie22vs26 = coutTotal * 0.30; // 22°C consomme ~30% de plus que 26°C
+  
+  // Type de clim
+  let typeClim = 'Personnalisée';
+  if (puissance < 1000) typeClim = '🌿 Petite (chambre)';
+  else if (puissance < 2000) typeClim = '🏠 Split moyen (salon)';
+  else if (puissance < 3500) typeClim = '🏢 Multi-split / grande pièce';
+  else typeClim = '🏛️ Centrale / commerciale';
+  
+  // Comparaison avec alternatives
+  const ventilateur = 50 * heures * jours / 1000 * prixKwh; // ventilateur ~50W
+  
+  showResult('clim-result', `
+    <div class="result-label">Coût de la clim</div>
+    <div class="result-value">${formatEur(coutTotal)}</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Type de clim</span><strong>${typeClim} (${puissance}W)</strong></div>
+      <div class="result-detail-row"><span>Utilisation</span><strong>${heures}h/jour × ${jours} jours</strong></div>
+      <div class="result-detail-row"><span>Conso totale</span><strong>${formatNum(consoTotaleKwh, 1)} kWh</strong></div>
+      <div class="result-detail-row"><span>Prix kWh</span><strong>${formatEur(prixKwh)}</strong></div>
+      <div class="result-detail-row"><span>Coût par heure</span><strong>${formatEur(coutHeure)}/h</strong></div>
+      <div class="result-detail-row"><span>Coût par jour</span><strong>${formatEur(coutJour)}</strong></div>
+      <div class="result-detail-row"><span>Coût par mois (30j)</span><strong>${formatEur(coutMois)}</strong></div>
+      <div class="result-detail-row"><span><strong>Coût total période</strong></span><strong style="color:#dc2626;">${formatEur(coutTotal)}</strong></div>
+      <div class="result-detail-row"><span>🌱 Empreinte CO₂</span><strong>${formatNum(co2Kg, 1)} kg CO₂eq</strong></div>
+    </div>
+    
+    <div style="margin-top: 16px; padding: 14px; background: #fef3c7; border-radius: 8px; border-left: 4px solid #f59e0b;">
+      <strong>💡 Tu pourrais économiser ${formatEur(economie22vs26)}</strong><br>
+      <span style="font-size:13px;">En passant ta consigne de 22°C à 26°C (recommandation ADEME). Chaque degré supplémentaire coûte ~7% de plus.</span>
+    </div>
+
+    <div style="margin-top: 12px; padding: 14px; background: var(--surface-2); border-radius: 8px;">
+      <strong>🆚 Alternatives moins chères :</strong>
+      <div class="result-detail-row" style="margin-top:6px;"><span>Ventilateur 50W (même usage)</span><strong>${formatEur(ventilateur)} (économie ${formatEur(coutTotal - ventilateur)})</strong></div>
+      <div class="result-detail-row"><span>Volets fermés + ventilation nuit</span><strong>0 € (gratuit)</strong></div>
+      <div class="result-detail-row"><span>Climatiseur de classe A+++ (-30%)</span><strong>${formatEur(coutTotal * 0.7)}</strong></div>
+    </div>
+
+    <div class="note">📊 <strong>Astuces ADEME :</strong> 26°C max recommandé, écart max 7°C avec l'extérieur (donc 28°C s'il fait 35°C dehors). Nettoyer filtres chaque mois (+15% efficacité). Fermer volets dès le matin. Ventilation nocturne quand température extérieure < intérieur.</div>
+  `);
+}
+
+// ========== 56. RECHARGE VOITURE ÉLECTRIQUE (RICHE) ==========
+
+const VE_MODELS = {
+  'tesla-model-3-sr': { name: 'Tesla Model 3 SR (60 kWh)', capacite: 60, conso: 14 },
+  'tesla-model-3-lr': { name: 'Tesla Model 3 LR (82 kWh)', capacite: 82, conso: 15 },
+  'tesla-model-y': { name: 'Tesla Model Y (75 kWh)', capacite: 75, conso: 16 },
+  'tesla-model-s': { name: 'Tesla Model S (100 kWh)', capacite: 100, conso: 18 },
+  'renault-zoe': { name: 'Renault Zoe (52 kWh)', capacite: 52, conso: 17 },
+  'renault-megane': { name: 'Renault Megane E-Tech (60 kWh)', capacite: 60, conso: 16 },
+  'peugeot-e208': { name: 'Peugeot e-208 (50 kWh)', capacite: 50, conso: 16 },
+  'peugeot-e308': { name: 'Peugeot e-308 (54 kWh)', capacite: 54, conso: 17 },
+  'citroen-ec3': { name: 'Citroën ë-C3 (44 kWh)', capacite: 44, conso: 17 },
+  'dacia-spring': { name: 'Dacia Spring (27 kWh)', capacite: 27, conso: 14 },
+  'volkswagen-id3': { name: 'VW ID.3 (58 kWh)', capacite: 58, conso: 16 },
+  'volkswagen-id4': { name: 'VW ID.4 (77 kWh)', capacite: 77, conso: 18 },
+  'kia-ev6': { name: 'Kia EV6 (77 kWh)', capacite: 77, conso: 16 },
+  'hyundai-ioniq5': { name: 'Hyundai Ioniq 5 (77 kWh)', capacite: 77, conso: 17 },
+  'fiat-500e': { name: 'Fiat 500e (42 kWh)', capacite: 42, conso: 15 },
+  'bmw-i4': { name: 'BMW i4 (80 kWh)', capacite: 80, conso: 17 },
+  'mercedes-eqe': { name: 'Mercedes EQE (90 kWh)', capacite: 90, conso: 19 },
+  'mg4': { name: 'MG4 (64 kWh)', capacite: 64, conso: 16 },
+  'byd-atto3': { name: 'BYD Atto 3 (60 kWh)', capacite: 60, conso: 17 },
+  'autre': { name: 'Autre / Personnalisé', capacite: 0, conso: 18 }
+};
+
+function vePreset(modelKey) {
+  if (!VE_MODELS[modelKey]) return;
+  const m = VE_MODELS[modelKey];
+  if (m.capacite > 0) $('ve-capacite').value = m.capacite;
+  if (m.conso > 0) $('ve-conso').value = m.conso;
+  document.querySelectorAll('.ve-model-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.ve-model-btn[data-key="${modelKey}"]`);
+  if (btn) btn.classList.add('active');
+}
+
+function veBorne(puissance, prix) {
+  $('ve-puissance').value = puissance;
+  $('ve-prix-kwh').value = prix;
+  document.querySelectorAll('.ve-borne-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.querySelector(`.ve-borne-btn[data-puissance="${puissance}"]`);
+  if (btn) btn.classList.add('active');
+}
+
+function calcRechargeVE() {
+  const capacite = parseFloat($('ve-capacite').value) || 0;
+  const chargeInitiale = parseFloat($('ve-charge-init').value) || 0;
+  const chargeFinale = parseFloat($('ve-charge-fin').value) || 100;
+  const puissanceCharge = parseFloat($('ve-puissance').value) || 0;
+  const prixKwh = parseFloat($('ve-prix-kwh').value) || 0.25;
+  const conso100km = parseFloat($('ve-conso').value) || 18;
+  
+  if (capacite <= 0 || puissanceCharge <= 0) {
+    showResult('ve-result', '<div class="note">⚠ Remplis la capacité batterie et la puissance de charge.</div>');
+    return;
+  }
+  
+  if (chargeFinale <= chargeInitiale) {
+    showResult('ve-result', '<div class="note">⚠ La charge finale doit être supérieure à la charge initiale.</div>');
+    return;
+  }
+  
+  const pourcentageACharger = chargeFinale - chargeInitiale;
+  const kwhNecessaires = capacite * (pourcentageACharger / 100);
+  
+  // Rendement de charge (en moyenne 90% à domicile, 95% en borne rapide)
+  const rendement = puissanceCharge > 50 ? 0.92 : 0.88;
+  const kwhFactures = kwhNecessaires / rendement;
+  
+  // Temps de charge (sur charge rapide, ralentit après 80%)
+  let tempsCharge;
+  if (puissanceCharge >= 50 && chargeFinale > 80) {
+    // Charge rapide : 10-80% à pleine puissance, 80-100% à moitié
+    const partRapide = Math.max(0, 80 - chargeInitiale) / 100 * capacite;
+    const partLente = (chargeFinale - 80) / 100 * capacite;
+    tempsCharge = partRapide / puissanceCharge + partLente / (puissanceCharge * 0.4);
+  } else {
+    tempsCharge = kwhNecessaires / puissanceCharge;
+  }
+  
+  const heuresCharge = Math.floor(tempsCharge);
+  const minutesCharge = Math.round((tempsCharge - heuresCharge) * 60);
+  
+  const coutTotal = kwhFactures * prixKwh;
+  const kmAvecCharge = (kwhNecessaires / conso100km) * 100;
+  const coutAu100km = (conso100km / 100) * (prixKwh / rendement);
+  
+  // Comparaison thermique (8L/100km × 1.80€/L)
+  const coutThermique100km = 8 * 1.80;
+  const economie100km = coutThermique100km - coutAu100km;
+  const economie10000km = economie100km * 100;
+  
+  // Type de borne
+  let typeBorne = '';
+  if (puissanceCharge <= 2.3) typeBorne = '🐌 Prise domestique (220V)';
+  else if (puissanceCharge <= 3.7) typeBorne = '🔌 Prise renforcée Green\'Up';
+  else if (puissanceCharge <= 7.4) typeBorne = '⚡ Wallbox 32A monophasée';
+  else if (puissanceCharge <= 22) typeBorne = '⚡⚡ Wallbox triphasée';
+  else if (puissanceCharge <= 50) typeBorne = '🔥 Borne rapide DC';
+  else if (puissanceCharge <= 150) typeBorne = '🔥🔥 Borne ultra-rapide';
+  else typeBorne = '🚀 Supercharger / 350 kW';
+  
+  // CO2 (50g/kWh mix français)
+  const co2 = (kwhFactures * 50) / 1000;
+  
+  showResult('ve-result', `
+    <div class="result-label">Coût de la recharge</div>
+    <div class="result-value">${formatEur(coutTotal)}</div>
+    <div class="result-detail">
+      <div class="result-detail-row"><span>Batterie</span><strong>${capacite} kWh</strong></div>
+      <div class="result-detail-row"><span>Charge</span><strong>${chargeInitiale}% → ${chargeFinale}%</strong></div>
+      <div class="result-detail-row"><span>Énergie facturée</span><strong>${formatNum(kwhFactures, 1)} kWh</strong></div>
+      <div class="result-detail-row"><span>Borne</span><strong>${typeBorne}</strong></div>
+      <div class="result-detail-row"><span>⏱️ Temps de charge</span><strong>${heuresCharge}h${minutesCharge.toString().padStart(2,'0')}</strong></div>
+      <div class="result-detail-row"><span>Prix kWh</span><strong>${formatEur(prixKwh)}</strong></div>
+      <div class="result-detail-row"><span><strong>Coût total</strong></span><strong style="color:#dc2626;">${formatEur(coutTotal)}</strong></div>
+      <div class="result-detail-row"><span>🛣️ Autonomie ajoutée</span><strong>~${formatNum(kmAvecCharge, 0)} km</strong></div>
+      <div class="result-detail-row"><span>🟢 Coût aux 100 km</span><strong style="color:#10b981;">${formatEur(coutAu100km)}</strong></div>
+      <div class="result-detail-row"><span>🌱 CO₂ émis</span><strong>${formatNum(co2, 1)} kg</strong></div>
+    </div>
+
+    <div style="margin-top:16px; padding:14px; background:#d1fae5; border-radius:8px; border-left:4px solid #10b981;">
+      <strong>🆚 Comparaison voiture thermique</strong><br>
+      <div class="result-detail-row" style="margin-top:6px;"><span>Coût aux 100 km thermique</span><strong>${formatEur(coutThermique100km)} (8L × 1,80€/L)</strong></div>
+      <div class="result-detail-row"><span>Économie aux 100 km</span><strong>${formatEur(economie100km)} (-${Math.round((economie100km/coutThermique100km)*100)}%)</strong></div>
+      <div class="result-detail-row"><span>Sur 10 000 km/an</span><strong>${formatEur(economie10000km)} économisés</strong></div>
+      <div class="result-detail-row"><span>Sur 5 ans</span><strong>${formatEur(economie10000km * 5)} économisés</strong></div>
+    </div>
+
+    <div style="margin-top:12px; padding:14px; background:var(--surface-2); border-radius:8px;">
+      <strong>💡 Astuces de recharge</strong>
+      <div style="margin-top:8px; font-size:13px;">
+        • <strong>Charge à domicile</strong> = 5-8x moins cher qu'en borne publique<br>
+        • <strong>Heures creuses</strong> (22h-6h) = -30% à -50% sur la facture<br>
+        • <strong>80% suffit</strong> au quotidien (préserve la batterie + plus rapide)<br>
+        • <strong>100% utile</strong> avant un long trajet seulement<br>
+        • <strong>Charge lente</strong> (Wallbox 7kW) = meilleure longévité batterie
+      </div>
+    </div>
+
+    <div class="note">📊 Estimation basée sur le rendement réel (${Math.round(rendement*100)}%), pas la conso théorique. La conso varie de ±30% selon vitesse, climat, charge transportée. Sur autoroute à 130 km/h, compte +40% vs cycle WLTP.</div>
+  `);
+}
+
