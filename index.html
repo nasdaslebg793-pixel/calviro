@@ -49,13 +49,13 @@
     </div>
   </nav>
 
-  <div style="text-align: center; margin-bottom: 12px;">
-    <h1>Calviro</h1>
-    <p class="tagline">51 calculateurs gratuits pour la vie de tous les jours.</p>
+  <div>
+    <h1 class="hero-title">Calviro</h1>
+    <p class="hero-subtitle">51 calculateurs gratuits pour la vie de tous les jours</p>
   </div>
 
   <div class="search-bar">
-    <input type="text" id="search-input" placeholder="Chercher un outil (ex: salaire, crédit, calories...)" oninput="filterTools()" autocomplete="off">
+    <input type="text" id="search-input" placeholder="Chercher un outil..." oninput="filterTools()" autocomplete="off">
   </div>
 
   <div class="search-results-empty" id="search-empty">
@@ -70,15 +70,15 @@
     <div class="history-items" id="history-items"></div>
   </div>
 
-  <div class="category-nav">
-    <a href="#" class="category-pill active" onclick="showAll(); event.preventDefault();">✨ Tous (51)</a>
-    <a href="#immobilier" class="category-pill">🏠 Immobilier</a>
-    <a href="#finance" class="category-pill">💰 Finance</a>
-    <a href="#travail" class="category-pill">💼 Travail</a>
-    <a href="#sante" class="category-pill">🏃 Santé</a>
-    <a href="#temps" class="category-pill">📅 Temps</a>
-    <a href="#quotidien" class="category-pill">🛠️ Quotidien</a>
-    <a href="#etudes" class="category-pill">🎓 Études & Jeux</a>
+  <div class="category-tabs" id="category-tabs">
+    <button class="tab-pill active" data-cat="all" onclick="selectCategory('all')">✨ Tous</button>
+    <button class="tab-pill" data-cat="immobilier" onclick="selectCategory('immobilier')">🏠 Immobilier</button>
+    <button class="tab-pill" data-cat="finance" onclick="selectCategory('finance')">💰 Finance</button>
+    <button class="tab-pill" data-cat="travail" onclick="selectCategory('travail')">💼 Travail</button>
+    <button class="tab-pill" data-cat="sante" onclick="selectCategory('sante')">🏃 Santé</button>
+    <button class="tab-pill" data-cat="temps" onclick="selectCategory('temps')">📅 Temps</button>
+    <button class="tab-pill" data-cat="quotidien" onclick="selectCategory('quotidien')">🛠️ Quotidien</button>
+    <button class="tab-pill" data-cat="etudes" onclick="selectCategory('etudes')">🎓 Études</button>
   </div>
 
   <section class="category-section" id="immobilier">
@@ -369,25 +369,76 @@ function toggleTheme() {
   }
 }
 
+let currentCategory = 'all';
+
+function selectCategory(cat) {
+  currentCategory = cat;
+  document.body.setAttribute('data-cat', cat);
+  
+  // Update active pill
+  document.querySelectorAll('.tab-pill').forEach(p => {
+    p.classList.toggle('active', p.getAttribute('data-cat') === cat);
+  });
+  
+  // Show/hide sections
+  document.querySelectorAll('.category-section').forEach(section => {
+    if (cat === 'all') {
+      section.classList.add('visible');
+      section.classList.remove('alone');
+    } else {
+      const isActive = section.id === cat;
+      section.classList.toggle('visible', isActive);
+      section.classList.toggle('alone', isActive);
+    }
+  });
+  
+  // Re-apply search filter if any
+  filterTools();
+  
+  // Smooth scroll to top of grid
+  const firstVisible = document.querySelector('.category-section.visible');
+  if (firstVisible && cat !== 'all') {
+    setTimeout(() => {
+      firstVisible.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  }
+}
+
 function filterTools() {
   const query = (document.getElementById('search-input').value || '').toLowerCase().trim();
+  
+  // Si recherche active, on montre tout
+  if (query !== '' && currentCategory !== 'all') {
+    document.querySelectorAll('.category-section').forEach(s => {
+      s.classList.add('visible');
+      s.classList.remove('alone');
+    });
+  }
+  
   const cards = document.querySelectorAll('.tool-card[data-tags]');
   const sections = document.querySelectorAll('.category-section');
   let matchCount = 0;
   
   cards.forEach(card => {
     const tags = (card.getAttribute('data-tags') + ' ' + card.querySelector('.title').textContent + ' ' + card.querySelector('.desc').textContent).toLowerCase();
-    if (query === '' || tags.includes(query)) {
-      card.style.display = '';
-      matchCount++;
-    } else {
-      card.style.display = 'none';
-    }
+    const matches = query === '' || tags.includes(query);
+    card.style.display = matches ? '' : 'none';
+    if (matches) matchCount++;
   });
   
   sections.forEach(section => {
-    const visible = Array.from(section.querySelectorAll('.tool-card')).filter(c => c.style.display !== 'none');
-    section.style.display = (visible.length === 0 && query !== '') ? 'none' : '';
+    const visibleCards = Array.from(section.querySelectorAll('.tool-card')).filter(c => c.style.display !== 'none');
+    if (query !== '') {
+      section.style.display = visibleCards.length === 0 ? 'none' : '';
+    } else {
+      section.style.display = '';
+      // Re-apply category logic
+      if (currentCategory === 'all') {
+        section.classList.add('visible');
+      } else {
+        section.classList.toggle('visible', section.id === currentCategory);
+      }
+    }
   });
   
   document.getElementById('search-empty').classList.toggle('visible', matchCount === 0 && query !== '');
@@ -395,8 +446,7 @@ function filterTools() {
 
 function showAll() {
   document.getElementById('search-input').value = '';
-  filterTools();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  selectCategory('all');
 }
 
 function getHistory() {
@@ -428,6 +478,9 @@ function clearHistory() {
   }
 }
 
+// Init
+document.body.setAttribute('data-cat', 'all');
+document.querySelectorAll('.category-section').forEach(s => s.classList.add('visible'));
 renderHistory();
 </script>
 
